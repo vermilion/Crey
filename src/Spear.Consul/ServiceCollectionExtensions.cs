@@ -1,11 +1,9 @@
-﻿using System;
-using System.Linq;
-using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Spear.Core.Config;
 using Spear.Core.Micro;
 using Spear.Core.Micro.Services;
+using Spear.Discovery.Consul;
 
 namespace Spear.Consul
 {
@@ -56,8 +54,7 @@ namespace Spear.Consul
         /// <param name="server"></param>
         /// <param name="token"></param>
         /// <returns></returns>
-        public static IMicroClientBuilder AddConsul(this IMicroClientBuilder builder, string server,
-            string token = null)
+        public static IMicroClientBuilder AddConsul(this IMicroClientBuilder builder, string server, string token = null)
         {
             builder.Services.AddMemoryCache();
             builder.Services.AddSingleton<IServiceFinder>(provider =>
@@ -74,8 +71,7 @@ namespace Spear.Consul
         /// <param name="server"></param>
         /// <param name="token"></param>
         /// <returns></returns>
-        public static IMicroServerBuilder AddConsul(this IMicroServerBuilder builder, string server,
-            string token = null)
+        public static IMicroServerBuilder AddConsul(this IMicroServerBuilder builder, string server, string token = null)
         {
             builder.Services.AddSingleton<IServiceRegister>(provider =>
             {

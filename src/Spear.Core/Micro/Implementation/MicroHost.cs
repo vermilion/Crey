@@ -11,7 +11,6 @@ namespace Spear.Core.Micro.Implementation
         private readonly IServiceRegister _serviceRegister;
         private readonly IMicroEntryFactory _entryFactory;
         private readonly ILogger<MicroHost> _logger;
-        //private readonly ServiceProtocol _protocol;
 
         /// <summary> 服务宿主机 </summary>
         /// <param name="serviceExecutor"></param>
@@ -20,15 +19,13 @@ namespace Spear.Core.Micro.Implementation
         /// <param name="entryFactory"></param>
         /// <param name="loggerFactory"></param>
         public MicroHost(IMicroExecutor serviceExecutor, IMicroListener microListener,
-            IServiceRegister serviceRegister, IMicroEntryFactory entryFactory, ILoggerFactory loggerFactory)
+            IServiceRegister serviceRegister, IMicroEntryFactory entryFactory, 
+            ILoggerFactory loggerFactory)
             : base(serviceExecutor, microListener, loggerFactory)
         {
             _serviceRegister = serviceRegister;
             _entryFactory = entryFactory;
             _logger = loggerFactory.CreateLogger<MicroHost>();
-            //var protocol = microListener.GetType().GetCustomAttribute<ProtocolAttribute>();
-            //if (protocol != null)
-            //    _protocol = protocol.Protocol;
         }
 
         public override void Dispose()
@@ -47,7 +44,7 @@ namespace Spear.Core.Micro.Implementation
                 await MicroListener.Start(serviceAddress);
 
                 if (_logger.IsEnabled(LogLevel.Information))
-                    _logger.LogInformation($"服务已启动：{serviceAddress}");
+                    _logger.LogInformation($"Service started at：{serviceAddress}");
             }
             catch (Exception ex)
             {
@@ -55,14 +52,14 @@ namespace Spear.Core.Micro.Implementation
             }
 
             var assemblies = _entryFactory.GetContracts();
-            await _serviceRegister.Regist(assemblies, serviceAddress);
+            await _serviceRegister.Register(assemblies, serviceAddress);
         }
 
         /// <summary> 停止服务 </summary>
         /// <returns></returns>
         public override async Task Stop()
         {
-            await _serviceRegister.Deregist();
+            await _serviceRegister.Deregister();
             await MicroListener.Stop();
             Console.WriteLine("Service Stoped");
         }

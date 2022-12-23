@@ -1,9 +1,8 @@
-﻿namespace Spear.Core.Micro.Services
+﻿namespace Spear.Core.Micro.Services;
+
+public abstract class DServiceRoute
 {
-    public abstract class DServiceRoute
-    {
-        protected const string KeyService = "service";
-        protected const string KeyMode = "mode";
-        protected const string KeyVersion = "version";
-    }
+    protected const string KeyService = "service";
+    protected const string KeyMode = "mode";
+    protected const string KeyVersion = "version";
 }

@@ -1,8 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Threading.Tasks;
+﻿using System.Reflection;
+using Microsoft.Extensions.Logging;
 using Spear.Core.Config;
 using Spear.Core.Extensions;
 
@@ -23,24 +20,26 @@ namespace Spear.Core.Micro.Services
             var services = SpearConfig.GetConfig().Services;
             if (services.IsNullOrEmpty())
                 return;
+
             foreach (var service in services)
             {
                 if (service.Key.IsNullOrEmpty() || service.Value.IsNullOrEmpty())
                     continue;
+
                 foreach (var address in service.Value)
                 {
-                    Regist(service.Key, address);
+                    Register(service.Key, address);
                 }
             }
         }
 
-        public Task Deregist()
+        public Task Deregister()
         {
             _serviceCenter.Clear();
             return Task.CompletedTask;
         }
 
-        public void Regist(string serviceName, ServiceAddress address)
+        public void Register(string serviceName, ServiceAddress address)
         {
             Logger?.LogInformation($"regist service:{serviceName},{address}");
             if (!_serviceCenter.TryGetValue(serviceName, out var list))
@@ -51,12 +50,12 @@ namespace Spear.Core.Micro.Services
             _serviceCenter[serviceName] = list;
         }
 
-        public Task Regist(IEnumerable<Assembly> assemblyList, ServiceAddress serverAddress)
+        public Task Register(IEnumerable<Assembly> assemblyList, ServiceAddress serverAddress)
         {
             foreach (var assembly in assemblyList)
             {
                 var serviveName = assembly.ServiceName();
-                Regist(serviveName, serverAddress);
+                Register(serviveName, serverAddress);
             }
             return Task.CompletedTask;
         }

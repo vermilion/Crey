@@ -17,6 +17,7 @@ namespace Spear.Core
                 var mode = "SPEAR_MODE".Env<ProductMode?>();
                 if (mode.HasValue)
                     return mode.Value;
+
                 return "mode".Config(ProductMode.Dev);
             }
         }

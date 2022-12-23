@@ -23,7 +23,7 @@ namespace Spear.Tests.Server.Services
             await Task.CompletedTask;
         }
 
-        public async Task<string> Get(string name)
+        public async Task<string> Say(string name)
         {
             return await Task.FromResult($"{_session.UserName}, get name:{name}");
         }

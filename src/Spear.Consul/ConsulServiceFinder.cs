@@ -1,14 +1,10 @@
-﻿using Consul;
+﻿using System.Text.Json;
+using Consul;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using Spear.Core;
 using Spear.Core.Extensions;
 using Spear.Core.Micro.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Spear.Consul
 {
@@ -17,7 +13,7 @@ namespace Spear.Consul
         private readonly string _consulServer;
         private readonly string _consulToken;
 
-        public ConsulServiceFinder(IMemoryCache cache, ILogger logger, string server, string token = null) 
+        public ConsulServiceFinder(IMemoryCache cache, ILogger logger, string server, string token = null)
             : base(cache, logger)
         {
             _consulServer = server;
@@ -36,27 +32,28 @@ namespace Spear.Consul
 
         protected override async Task<List<ServiceAddress>> QueryService(Type serviceType, ProductMode[] modes)
         {
-            var ass = serviceType.Assembly;
             var services = new List<ServiceAddress>();
-            using (var client = CreateClient())
-            {
-                var list = await client.Catalog.Service(ass.ServiceName());
-                foreach (var service in list.Response)
-                {
-                    if (service.ServiceMeta.TryGetValue(KeyMode, out var modeValue))
-                    {
-                        var mode = modeValue.CastTo(ProductMode.Dev);
-                        if (!modes.Contains(mode))
-                            continue;
-                    }
 
-                    services.Add(service.ServiceMeta.TryGetValue(KeyService, out var json)
-                        ? JsonConvert.DeserializeObject<ServiceAddress>(json)
-                        : new ServiceAddress(service.Address, service.ServicePort));
+            using var client = CreateClient();
+            var list = await client.Catalog.Service(serviceType.Assembly.ServiceName());
+            foreach (var service in list.Response)
+            {
+                if (service.ServiceMeta.TryGetValue(KeyMode, out var modeValue))
+                {
+                    var mode = modeValue.CastTo(ProductMode.Dev);
+                    if (!modes.Contains(mode))
+                        continue;
                 }
 
-                return services;
+                if (service.ServiceMeta.TryGetValue(KeyService, out var json))
+                {
+                    var address = JsonSerializer.Deserialize<ServiceAddress>(json);
+                    if (address is not null)
+                        services.Add(address);
+                }
             }
+
+            return services;
         }
     }
 }

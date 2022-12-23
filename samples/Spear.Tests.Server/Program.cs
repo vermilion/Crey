@@ -69,7 +69,6 @@ namespace Spear.Tests.Server
             {
                 var m = "micro".Config<ServiceAddress>();
                 if (m == null) return;
-                address.Service = m.Service;
                 address.Host = m.Host;
                 address.Port = port > 80 ? port : m.Port;
                 if (address.Port < 80)
@@ -82,17 +81,21 @@ namespace Spear.Tests.Server
 
             try
             {
-                var result = contract.Get("shay");
+                var result = contract.Say("Hello");
                 Console.WriteLine(result.Result);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine(ex);
             }
            
             while (true)
             {
                 var cmd = Console.ReadLine();
                 if (cmd == "exit") break;
+
+                var result = contract.Say(cmd);
+                Console.WriteLine(result.Result);
             }
         }
 

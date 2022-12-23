@@ -7,7 +7,7 @@ namespace Spear.Tests.Contracts
     {
         Task Notice(string name);
 
-        Task<string> Get(string name);
+        Task<string> Say(string name);
 
         Task<UserDto> User(UserInputDto input);
     }

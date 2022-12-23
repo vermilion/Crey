@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Threading.Tasks;
+﻿using System.Net;
 using Grpc.Core;
 using Grpc.Health.V1;
 using Grpc.HealthCheck;
@@ -76,7 +73,7 @@ namespace Spear.Protocol.Grpc
             {
                 Ports =
                 {
-                    new ServerPort(serviceAddress.Service, serviceAddress.Port, ServerCredentials.Insecure)
+                    new ServerPort(serviceAddress.Host, serviceAddress.Port, ServerCredentials.Insecure)
                 },
                 Services =
                 {
@@ -85,7 +82,6 @@ namespace Spear.Protocol.Grpc
                 }
             };
 
-            _logger.LogInformation($"GRPC Service Start At:{serviceAddress}");
             _grpcServer.Start();
 
             return Task.CompletedTask;

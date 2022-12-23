@@ -35,7 +35,7 @@ namespace Spear.Core.Extensions
         /// <param name="configName"></param>
         /// <param name="def"></param>
         /// <returns></returns>
-        public static T Config<T>(this string configName, T def = default(T))
+        public static T Config<T>(this string configName, T def = default)
         {
             var helper = ConfigHelper.Instance;
             return helper.Get(configName, def);
