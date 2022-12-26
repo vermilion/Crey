@@ -4,6 +4,7 @@ using Consul;
 using Microsoft.Extensions.Logging;
 using Spear.Core;
 using Spear.Core.Extensions;
+using Spear.Core.Helper;
 using Spear.Core.Micro.Services;
 
 namespace Spear.Discovery.Consul
@@ -61,7 +62,7 @@ namespace Spear.Discovery.Consul
                     },
                     Meta = new Dictionary<string, string>
                     {
-                        { KeyService, serverAddress.ToJson() },
+                        { KeyService, JsonHelper.ToJson(serverAddress) },
                         { KeyMode, Constants.Mode.ToString() },
                         { KeyVersion, ass.GetName().Version.ToString() }
                     }

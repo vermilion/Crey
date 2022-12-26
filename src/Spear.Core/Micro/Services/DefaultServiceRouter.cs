@@ -9,7 +9,7 @@ namespace Spear.Core.Micro.Services
     {
         private readonly Dictionary<string, List<ServiceAddress>> _serviceCenter;
         public DefaultServiceRouter(ILogger<DefaultServiceRouter> logger)
-            : base(null, logger)
+            : base(logger)
         {
             _serviceCenter = new Dictionary<string, List<ServiceAddress>>();
             RegistFromConfig();

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Web;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Spear.Core.Helper;
 using Spear.Core.Message;
 using Spear.Core.Message.Models;
 using Spear.Core.Session;
@@ -102,7 +103,7 @@ namespace Spear.Core.Micro.Implementation
             }
 
             if (_logger.IsEnabled(LogLevel.Debug))
-                _logger.LogDebug(JsonSerializer.Serialize(message));
+                _logger.LogDebug(JsonHelper.ToJson(message));
 
             var entry = _entryFactory.Find(message.ServiceId);
             if (entry == null)

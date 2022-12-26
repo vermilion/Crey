@@ -1,6 +1,8 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Security.Cryptography;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 using Spear.Core.Extensions;
 
 namespace Spear.Core.Micro.Services
@@ -39,9 +41,14 @@ namespace Spear.Core.Micro.Services
     /// <summary> 服务地址扩展 </summary>
     public static class ServiceAddressExtensions
     {
-        public static string ToJson(this ServiceAddress address)
+        public static EndPoint ToEndpoint(this ServiceAddress address)
         {
-            return JsonSerializer.Serialize(address);
+            var ipRegex = @"^((2[0-4]\d|25[0-5]|[01]?\d\d?)\.){3}(2[0-4]\d|25[0-5]|[01]?\d\d?)$";
+
+            if (Regex.IsMatch(address.Host, ipRegex))
+                return new IPEndPoint(IPAddress.Parse(address.Host), address.Port);
+
+            return new DnsEndPoint(address.Host, address.Port);
         }
 
         /// <summary>

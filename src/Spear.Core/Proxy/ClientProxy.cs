@@ -1,4 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Diagnostics;
+using System.Net.Sockets;
+using System.Reflection;
+using System.Web;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Polly;
 using Spear.Core.Exceptions;
@@ -8,15 +12,6 @@ using Spear.Core.Micro;
 using Spear.Core.Micro.Services;
 using Spear.Core.Session;
 using Spear.ProxyGenerator;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Sockets;
-using System.Reflection;
-using System.Threading.Tasks;
-using System.Web;
 
 namespace Spear.Core.Proxy
 {
@@ -24,7 +19,6 @@ namespace Spear.Core.Proxy
     public class ClientProxy : IProxyProvider
     {
         private readonly ILogger<ClientProxy> _logger;
-
         private readonly IServiceProvider _provider;
         private readonly IServiceFinder _serviceFinder;
 
@@ -62,15 +56,14 @@ namespace Spear.Core.Proxy
         {
             var serviceType = targetMethod.DeclaringType;
 
-            var services = (await _serviceFinder.Find(serviceType) ?? new List<ServiceAddress>())
-                .ToList();
-            
+            var services = await _serviceFinder.Find(serviceType);
+
             if (!services.Any())
                 throw ErrorCodes.NoService.CodeException();
 
             var invokeMessage = Create(targetMethod, args);
             ServiceAddress service = null;
-            
+
             var builder = Policy
                 .Handle<Exception>(ex =>
                     ex.GetBaseException() is SocketException ||
@@ -78,29 +71,20 @@ namespace Spear.Core.Proxy
                     (ex.GetBaseException() is SpearException spearEx && spearEx.Code == ErrorCodes.SystemError)) //服务器异常
                 .OrResult<MessageResult>(r => r.Code != 200); //服务未找到
 
-            //熔断,3次异常,熔断5分钟
-            var breaker = builder.CircuitBreakerAsync(3, TimeSpan.FromMinutes(5));
-            //重试3次
-            var retry = builder.RetryAsync(3, (result, count) =>
+            // retry 3 times
+            var policy = builder.RetryAsync(3, (result, count) =>
             {
                 _logger.LogWarning(result.Exception != null
                     ? $"{service},{targetMethod.ServiceKey()}:retry,{count},{result.Exception.Format()}"
                     : $"{service},{targetMethod.ServiceKey()}:retry,{count},{result.Result.Code}");
-                
+
                 services.Remove(service);
-
-                _serviceFinder.CleanCache(serviceType);
             });
-
-            var policy = Policy.WrapAsync(retry, breaker);
 
             return await policy.ExecuteAsync(async () =>
             {
                 if (!services.Any())
-                {
-                    await _serviceFinder.CleanCache(serviceType);
                     throw ErrorCodes.NoService.CodeException();
-                }
 
                 service = services.Random();
 

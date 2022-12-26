@@ -5,6 +5,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Spear.Core.Exceptions;
+using Spear.Core.Helper;
 using Spear.Core.Message;
 using Spear.Core.Message.Models;
 
@@ -77,7 +78,7 @@ namespace Spear.Core.Micro.Implementation
                     _logger.LogDebug("准备发送消息");
                 var callback = RegistCallbackAsync(message.Id);
                 if (_logger.IsEnabled(LogLevel.Debug))
-                    _logger.LogDebug($"{_sender.GetType()}:send :{JsonSerializer.Serialize(message)}");
+                    _logger.LogDebug($"{_sender.GetType()}:send :{JsonHelper.ToJson(message)}");
                 //发送
                 await _sender.Send(message);
                 if (_logger.IsEnabled(LogLevel.Debug))

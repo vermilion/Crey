@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using Microsoft.Extensions.Logging;
+using Spear.Core.Helper;
 using Spear.Core.Message;
 using Spear.Core.Message.Models;
 using Spear.Core.Micro.Services;
@@ -47,7 +48,7 @@ namespace Spear.Core.Micro.Implementation
                 return;
             
             if (_logger.IsEnabled(LogLevel.Debug))
-                _logger.LogDebug($"receive:{JsonSerializer.Serialize(message)}");
+                _logger.LogDebug($"receive:{JsonHelper.ToJson(message)}");
 
             await _microExecutor.Execute(sender, invokeMessage);
         }

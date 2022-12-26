@@ -1,9 +1,9 @@
 ﻿using System.Text.Json;
 using Consul;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Spear.Core;
 using Spear.Core.Extensions;
+using Spear.Core.Helper;
 using Spear.Core.Micro.Services;
 
 namespace Spear.Consul
@@ -13,8 +13,8 @@ namespace Spear.Consul
         private readonly string _consulServer;
         private readonly string _consulToken;
 
-        public ConsulServiceFinder(IMemoryCache cache, ILogger logger, string server, string token = null)
-            : base(cache, logger)
+        public ConsulServiceFinder(ILogger logger, string server, string token = null)
+            : base(logger)
         {
             _consulServer = server;
             _consulToken = token;
@@ -35,19 +35,22 @@ namespace Spear.Consul
             var services = new List<ServiceAddress>();
 
             using var client = CreateClient();
-            var list = await client.Catalog.Service(serviceType.Assembly.ServiceName());
-            foreach (var service in list.Response)
+            var list = await client.Health.Service(serviceType.Assembly.ServiceName(), null, true);
+
+            foreach (var entry in list.Response)
             {
-                if (service.ServiceMeta.TryGetValue(KeyMode, out var modeValue))
+                var service = entry.Service;
+
+                if (service.Meta.TryGetValue(KeyMode, out var modeValue))
                 {
                     var mode = modeValue.CastTo(ProductMode.Dev);
                     if (!modes.Contains(mode))
                         continue;
                 }
 
-                if (service.ServiceMeta.TryGetValue(KeyService, out var json))
+                if (service.Meta.TryGetValue(KeyService, out var json))
                 {
-                    var address = JsonSerializer.Deserialize<ServiceAddress>(json);
+                    var address = JsonHelper.FromJson<ServiceAddress>(json);
                     if (address is not null)
                         services.Add(address);
                 }

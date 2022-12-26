@@ -6,7 +6,7 @@ using Spear.Core;
 using Spear.Core.Extensions;
 using Spear.Core.Micro;
 using Spear.Core.Micro.Services;
-using Spear.Protocol.Grpc;
+using Spear.Protocol.Tcp;
 using Spear.ProxyGenerator;
 using Spear.Tests.Contracts;
 using Spear.Tests.Server.Services;
@@ -43,7 +43,7 @@ namespace Spear.Tests.Server
                 .AddMicroService(builder =>
                 {
                     builder
-                        .AddGrpcProtocol()
+                        .AddTcpProtocol()
                         .AddMessagePackCodec()
                         .AddSession()
                         //.AddDefaultRouter()
@@ -53,7 +53,7 @@ namespace Spear.Tests.Server
                 .AddMicroClient(builder =>
                 {
                     builder
-                        .AddGrpcProtocol()
+                        .AddTcpProtocol()
                         .AddMessagePackCodec()
                         .AddSession()
                         //.AddDefaultRouter()
@@ -75,6 +75,8 @@ namespace Spear.Tests.Server
                     address.Port = 5000;
                 address.Weight = m.Weight;
             });
+
+            await Task.Delay(10000);
 
             var proxy = _provider.GetRequiredService<IProxyFactory>();
             var contract = proxy.Create<ITestContract>();

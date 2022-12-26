@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text.Json;
+﻿using Spear.Core.Helper;
 
 namespace Spear.Core.Message.Models
 {
@@ -25,7 +24,7 @@ namespace Spear.Core.Message.Models
             var type = value.GetType();
             ContentType = type.TypeName();
             var code = Type.GetTypeCode(type);
-            Content = _serialize.Serialize(code == TypeCode.Object ? JsonSerializer.Serialize(value) : value);
+            Content = _serialize.Serialize(code == TypeCode.Object ? JsonHelper.ToJson(value) : value);
         }
 
         public object GetValue()
@@ -38,7 +37,7 @@ namespace Spear.Core.Message.Models
             if (code == TypeCode.Object)
             {
                 var content = _serialize.Deserialize<string>(Content);
-                return JsonSerializer.Deserialize(content, type);
+                return JsonHelper.FromJson(content, type);
             }
 
             return _serialize.Deserialize(Content, type);
