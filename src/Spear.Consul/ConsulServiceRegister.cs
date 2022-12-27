@@ -2,21 +2,25 @@
 using System.Reflection;
 using Consul;
 using Microsoft.Extensions.Logging;
-using Spear.Core;
+using Microsoft.Extensions.Options;
 using Spear.Core.Extensions;
 using Spear.Core.Helper;
-using Spear.Core.Micro.Services;
+using Spear.Core.Options;
+using Spear.Core.ServiceDiscovery;
+using Spear.Core.ServiceDiscovery.Constants;
 
 namespace Spear.Discovery.Consul
 {
-    public class ConsulServiceRegister : DServiceRegister
+    public class ConsulServiceRegister : ServiceRegister
     {
         private readonly string _consulServer;
         private readonly string _consulToken;
         private readonly List<string> _services;
         private readonly ILogger<ConsulServiceRegister> _logger;
 
-        public ConsulServiceRegister(ILogger<ConsulServiceRegister> logger, string server, string token)
+        public ConsulServiceRegister(
+            ILogger<ConsulServiceRegister> logger, 
+            string server, string token)
         {
             _consulServer = server;
             _consulToken = token;
@@ -49,7 +53,7 @@ namespace Spear.Discovery.Consul
                 {
                     ID = id,
                     Name = serviceName,
-                    Tags = new[] { $"{Constants.Mode}", ass.GetName().Version.ToString() },
+                    Tags = new[] { ass.GetName().Version.ToString() },
                     EnableTagOverride = true,
                     Address = serverAddress.Host,
                     Port = serverAddress.Port,
@@ -62,9 +66,8 @@ namespace Spear.Discovery.Consul
                     },
                     Meta = new Dictionary<string, string>
                     {
-                        { KeyService, JsonHelper.ToJson(serverAddress) },
-                        { KeyMode, Constants.Mode.ToString() },
-                        { KeyVersion, ass.GetName().Version.ToString() }
+                        { ServiceRouteConstants.KeyService, JsonHelper.ToJson(serverAddress) },
+                        { ServiceRouteConstants.KeyVersion, ass.GetName().Version.ToString() }
                     }
                 };
 
@@ -72,9 +75,9 @@ namespace Spear.Discovery.Consul
 
                 var result = await client.Agent.ServiceRegister(service);
                 if (result.StatusCode != HttpStatusCode.OK)
-                    _logger.LogWarning($"Service register failed [{serviceName},{serverAddress}]:{result.StatusCode},{result.RequestTime}");
+                    _logger.LogWarning($"Service registration failed [{serviceName}@{serverAddress}]:{result.StatusCode}, {result.RequestTime}");
                 else
-                    _logger.LogInformation($"Service registered [{serviceName},{serverAddress}]");
+                    _logger.LogInformation($"Service registered [{serviceName}@{serverAddress}]");
             }
         }
 

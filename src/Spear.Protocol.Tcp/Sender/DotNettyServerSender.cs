@@ -1,7 +1,7 @@
 ﻿using DotNetty.Transport.Channels;
-using Spear.Core.Message;
+using Spear.Core.Message.Abstractions;
 using Spear.Core.Message.Models;
-using Spear.Core.Micro.Services;
+using Spear.Core.ServiceDiscovery;
 
 namespace Spear.Protocol.Tcp.Sender
 {

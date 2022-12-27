@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Spear.Core.Micro;
+using Spear.Core.Builder;
+using Spear.Core.Micro.Abstractions;
 
 namespace Spear.Protocol.Tcp
 {
@@ -8,18 +9,11 @@ namespace Spear.Protocol.Tcp
         /// <summary> 使用DotNetty的TCP传输协议 </summary>
         /// <param name="builder"></param>
         /// <returns></returns>
-        public static IMicroServerBuilder AddTcpProtocol(this IMicroServerBuilder builder)
+        public static IMicroBuilder AddTcpProtocol(this IMicroBuilder builder)
         {
             builder.Services.AddSingleton<IMicroListener, DotNettyMicroListener>();
-            return builder;
-        }
-
-        /// <summary> 使用DotNetty的TCP传输协议 </summary>
-        /// <param name="builder"></param>
-        /// <returns></returns>
-        public static IMicroClientBuilder AddTcpProtocol(this IMicroClientBuilder builder)
-        {
             builder.Services.AddSingleton<IMicroClientFactory, DotNettyClientFactory>();
+
             return builder;
         }
     }

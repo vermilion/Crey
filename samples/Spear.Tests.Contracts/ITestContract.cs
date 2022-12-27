@@ -1,9 +1,9 @@
-﻿using Spear.Core;
+﻿using Spear.Core.Micro.Abstractions;
 using Spear.Tests.Contracts.Dtos;
 
 namespace Spear.Tests.Contracts
 {
-    public interface ITestContract : ISpearService
+    public interface ITestContract : IMicroService
     {
         Task Notice(string name);
 

@@ -4,13 +4,19 @@ using System.Reflection;
 using System.Web;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Polly;
 using Spear.Core.Exceptions;
 using Spear.Core.Extensions;
+using Spear.Core.Helper;
 using Spear.Core.Message.Models;
-using Spear.Core.Micro;
-using Spear.Core.Micro.Services;
-using Spear.Core.Session;
+using Spear.Core.Micro.Abstractions;
+using Spear.Core.Options;
+using Spear.Core.ServiceDiscovery;
+using Spear.Core.ServiceDiscovery.Abstractions;
+using Spear.Core.ServiceDiscovery.Extensions;
+using Spear.Core.Session.Abstractions;
+using Spear.Core.Session.Models;
 using Spear.ProxyGenerator;
 
 namespace Spear.Core.Proxy
@@ -56,7 +62,7 @@ namespace Spear.Core.Proxy
         {
             var serviceType = targetMethod.DeclaringType;
 
-            var services = await _serviceFinder.Find(serviceType);
+            var services = await _serviceFinder.QueryService(serviceType);
 
             if (!services.Any())
                 throw ErrorCodes.NoService.CodeException();
@@ -94,7 +100,7 @@ namespace Spear.Core.Proxy
 
         private InvokeMessage Create(MethodInfo targetMethod, IDictionary<string, object> args)
         {
-            var localIp = Constants.LocalIp();
+            var localIp = IpAddressHelper.LocalIp();
             var headers = new Dictionary<string, string>
             {
                 { SpearClaimTypes.HeaderForward, localIp },

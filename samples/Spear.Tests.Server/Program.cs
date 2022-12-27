@@ -1,11 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Spear.Codec.MessagePack;
+﻿using Spear.Codec.MessagePack;
 using Spear.Consul;
 using Spear.Core;
-using Spear.Core.Extensions;
-using Spear.Core.Micro;
-using Spear.Core.Micro.Services;
+using Spear.Core.Builder;
 using Spear.Protocol.Tcp;
 using Spear.ProxyGenerator;
 using Spear.Tests.Contracts;
@@ -15,70 +11,45 @@ namespace Spear.Tests.Server
 {
     internal class Program
     {
-        private static IServiceProvider _provider;
-
         private static async Task Main(string[] args)
         {
-            AppDomain.CurrentDomain.ProcessExit += async (sender, eventArgs) => await Shutdown();
-            Console.CancelKeyPress += async (sender, eventArgs) =>
-            {
-                await Shutdown();
-                eventArgs.Cancel = true;
-            };
-
-            var port = -1;
-            if (args.Length > 0)
-                int.TryParse(args[0], out port);
-
-            var builder = new MicroBuilder();
-            builder.Services.AddLogging(builder =>
-            {
-                builder.SetMinimumLevel(LogLevel.Information);
-                builder.AddFilter("System", level => level >= LogLevel.Warning);
-                builder.AddFilter("Microsoft", level => level >= LogLevel.Warning);
-                builder.AddConsole();
-            });
-
-            builder
-                .AddMicroService(builder =>
+            var host = Host.CreateDefaultBuilder(args)
+                .ConfigureLogging(x =>
                 {
-                    builder
-                        .AddTcpProtocol()
-                        .AddMessagePackCodec()
-                        .AddSession()
-                        //.AddDefaultRouter()
-                        .AddConsul("http://192.168.1.24:8500")
-                        ;
+                    x.SetMinimumLevel(LogLevel.Information);
+                    x.AddFilter("System", level => level >= LogLevel.Warning);
+                    x.AddFilter("Microsoft", level => level >= LogLevel.Warning);
+                    x.AddConsole();
                 })
-                .AddMicroClient(builder =>
+                .ConfigureServices((context, services) =>
                 {
+                    var builder = new MicroBuilder(context.Configuration, services);
+
                     builder
                         .AddTcpProtocol()
                         .AddMessagePackCodec()
                         .AddSession()
                         //.AddDefaultRouter()
                         .AddConsul("http://192.168.1.24:8500")
-                        ;
-                });
 
-            builder.Services.AddSingleton<ITestContract, TestService>();
+                        .AddMicroService(builder =>
+                        {
+                        })
+                        .AddMicroClient(builder =>
+                        {
+                        });
 
-            _provider = builder.Services.BuildServiceProvider();
+                    services.AddScoped<ITestContract, TestService>();
+                })
+                .Build();
 
-            await _provider.UseMicroService(address =>
-            {
-                var m = "micro".Config<ServiceAddress>();
-                if (m == null) return;
-                address.Host = m.Host;
-                address.Port = port > 80 ? port : m.Port;
-                if (address.Port < 80)
-                    address.Port = 5000;
-                address.Weight = m.Weight;
-            });
+            host.RunAsync();
+
+            var provider = host.Services;
 
             await Task.Delay(10000);
 
-            var proxy = _provider.GetRequiredService<IProxyFactory>();
+            var proxy = provider.GetRequiredService<IProxyFactory>();
             var contract = proxy.Create<ITestContract>();
 
             try
@@ -90,7 +61,7 @@ namespace Spear.Tests.Server
             {
                 Console.WriteLine(ex);
             }
-           
+
             while (true)
             {
                 var cmd = Console.ReadLine();
@@ -99,11 +70,6 @@ namespace Spear.Tests.Server
                 var result = contract.Say(cmd);
                 Console.WriteLine(result.Result);
             }
-        }
-
-        private static Task Shutdown()
-        {
-            return _provider.GetService<IMicroHost>()?.Stop();
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using MessagePack;
 using MessagePack.Resolvers;
-using Spear.Core.Message;
+using Spear.Core.Message.Abstractions;
 
 namespace Spear.Codec
 {

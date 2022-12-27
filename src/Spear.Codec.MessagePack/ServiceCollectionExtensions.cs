@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Spear.Core.Config;
-using Spear.Core.Message;
-using Spear.Core.Micro;
+using Spear.Core.Builder;
+using Spear.Core.Message.Abstractions;
 
 namespace Spear.Codec.MessagePack
 {
@@ -10,30 +9,13 @@ namespace Spear.Codec.MessagePack
         /// <summary> 使用Json编解码器。 </summary>
         /// <param name="builder">服务构建者。</param>
         /// <returns>服务构建者。</returns>
-        public static IMicroServerBuilder AddMessagePackCodec(this IMicroServerBuilder builder)
+        public static IMicroBuilder AddMessagePackCodec(this IMicroBuilder builder)
         {
             builder.Services.AddSingleton<IMessageSerializer, MessagePackMessageSerializer>();
             builder.Services.AddSingleton<IMessageCodec, MessagePackCodec>(provider =>
             {
                 var serializer = provider.GetRequiredService<IMessageSerializer>();
-                var config = provider.GetService<SpearConfig>();
-                return new MessagePackCodec(serializer, config);
-            });
-
-            return builder;
-        }
-
-        /// <summary> 使用Json编解码器。 </summary>
-        /// <param name="builder">服务构建者。</param>
-        /// <returns>服务构建者。</returns>
-        public static IMicroClientBuilder AddMessagePackCodec(this IMicroClientBuilder builder)
-        {
-            builder.Services.AddSingleton<IMessageSerializer, MessagePackMessageSerializer>();
-            builder.Services.AddSingleton<IClientMessageCodec, MessagePackCodec>(provider =>
-            {
-                var serializer = provider.GetRequiredService<IMessageSerializer>();
-                var config = provider.GetService<SpearConfig>();
-                return new MessagePackCodec(serializer, config);
+                return new MessagePackCodec(serializer);
             });
 
             return builder;

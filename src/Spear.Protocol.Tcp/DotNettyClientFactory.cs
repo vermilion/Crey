@@ -6,17 +6,18 @@ using DotNetty.Transport.Channels;
 using DotNetty.Transport.Channels.Sockets;
 using Microsoft.Extensions.Logging;
 using Spear.Core.Message;
-using Spear.Core.Message.Implementation;
+using Spear.Core.Message.Abstractions;
 using Spear.Core.Message.Models;
 using Spear.Core.Micro;
-using Spear.Core.Micro.Implementation;
-using Spear.Core.Micro.Services;
+using Spear.Core.Micro.Abstractions;
+using Spear.Core.ServiceDiscovery;
+using Spear.Core.ServiceDiscovery.Extensions;
 using Spear.Protocol.Tcp.Adapter;
 using Spear.Protocol.Tcp.Sender;
 
 namespace Spear.Protocol.Tcp
 {
-    public class DotNettyClientFactory : DMicroClientFactory
+    public class DotNettyClientFactory : MicroClientFactory
     {
         private static readonly AttributeKey<ServiceAddress> ServiceAddressKey =
             AttributeKey<ServiceAddress>.ValueOf(typeof(DotNettyClientFactory), nameof(ServiceAddress));
@@ -31,7 +32,7 @@ namespace Spear.Protocol.Tcp
             ILoggerFactory loggerFactory,
             IServiceProvider provider,
             IMessageCodec codec,
-            IMicroExecutor executor = null)
+            IMicroExecutor executor)
             : base(loggerFactory, provider, executor)
         {
             _codec = codec;

@@ -1,7 +1,7 @@
 ﻿using DotNetty.Buffers;
 using DotNetty.Common.Utilities;
 using DotNetty.Transport.Channels;
-using Spear.Core.Message;
+using Spear.Core.Message.Abstractions;
 using Spear.Core.Message.Models;
 
 namespace Spear.Protocol.Tcp.Adapter

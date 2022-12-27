@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using Spear.Core.Session;
+using Spear.Core.Session.Abstractions;
 using Spear.Tests.Contracts;
 using Spear.Tests.Contracts.Dtos;
 

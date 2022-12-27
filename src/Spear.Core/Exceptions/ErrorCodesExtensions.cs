@@ -1,39 +1,24 @@
-﻿using Spear.Core.Extensions;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
 using System.ComponentModel;
-using System.Linq;
 using System.Reflection;
+using Spear.Core.Extensions;
 
 namespace Spear.Core.Exceptions
 {
     /// <summary> 错误码扩展 </summary>
     public static class ErrorCodesExtension
     {
-        private static readonly ConcurrentDictionary<RuntimeTypeHandle, IDictionary<int, string>> ErrorCodesCache =
-            new ConcurrentDictionary<RuntimeTypeHandle, IDictionary<int, string>>();
+        private static readonly ConcurrentDictionary<RuntimeTypeHandle, IDictionary<int, string>> ErrorCodesCache = new();
 
         private static readonly Type ErrorType = typeof(ErrorCodes);
 
         /// <summary> 获取错误码对应的错误信息 </summary>
         /// <param name="code"></param>
         /// <returns></returns>
-        public static string Message(this int code)
-        {
-            return code.Message<ErrorCodes>();
-        }
-
-        /// <summary> 获取错误码对应的错误信息 </summary>
-        /// <param name="code"></param>
-        /// <returns></returns>
         public static string Message<T>(this int code) where T : ErrorCodes
         {
-            var message = $"errorMsg:{code}".Config<string>();
-            if (message != null)
-                return message;
             var codes = Codes<T>();
-            return codes.TryGetValue(code, out message) ? message : ErrorCodes.SystemError.Message<ErrorCodes>();
+            return codes.TryGetValue(code, out var message) ? message : ErrorCodes.SystemError.Message<ErrorCodes>();
         }
 
         /// <summary> 错误编码对应的Exception </summary>
@@ -41,17 +26,17 @@ namespace Spear.Core.Exceptions
         /// <param name="code"></param>
         /// <param name="message"></param>
         /// <returns></returns>
-        public static BusiException CodeException<T>(this int code, string message = null) where T : ErrorCodes
+        public static SpearException CodeException<T>(this int code, string message = null) where T : ErrorCodes
         {
             message = string.IsNullOrWhiteSpace(message) ? code.Message<T>() : message;
-            return new BusiException(message, code);
+            return new SpearException(message, code);
         }
 
         /// <summary> 错误编码对应的Exception </summary>
         /// <param name="code"></param>
         /// <param name="message"></param>
         /// <returns></returns>
-        public static BusiException CodeException(this int code, string message = null)
+        public static SpearException CodeException(this int code, string message = null)
         {
             return code.CodeException<ErrorCodes>(message);
         }
@@ -62,13 +47,6 @@ namespace Spear.Core.Exceptions
         public static IDictionary<int, string> Codes<T>() where T : ErrorCodes
         {
             return typeof(T).Codes();
-        }
-
-        /// <summary> 获取错误码 </summary>
-        /// <returns></returns>
-        public static IDictionary<int, string> Codes()
-        {
-            return typeof(ErrorCodes).Codes();
         }
 
         /// <summary> 获取错误码 </summary>

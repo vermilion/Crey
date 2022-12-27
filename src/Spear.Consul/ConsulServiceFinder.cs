@@ -1,14 +1,13 @@
-﻿using System.Text.Json;
-using Consul;
+﻿using Consul;
 using Microsoft.Extensions.Logging;
-using Spear.Core;
 using Spear.Core.Extensions;
 using Spear.Core.Helper;
-using Spear.Core.Micro.Services;
+using Spear.Core.ServiceDiscovery;
+using Spear.Core.ServiceDiscovery.Constants;
 
 namespace Spear.Consul
 {
-    public class ConsulServiceFinder : DServiceFinder
+    public class ConsulServiceFinder : ServiceFinder
     {
         private readonly string _consulServer;
         private readonly string _consulToken;
@@ -30,7 +29,7 @@ namespace Spear.Consul
             });
         }
 
-        protected override async Task<List<ServiceAddress>> QueryService(Type serviceType, ProductMode[] modes)
+        public override async Task<List<ServiceAddress>> QueryService(Type serviceType)
         {
             var services = new List<ServiceAddress>();
 
@@ -41,14 +40,7 @@ namespace Spear.Consul
             {
                 var service = entry.Service;
 
-                if (service.Meta.TryGetValue(KeyMode, out var modeValue))
-                {
-                    var mode = modeValue.CastTo(ProductMode.Dev);
-                    if (!modes.Contains(mode))
-                        continue;
-                }
-
-                if (service.Meta.TryGetValue(KeyService, out var json))
+                if (service.Meta.TryGetValue(ServiceRouteConstants.KeyService, out var json))
                 {
                     var address = JsonHelper.FromJson<ServiceAddress>(json);
                     if (address is not null)

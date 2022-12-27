@@ -1,4 +1,6 @@
-﻿using Spear.Core.Helper;
+﻿using Spear.Core.Extensions;
+using Spear.Core.Helper;
+using Spear.Core.Message.Abstractions;
 
 namespace Spear.Core.Message.Models
 {
