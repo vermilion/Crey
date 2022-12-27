@@ -2,13 +2,12 @@
 using Spear.Core.Message;
 using Spear.Core.Message.Abstractions;
 
-namespace Spear.Codec.MessagePack
+namespace Spear.Codec.MessagePack;
+
+public class MessagePackCodec : MessageCodec<MessagePackDynamic, MessagePackInvoke, MessagePackResult>
 {
-    public class MessagePackCodec : MessageCodec<MessagePackDynamic, MessagePackInvoke, MessagePackResult>
+    public MessagePackCodec(IMessageSerializer serializer) 
+        : base(serializer)
     {
-        public MessagePackCodec(IMessageSerializer serializer) 
-            : base(serializer)
-        {
-        }
     }
 }

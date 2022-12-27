@@ -1,20 +1,18 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Spear.Core.Builder.Abstractions;
 
-namespace Spear.Core.Builder
+namespace Spear.Core.Builder;
+
+public class MicroBuilder : IMicroBuilder
 {
-    /// <summary> Spear构建器 </summary>
-    public class MicroBuilder : IMicroBuilder
+    public MicroBuilder(IConfiguration configuration, IServiceCollection services)
     {
-        public MicroBuilder(IConfiguration configuration, IServiceCollection services)
-        {
-            Configuration = configuration;
-            Services = services;
-        }
-
-        public IConfiguration Configuration { get; }
-
-        /// <summary> 服务集合 </summary>
-        public IServiceCollection Services { get; }
+        Configuration = configuration;
+        Services = services;
     }
+
+    public IConfiguration Configuration { get; }
+
+    public IServiceCollection Services { get; }
 }

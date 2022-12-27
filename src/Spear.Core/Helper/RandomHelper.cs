@@ -2,15 +2,8 @@
 
 namespace Spear.Core.Helper;
 
-/// <summary>
-/// 随机数辅助
-/// </summary>
 public static class RandomHelper
 {
-    /// <summary>
-    /// 获取线程级随机数
-    /// </summary>
-    /// <returns></returns>
     public static Random Random()
     {
         var bytes = new byte[4];

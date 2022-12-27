@@ -2,42 +2,39 @@
 using System.Text.RegularExpressions;
 using Spear.Core.Extensions;
 using Spear.Core.Helper;
+using Spear.Core.ServiceDiscovery.Models;
 
-namespace Spear.Core.ServiceDiscovery.Extensions
+namespace Spear.Core.ServiceDiscovery.Extensions;
+
+public static class ServiceAddressExtensions
 {
-    /// <summary> 服务地址扩展 </summary>
-    public static class ServiceAddressExtensions
+    public static EndPoint ToEndpoint(this ServiceAddress address)
     {
-        public static EndPoint ToEndpoint(this ServiceAddress address)
+        var ipRegex = @"^((2[0-4]\d|25[0-5]|[01]?\d\d?)\.){3}(2[0-4]\d|25[0-5]|[01]?\d\d?)$";
+
+        if (Regex.IsMatch(address.Host, ipRegex))
+            return new IPEndPoint(IPAddress.Parse(address.Host), address.Port);
+
+        return new DnsEndPoint(address.Host, address.Port);
+    }
+
+    public static ServiceAddress Random(this IList<ServiceAddress> services)
+    {
+        if (services == null || !services.Any()) return null;
+        if (services.Count == 1) return services.First();
+
+        // order by weight
+        var sum = services.Sum(t => t.Weight);
+        var rand = RandomHelper.Random().NextDouble() * sum;
+        var tempWeight = 0D;
+
+        foreach (var service in services)
         {
-            var ipRegex = @"^((2[0-4]\d|25[0-5]|[01]?\d\d?)\.){3}(2[0-4]\d|25[0-5]|[01]?\d\d?)$";
-
-            if (Regex.IsMatch(address.Host, ipRegex))
-                return new IPEndPoint(IPAddress.Parse(address.Host), address.Port);
-
-            return new DnsEndPoint(address.Host, address.Port);
+            tempWeight += service.Weight;
+            if (rand <= tempWeight)
+                return service;
         }
 
-        /// <summary> 权重随机 </summary>
-        /// <param name="services"></param>
-        /// <returns></returns>
-        public static ServiceAddress Random(this IList<ServiceAddress> services)
-        {
-            if (services == null || !services.Any()) return null;
-            if (services.Count == 1) return services.First();
-
-            // order by weight
-            var sum = services.Sum(t => t.Weight);
-            var rand = RandomHelper.Random().NextDouble() * sum;
-            var tempWeight = 0D;
-            foreach (var service in services)
-            {
-                tempWeight += service.Weight;
-                if (rand <= tempWeight)
-                    return service;
-            }
-
-            return services.RandomSort().First();
-        }
+        return services.RandomSort().First();
     }
 }

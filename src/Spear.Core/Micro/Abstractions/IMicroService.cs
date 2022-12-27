@@ -1,6 +1,8 @@
-﻿namespace Spear.Core.Micro.Abstractions
+﻿namespace Spear.Core.Micro.Abstractions;
+
+/// <summary>
+/// Service marker interface
+/// </summary>
+public interface IMicroService
 {
-    public interface IMicroService
-    {
-    }
 }

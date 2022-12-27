@@ -1,33 +1,29 @@
-﻿using System.Linq;
-using Spear.Core.Session.Abstractions;
+﻿using Spear.Core.Session.Abstractions;
 using Spear.Core.Session.Models;
 
-namespace Spear.Core.Session
+namespace Spear.Core.Session;
+
+public class ClaimMicroSession : AbstractMicroSession
 {
-    public class ClaimMicroSession : AbstractMicroSession
+    private readonly IPrincipalAccessor _principalAccessor;
+
+    public ClaimMicroSession(IPrincipalAccessor principalAccessor)
     {
-        private readonly IPrincipalAccessor _principalAccessor;
+        _principalAccessor = principalAccessor;
+    }
 
+    private string GetClaimValue(string type)
+    {
+        var claim = _principalAccessor.Principal?.Claims.FirstOrDefault(t => t.Type == type);
+        return string.IsNullOrWhiteSpace(claim?.Value) ? null : claim.Value;
+    }
 
-        public ClaimMicroSession(IPrincipalAccessor principalAccessor)
-        {
-            _principalAccessor = principalAccessor;
-        }
+    public override string UserName => TempSession != null ? TempSession.UserName : GetClaimValue(SpearClaimTypes.UserName);
 
-        private string GetClaimValue(string type)
-        {
-            var claim = _principalAccessor.Principal?.Claims.FirstOrDefault(t => t.Type == type);
-            return string.IsNullOrWhiteSpace(claim?.Value) ? null : claim.Value;
-        }
+    public override string Role => TempSession != null ? TempSession.Role : GetClaimValue(SpearClaimTypes.Role);
 
-        public override string UserName =>
-            TempSession != null ? TempSession.UserName : GetClaimValue(SpearClaimTypes.UserName);
-
-        public override string Role => TempSession != null ? TempSession.Role : GetClaimValue(SpearClaimTypes.Role);
-
-        protected override object GetUserId()
-        {
-            return GetClaimValue(SpearClaimTypes.UserId);
-        }
+    protected override object GetUserId()
+    {
+        return GetClaimValue(SpearClaimTypes.UserId);
     }
 }

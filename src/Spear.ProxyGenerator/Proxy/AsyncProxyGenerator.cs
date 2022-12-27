@@ -1,4 +1,4 @@
-﻿using Spear.ProxyGenerator.Impl;
+﻿using Spear.ProxyGenerator.Abstractions;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;

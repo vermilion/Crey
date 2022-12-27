@@ -1,25 +1,18 @@
 ﻿using System.Net;
 
-namespace Spear.Core.Message.Models
+namespace Spear.Core.Message.Models;
+
+public class MessageResult : DMessage
 {
-    /// <summary> 调用结果消息 </summary>
-    public class MessageResult : DMessage
+    public int Code { get; set; } = 200;
+    public string Message { get; set; }
+    public object Content { get; set; }
+
+    public MessageResult() { }
+
+    public MessageResult(string message, int code = (int)HttpStatusCode.InternalServerError)
     {
-        /// <summary> 状态码 </summary>
-        public int Code { get; set; } = 200;
-
-        /// <summary> 错误消息 </summary>
-        public string Message { get; set; }
-
-        /// <summary> 数据实体 </summary>
-        public object Content { get; set; }
-
-        public MessageResult() { }
-
-        public MessageResult(string message, int code = (int)HttpStatusCode.InternalServerError)
-        {
-            Message = message;
-            Code = code;
-        }
+        Message = message;
+        Code = code;
     }
 }

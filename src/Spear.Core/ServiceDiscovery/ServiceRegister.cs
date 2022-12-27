@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Spear.Core.ServiceDiscovery.Abstractions;
+using Spear.Core.ServiceDiscovery.Models;
 
 namespace Spear.Core.ServiceDiscovery;
 

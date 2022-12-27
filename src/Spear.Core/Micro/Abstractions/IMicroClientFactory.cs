@@ -1,14 +1,8 @@
-﻿using System.Threading.Tasks;
-using Spear.Core.ServiceDiscovery;
+﻿using Spear.Core.ServiceDiscovery.Models;
 
-namespace Spear.Core.Micro.Abstractions
+namespace Spear.Core.Micro.Abstractions;
+
+public interface IMicroClientFactory
 {
-    /// <summary> Spear客户端工厂 </summary>
-    public interface IMicroClientFactory
-    {
-        /// <summary> 创建客户端 </summary>
-        /// <param name="serviceAddress"></param>
-        /// <returns></returns>
-        Task<IMicroClient> CreateClient(ServiceAddress serviceAddress);
-    }
+    Task<IMicroClient> CreateClient(ServiceAddress serviceAddress);
 }

@@ -3,49 +3,43 @@ using Spear.Core.Helper;
 using Spear.Core.Message.Abstractions;
 using Spear.Core.Message.Models;
 using Spear.Core.Micro.Abstractions;
-using Spear.Core.ServiceDiscovery;
+using Spear.Core.ServiceDiscovery.Models;
 
-namespace Spear.Core.Micro
+namespace Spear.Core.Micro;
+
+public abstract class MicroHostBase : IMicroHost
 {
-    /// <summary> 服务宿主基类 </summary>
-    public abstract class MicroHostBase : IMicroHost
+    private readonly IMicroExecutor _microExecutor;
+    private readonly ILogger<MicroHostBase> _logger;
+
+    protected IMicroListener MicroListener { get; set; }
+
+    protected MicroHostBase(IMicroExecutor microExecutor, IMicroListener microListener, ILoggerFactory loggerFactory)
     {
-        private readonly IMicroExecutor _microExecutor;
-        private readonly ILogger<MicroHostBase> _logger;
+        _logger = loggerFactory.CreateLogger<MicroHostBase>();
+        _microExecutor = microExecutor;
 
-        /// <summary> 消息监听者。 </summary>
-        protected IMicroListener MicroListener { get; set; }
+        MicroListener = microListener;
+        MicroListener.Received += MessageListenerReceived;
+    }
 
-        protected MicroHostBase(IMicroExecutor microExecutor, IMicroListener microListener, ILoggerFactory loggerFactory)
-        {
-            _logger = loggerFactory.CreateLogger<MicroHostBase>();
-            _microExecutor = microExecutor;
-            MicroListener = microListener;
-            MicroListener.Received += MessageListenerReceived;
-        }
+    public virtual void Dispose()
+    {
+        Task.Run(Stop).Wait();
+    }
 
-        /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
-        public virtual void Dispose()
-        {
-            Task.Run(Stop).Wait();
-        }
+    public abstract Task Start(ServiceAddress serviceAddress);
 
-        /// <summary> 启动微服务 </summary>
-        /// <param name="serviceAddress">主机终结点。</param>
-        /// <returns>一个任务。</returns>
-        public abstract Task Start(ServiceAddress serviceAddress);
+    public abstract Task Stop();
 
-        public abstract Task Stop();
+    private async Task MessageListenerReceived(IMessageSender sender, DMessage message)
+    {
+        if (message is not InvokeMessage invokeMessage)
+            return;
 
-        private async Task MessageListenerReceived(IMessageSender sender, DMessage message)
-        {
-            if (message is not InvokeMessage invokeMessage)
-                return;
+        if (_logger.IsEnabled(LogLevel.Debug))
+            _logger.LogDebug($"receive:{JsonHelper.ToJson(message)}");
 
-            if (_logger.IsEnabled(LogLevel.Debug))
-                _logger.LogDebug($"receive:{JsonHelper.ToJson(message)}");
-
-            await _microExecutor.Execute(sender, invokeMessage);
-        }
+        await _microExecutor.Execute(sender, invokeMessage);
     }
 }

@@ -1,5 +1,4 @@
-﻿using Spear.ProxyGenerator.Impl;
-using System;
+﻿using System;
 
 namespace Spear.ProxyGenerator.Proxy
 {

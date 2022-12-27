@@ -1,9 +1,10 @@
-﻿using Spear.Codec.MessagePack;
-using Spear.Consul;
-using Spear.Core;
+﻿using Spear.Codec.MessagePack.Extensions;
 using Spear.Core.Builder;
-using Spear.Protocol.Tcp;
-using Spear.ProxyGenerator;
+using Spear.Core.Builder.Extensions;
+using Spear.Core.Session.Extensions;
+using Spear.Discovery.Consul.Extensions;
+using Spear.Protocol.Tcp.Extensions;
+using Spear.ProxyGenerator.Abstractions;
 using Spear.Tests.Contracts;
 using Spear.Tests.Server.Services;
 
@@ -29,17 +30,16 @@ namespace Spear.Tests.Server
                         .AddTcpProtocol()
                         .AddMessagePackCodec()
                         .AddSession()
-                        //.AddDefaultRouter()
-                        .AddConsul("http://192.168.1.24:8500")
+                        //.AddStaticRouter()
+                        .AddConsulDiscovery()
 
                         .AddMicroService(builder =>
                         {
+                            builder.AddContract<ITestContract, TestService>();
                         })
                         .AddMicroClient(builder =>
                         {
                         });
-
-                    services.AddScoped<ITestContract, TestService>();
                 })
                 .Build();
 
