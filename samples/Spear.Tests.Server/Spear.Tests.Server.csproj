@@ -20,7 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Spear.Codec.MessagePack\Spear.Codec.MessagePack.csproj" />
     <ProjectReference Include="..\..\src\Spear.Consul\Spear.Discovery.Consul.csproj" />
-    <ProjectReference Include="..\..\src\Spear.Core\Spear.Core.csproj" />
+    <ProjectReference Include="..\..\src\Spear\Spear.csproj" />
     <ProjectReference Include="..\..\src\Spear.Protocol.Tcp\Spear.Protocol.Tcp.csproj" />
     <ProjectReference Include="..\Spear.Tests.Contracts\Spear.Tests.Contracts.csproj" />
   </ItemGroup>

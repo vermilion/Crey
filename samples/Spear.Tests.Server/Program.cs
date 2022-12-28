@@ -1,12 +1,12 @@
 ﻿using Spear.Codec.MessagePack.Extensions;
 using Spear.Core.Builder;
-using Spear.Core.Builder.Extensions;
-using Spear.Core.Session.Extensions;
 using Spear.Discovery.Consul.Extensions;
+using Spear.Micro.Extensions;
 using Spear.Protocol.Tcp.Extensions;
 using Spear.ProxyGenerator.Abstractions;
 using Spear.Tests.Contracts;
 using Spear.Tests.Server.Services;
+using Spear.Core.Extensions;
 
 namespace Spear.Tests.Server
 {
@@ -29,7 +29,6 @@ namespace Spear.Tests.Server
                     builder
                         .AddTcpProtocol()
                         .AddMessagePackCodec()
-                        .AddSession()
                         //.AddStaticRouter()
                         .AddConsulDiscovery()
 
@@ -43,7 +42,10 @@ namespace Spear.Tests.Server
                 })
                 .Build();
 
-            host.RunAsync();
+            await Task.Factory.StartNew(async () =>
+            {
+                await host.RunAsync();
+            });
 
             var provider = host.Services;
 
@@ -52,23 +54,23 @@ namespace Spear.Tests.Server
             var proxy = provider.GetRequiredService<IProxyFactory>();
             var contract = proxy.Create<ITestContract>();
 
-            try
-            {
-                var result = contract.Say("Hello");
-                Console.WriteLine(result.Result);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-            }
+            Console.WriteLine("Ready");
 
             while (true)
             {
                 var cmd = Console.ReadLine();
                 if (cmd == "exit") break;
 
-                var result = contract.Say(cmd);
-                Console.WriteLine(result.Result);
+                if (cmd.StartsWith("one:"))
+                {
+                    var command = cmd.Replace("one:", "");
+                    await SpearExtensions.InvokeOneWay<ITestContract>(provider, (x) => x.Say(command));
+                }
+                else
+                {
+                    var result = contract.Say("Hello");
+                    Console.WriteLine(result.Result);
+                }
             }
         }
     }

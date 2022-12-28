@@ -1,8 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using Spear.Core.Session.Abstractions;
-using Spear.Tests.Contracts;
-using Spear.Tests.Contracts.Dtos;
+﻿using Spear.Tests.Contracts;
+using Spear.Micro.Constants;
+using Spear.Micro.Abstractions;
+using Spear.Micro.Extensions;
 
 namespace Spear.Tests.Server.Services
 {
@@ -17,28 +16,14 @@ namespace Spear.Tests.Server.Services
             _session = session;
         }
 
-        public async Task Notice(string name)
-        {
-            _logger.LogInformation($"{DateTime.Now:u} ->{_session.UserName} notify name:{name}");
-            await Task.CompletedTask;
-        }
-
         public async Task<string> Say(string name)
         {
-            return await Task.FromResult($"{_session.UserName}, get name:{name}");
-        }
+            await Task.Delay(5000);
 
-        public async Task<UserDto> User(UserInputDto input)
-        {
-            _logger.LogInformation($"{DateTime.Now:u} ->{_session.UserName} {JsonConvert.SerializeObject(input)}");
-            var user = new UserDto
-            {
-                Id = input.Id,
-                Name = input.Name,
-                Role = UserRole.Admin,
-                Birthday = DateTime.Now
-            };
-            return await Task.FromResult(user);
+            var res = _session.GetValue<bool>(MicroConstants.LongRunning);
+            _logger.LogWarning($"Server says: {name}, longRunning: {res}");
+            
+            return await Task.FromResult($"get name:{name}");
         }
     }
 }

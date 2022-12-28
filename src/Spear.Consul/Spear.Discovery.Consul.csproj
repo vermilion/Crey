@@ -9,7 +9,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Spear.Core\Spear.Core.csproj" />
+		<ProjectReference Include="..\Spear\Spear.csproj" />
 	</ItemGroup>
 
 </Project>
