@@ -51,6 +51,7 @@ public class StaticServiceRouter : ServiceFinder, IServiceRegister
         {
             list = new List<ServiceAddress>();
         }
+
         list.Add(address);
         _serviceCenter[serviceName] = list;
     }
@@ -59,8 +60,8 @@ public class StaticServiceRouter : ServiceFinder, IServiceRegister
     {
         foreach (var assembly in assemblyList)
         {
-            var serviveName = assembly.ServiceName();
-            Register(serviveName, serverAddress);
+            var serviceName = assembly.ServiceName();
+            Register(serviceName, serverAddress);
         }
 
         return Task.CompletedTask;

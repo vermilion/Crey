@@ -5,6 +5,6 @@ namespace Spear.Core.Builder.Abstractions;
 
 public interface IBuilder
 {
-    IConfiguration Configuration { get; }
+    IConfigurationSection ConfigurationSection { get; }
     IServiceCollection Services { get; }
 }

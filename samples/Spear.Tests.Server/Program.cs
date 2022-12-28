@@ -1,76 +1,101 @@
-﻿using Spear.Codec.MessagePack.Extensions;
+﻿using Spear.Client;
+using Spear.Codec.MessagePack.Extensions;
 using Spear.Core.Builder;
+using Spear.Core.Extensions;
+using Spear.Core.ServiceDiscovery.Models;
+using Spear.Core.ServiceDiscovery.StaticRouter.Extensions;
 using Spear.Discovery.Consul.Extensions;
 using Spear.Micro.Extensions;
 using Spear.Protocol.Tcp.Extensions;
-using Spear.ProxyGenerator.Abstractions;
 using Spear.Tests.Contracts;
 using Spear.Tests.Server.Services;
-using Spear.Core.Extensions;
 
-namespace Spear.Tests.Server
+namespace Spear.Tests.Server;
+
+internal class Program
 {
-    internal class Program
+    private static async Task Main(string[] args)
     {
-        private static async Task Main(string[] args)
+        var host = Host.CreateDefaultBuilder(args)
+            .ConfigureLogging(x =>
+            {
+                x.SetMinimumLevel(LogLevel.Information);
+                x.AddFilter("System", level => level >= LogLevel.Warning);
+                x.AddFilter("Microsoft", level => level >= LogLevel.Warning);
+                x.AddConsole();
+            })
+            .ConfigureServices((context, services) =>
+            {
+                var builder = new MicroBuilder(context.Configuration, services);
+
+                builder
+                    .AddTcpProtocol()
+                    .AddMessagePackCodec()
+                    .AddStaticServiceDiscovery()
+                    //.AddConsulDiscovery()
+
+                    .AddMicroService(builder =>
+                    {
+                        builder.AddContract<ITestContract, TestService>();
+                    })
+                    .AddMicroClient();
+            })
+            .Build();
+
+        await Task.Factory.StartNew(async () =>
         {
-            var host = Host.CreateDefaultBuilder(args)
-                .ConfigureLogging(x =>
+            await host.RunAsync();
+        });
+
+        var provider = host.Services;
+
+        await Task.Delay(10000);
+
+        Console.WriteLine("Initialized");
+
+        var factory = ClientBuilder.Create(provider)
+            .CreateProxyFactory();
+
+        var c = factory.Create<ITestContract>();
+        var res = await c.Say("Hello existing");
+
+        // create separate client
+        var f2 = ClientBuilder.Create(builder =>
+        {
+            builder
+                .AddTcpProtocol()
+                .AddMessagePackCodec()
+                .AddStaticServiceDiscovery(x =>
                 {
-                    x.SetMinimumLevel(LogLevel.Information);
-                    x.AddFilter("System", level => level >= LogLevel.Warning);
-                    x.AddFilter("Microsoft", level => level >= LogLevel.Warning);
-                    x.AddConsole();
+                    x.Set<ITestContract>(new[] { new ServiceAddress("192.168.1.24", 5003) });
                 })
-                .ConfigureServices((context, services) =>
+                /*.AddConsulDiscovery(x =>
                 {
-                    var builder = new MicroBuilder(context.Configuration, services);
+                    x.Server = "http://192.168.1.24:8500";
+                })*/
+                .AddMicroClient();
+        })
+        .CreateProxyFactory();
 
-                    builder
-                        .AddTcpProtocol()
-                        .AddMessagePackCodec()
-                        //.AddStaticRouter()
-                        .AddConsulDiscovery()
+        var contract = f2.Create<ITestContract>();
 
-                        .AddMicroService(builder =>
-                        {
-                            builder.AddContract<ITestContract, TestService>();
-                        })
-                        .AddMicroClient(builder =>
-                        {
-                        });
-                })
-                .Build();
+        Console.WriteLine("Ready");
 
-            await Task.Factory.StartNew(async () =>
+        while (true)
+        {
+            var cmd = Console.ReadLine();
+            if (cmd == "exit") break;
+
+            if (cmd.StartsWith("one:"))
             {
-                await host.RunAsync();
-            });
+                var command = cmd.Replace("one:", "");
 
-            var provider = host.Services;
-
-            await Task.Delay(10000);
-
-            var proxy = provider.GetRequiredService<IProxyFactory>();
-            var contract = proxy.Create<ITestContract>();
-
-            Console.WriteLine("Ready");
-
-            while (true)
+                await SpearExtensions.InvokeOneWay<ITestContract>(provider, (x) => x.Say(command));
+            }
+            else
             {
-                var cmd = Console.ReadLine();
-                if (cmd == "exit") break;
-
-                if (cmd.StartsWith("one:"))
-                {
-                    var command = cmd.Replace("one:", "");
-                    await SpearExtensions.InvokeOneWay<ITestContract>(provider, (x) => x.Say(command));
-                }
-                else
-                {
-                    var result = contract.Say("Hello");
-                    Console.WriteLine(result.Result);
-                }
+                var result = contract.Say("Hello");
+                Console.WriteLine(result.Result);
             }
         }
     }

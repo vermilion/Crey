@@ -2,27 +2,27 @@
 using System.Reflection;
 using Consul;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Spear.Core.Extensions;
 using Spear.Core.Helper;
 using Spear.Core.ServiceDiscovery;
 using Spear.Core.ServiceDiscovery.Constants;
 using Spear.Core.ServiceDiscovery.Models;
+using Spear.Discovery.Consul.Options;
 
 namespace Spear.Discovery.Consul;
 
 public class ConsulServiceRegister : ServiceRegister
 {
-    private readonly string _consulServer;
-    private readonly string _consulToken;
     private readonly List<string> _services;
+    private readonly ConsulOptions _options;
     private readonly ILogger<ConsulServiceRegister> _logger;
 
     public ConsulServiceRegister(
-        ILogger<ConsulServiceRegister> logger, 
-        string server, string token)
+        ILogger<ConsulServiceRegister> logger,
+        IOptions<ConsulOptions> options)
     {
-        _consulServer = server;
-        _consulToken = token;
+        _options = options.Value;
         _logger = logger;
         _services = new List<string>();
     }
@@ -31,9 +31,9 @@ public class ConsulServiceRegister : ServiceRegister
     {
         return new ConsulClient(cfg =>
         {
-            cfg.Address = new Uri(_consulServer);
-            if (!string.IsNullOrWhiteSpace(_consulToken))
-                cfg.Token = _consulToken;
+            cfg.Address = new Uri(_options.Server);
+            if (!string.IsNullOrWhiteSpace(_options.Token))
+                cfg.Token = _options.Token;
         });
     }
 

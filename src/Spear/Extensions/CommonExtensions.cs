@@ -87,31 +87,6 @@ namespace Spear.Core.Extensions
             }
         }
 
-        /// <summary>
-        /// 将对象[主要是匿名对象]转换为dynamic
-        /// </summary>
-        public static dynamic ToDynamic(this object value)
-        {
-            IDictionary<string, object> expando = new ExpandoObject();
-            var type = value.GetType();
-            var properties = TypeDescriptor.GetProperties(type);
-            foreach (PropertyDescriptor property in properties)
-            {
-                var val = property.GetValue(value);
-                if (property.PropertyType.FullName != null && property.PropertyType.FullName.StartsWith("<>f__AnonymousType"))
-                {
-                    var dval = val.ToDynamic();
-                    expando.Add(property.Name, dval);
-                }
-                else
-                {
-                    expando.Add(property.Name, val);
-                }
-            }
-
-            return (ExpandoObject)expando;
-        }
-
         /// <summary> 异常信息格式化 </summary>
         /// <param name="ex"></param>
         /// <param name="isHideStackTrace"></param>
@@ -121,27 +96,29 @@ namespace Spear.Core.Extensions
             var sb = new StringBuilder();
             var count = 0;
             var appString = string.Empty;
+
             while (ex != null)
             {
                 if (count > 0)
-                {
                     appString += "  ";
-                }
-                sb.AppendLine($"{appString}异常消息：{ex.Message}");
-                sb.AppendLine($"{appString}异常类型：{ex.GetType().FullName}");
-                sb.AppendLine($"{appString}异常方法：{(ex.TargetSite == null ? null : ex.TargetSite.Name)}");
-                sb.AppendLine($"{appString}异常源：{ex.Source}");
+
+                sb.AppendLine($"{appString}Message：{ex.Message}");
+                sb.AppendLine($"{appString}Name：{ex.GetType().FullName}");
+                sb.AppendLine($"{appString}Site：{(ex.TargetSite?.Name)}");
+                sb.AppendLine($"{appString}Source：{ex.Source}");
                 if (!isHideStackTrace && ex.StackTrace != null)
                 {
-                    sb.AppendLine($"{appString}异常堆栈：{ex.StackTrace}");
+                    sb.AppendLine($"{appString}Stack：{ex.StackTrace}");
                 }
                 if (ex.InnerException != null)
                 {
-                    sb.AppendLine($"{appString}内部异常：");
+                    sb.AppendLine($"{appString}Inner Exception：");
                     count++;
                 }
+
                 ex = ex.InnerException;
             }
+
             return sb.ToString();
         }
     }

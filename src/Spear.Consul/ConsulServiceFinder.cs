@@ -1,32 +1,34 @@
 ﻿using Consul;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Spear.Core.Extensions;
 using Spear.Core.Helper;
 using Spear.Core.ServiceDiscovery;
 using Spear.Core.ServiceDiscovery.Constants;
 using Spear.Core.ServiceDiscovery.Models;
+using Spear.Discovery.Consul.Options;
 
 namespace Spear.Discovery.Consul;
 
 public class ConsulServiceFinder : ServiceFinder
 {
-    private readonly string _consulServer;
-    private readonly string _consulToken;
+    private readonly ConsulOptions _options;
 
-    public ConsulServiceFinder(ILogger logger, string server, string token = null)
+    public ConsulServiceFinder(
+        ILogger<ConsulServiceRegister> logger,
+        IOptions<ConsulOptions> options)
         : base(logger)
     {
-        _consulServer = server;
-        _consulToken = token;
+        _options = options.Value;
     }
 
     private IConsulClient CreateClient()
     {
         return new ConsulClient(cfg =>
         {
-            cfg.Address = new Uri(_consulServer);
-            if (!string.IsNullOrWhiteSpace(_consulToken))
-                cfg.Token = _consulToken;
+            cfg.Address = new Uri(_options.Server);
+            if (!string.IsNullOrWhiteSpace(_options.Token))
+                cfg.Token = _options.Token;
         });
     }
 

@@ -6,8 +6,6 @@ public delegate Task<object> MicroEntryDelegate(IServiceProvider provider, IDict
 
 public interface IMicroEntryFactory
 {
-    List<Type> Services { get; }
-
     IEnumerable<Assembly> GetContracts();
 
     MicroEntryDelegate? Find(string serviceId);

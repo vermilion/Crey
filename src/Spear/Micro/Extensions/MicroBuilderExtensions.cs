@@ -14,14 +14,14 @@ namespace Spear.Micro.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static IMicroBuilder AddMicroClient(this IMicroBuilder builder, Action<IMicroClientBuilder> builderAction)
+    public static IMicroBuilder AddMicroClient(this IMicroBuilder builder, Action<IMicroClientBuilder> builderAction = null)
     {
         var services = builder.Services;
 
-        builderAction.Invoke(builder);
+        builderAction?.Invoke(builder);
 
-        services.AddScoped<IMicroSession, MicroSession>();
-        
+        services.AddBase();
+
         // proxy services
         services.AddSingleton<AsyncProxyGenerator>();
         services.AddScoped<IProxyProvider, ClientProxy>();
@@ -36,16 +36,21 @@ public static class ServiceCollectionExtensions
 
         builderAction.Invoke(builder);
 
-        services.AddSingleton(services);
-        services.AddSingleton<IMicroEntryFactory, MicroEntryFactory>();
+        services.AddBase();
         services.AddSingleton<IMicroHost, MicroHost>();
-        services.AddScoped<IMicroSession, MicroSession>();
-        services.AddScoped<IMicroExecutor, MicroExecutor>();
         
         services.AddHostedService<HostListenerBackroungService>();
 
-        services.Configure<ServiceAddress>(builder.Configuration.GetSection("micro"));
+        services.Configure<ServiceAddress>(builder.ConfigurationSection.GetSection("service"));
 
         return builder;
+    }
+
+    private static void AddBase(this IServiceCollection services)
+    {
+        services.AddSingleton(services);
+        services.AddScoped<IMicroSession, MicroSession>();
+        services.AddScoped<IMicroExecutor, MicroExecutor>();
+        services.AddSingleton<IMicroEntryFactory, MicroEntryFactory>();
     }
 }

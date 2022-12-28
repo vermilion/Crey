@@ -18,7 +18,7 @@ namespace Spear.Tests.Server.Services
 
         public async Task<string> Say(string name)
         {
-            await Task.Delay(5000);
+            await Task.Delay(3000);
 
             var res = _session.GetValue<bool>(MicroConstants.LongRunning);
             _logger.LogWarning($"Server says: {name}, longRunning: {res}");

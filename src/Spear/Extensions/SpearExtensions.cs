@@ -9,6 +9,13 @@ namespace Spear.Core.Extensions
 {
     public static class SpearExtensions
     {
+        /// <summary>
+        /// Invoke service "OneWay", without waiting for result
+        /// </summary>
+        /// <typeparam name="T">Service type</typeparam>
+        /// <param name="serviceProvider">Provider instance <see cref="IServiceProvider"/></param>
+        /// <param name="action">Action to execute</param>
+        /// <returns><see cref="Task"/></returns>
         public static async Task InvokeOneWay<T>(IServiceProvider serviceProvider, Func<T, Task> action)
             where T : class, IMicroService
         {
@@ -41,7 +48,7 @@ namespace Spear.Core.Extensions
 
         public static string ServiceKey(this MethodInfo method)
         {
-            return $"{method.DeclaringType?.Name}/{method.Name}".ToLower();
+            return $"{method.DeclaringType.Name}/{method.Name}".ToLower();
         }
     }
 }

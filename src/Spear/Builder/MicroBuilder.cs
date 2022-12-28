@@ -8,11 +8,11 @@ public class MicroBuilder : IMicroBuilder
 {
     public MicroBuilder(IConfiguration configuration, IServiceCollection services)
     {
-        Configuration = configuration;
+        ConfigurationSection = configuration.GetSection("micro");
         Services = services;
     }
 
-    public IConfiguration Configuration { get; }
+    public IConfigurationSection ConfigurationSection { get; }
 
     public IServiceCollection Services { get; }
 }

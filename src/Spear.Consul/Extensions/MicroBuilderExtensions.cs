@@ -1,6 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Spear.Core.Builder.Abstractions;
 using Spear.Core.ServiceDiscovery.Abstractions;
 using Spear.Discovery.Consul.Options;
@@ -13,29 +12,22 @@ public static class ServiceCollectionExtensions
     /// Adds Consul as Service Discovery provider
     /// </summary>
     /// <param name="builder">Builder instance</param>
-    /// <param name="optionAction">Action to configure options</param>
+    /// <param name="action">Action to configure options</param>
     /// <returns>Builder instance</returns>
-    public static IMicroBuilder AddConsulDiscovery(this IMicroBuilder builder, Action<ConsulOptions> optionAction = null)
+    public static IMicroBuilder AddConsulDiscovery(this IMicroBuilder builder, Action<ConsulOptions> action = null)
     {
-        builder.Services.Configure<ConsulOptions>(builder.Configuration.GetSection("consul"));
+        var services = builder.Services;
 
-        builder.Services.AddSingleton<IServiceRegister>(provider =>
+        services.AddSingleton(provider =>
         {
-            var option = provider.GetRequiredService<IOptions<ConsulOptions>>().Value;
-            optionAction?.Invoke(option);
-            var logger = provider.GetRequiredService<ILogger<ConsulServiceRegister>>();
+            var options = builder.ConfigurationSection.GetSection("discovery:consul").Get<ConsulOptions>() ?? new ConsulOptions();
+            action?.Invoke(options);
 
-            return new ConsulServiceRegister(logger, option.Server, option.Token);
+            return Microsoft.Extensions.Options.Options.Create(options);
         });
 
-        builder.Services.AddSingleton<IServiceFinder>(provider =>
-        {
-            var option = provider.GetRequiredService<IOptions<ConsulOptions>>().Value;
-            optionAction?.Invoke(option);
-            var logger = provider.GetRequiredService<ILogger<ConsulServiceFinder>>();
-
-            return new ConsulServiceFinder(logger, option.Server, option.Token);
-        });
+        services.AddSingleton<IServiceRegister, ConsulServiceRegister>();
+        services.AddSingleton<IServiceFinder, ConsulServiceFinder>();
 
         return builder;
     }

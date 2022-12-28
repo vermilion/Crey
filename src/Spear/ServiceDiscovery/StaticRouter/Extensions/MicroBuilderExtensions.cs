@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Spear.Core.Builder.Abstractions;
 using Spear.Core.ServiceDiscovery.Abstractions;
@@ -12,17 +13,23 @@ public static class MicroBuilderExtensions
     /// Adds Static discovery as default
     /// </summary>
     /// <param name="builder">Builder instance</param>
-    /// <param name="routerAction">Action to configure options</param>
+    /// <param name="action">Action to configure options</param>
     /// <returns>Builder instance</returns>
-    public static IMicroBuilder AddStaticServiceDiscovery(this IMicroBuilder builder, Action<StaticRouterOptions> routerAction = null)
+    public static IMicroBuilder AddStaticServiceDiscovery(this IMicroBuilder builder, Action<StaticRouterOptions> action = null)
     {
-        var config = builder.Configuration.GetSection("micro:router").Get<StaticRouterOptions>();
-        routerAction?.Invoke(config);
+        var services = builder.Services;
 
-        //builder.Services.Configure<DefaultRouterOptions>();
+        services.AddSingleton(provider =>
+        {
+            var options = builder.ConfigurationSection.GetSection("discovery:static").Get<StaticRouterOptions>() ?? new StaticRouterOptions();
+            action?.Invoke(options);
 
-        builder.Services.AddSingleton<IServiceRegister, StaticServiceRouter>();
-        builder.Services.AddSingleton<IServiceFinder, StaticServiceRouter>();
+            return Microsoft.Extensions.Options.Options.Create(options);
+        });
+
+        services.AddSingleton<StaticServiceRouter>();
+        services.AddSingleton<IServiceRegister>(provider => provider.GetRequiredService<StaticServiceRouter>());
+        services.AddSingleton<IServiceFinder>(provider => provider.GetRequiredService<StaticServiceRouter>());
         return builder;
     }
 }

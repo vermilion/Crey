@@ -12,10 +12,10 @@ public class MicroEntryFactory : IMicroEntryFactory
 {
     private readonly ILogger<MicroEntryFactory> _logger;
     private readonly ConcurrentDictionary<string, MicroEntryDelegate> _entries = new();
+    private readonly List<Type> _services = new();
 
     public MicroEntryFactory(ILogger<MicroEntryFactory> logger, IServiceProvider serviceProvider)
     {
-        Services = new List<Type>();
         _logger = logger;
 
         InitServices(serviceProvider);
@@ -27,7 +27,7 @@ public class MicroEntryFactory : IMicroEntryFactory
 
         foreach (var service in services)
         {
-            Services.Add(service);
+            _services.Add(service);
             var methods = service.GetMethods(BindingFlags.Public | BindingFlags.Instance);
 
             foreach (var method in methods)
@@ -105,12 +105,11 @@ public class MicroEntryFactory : IMicroEntryFactory
         return id;
     }
 
-    public List<Type> Services { get; }
 
     public virtual IEnumerable<Assembly> GetContracts()
     {
         var list = new List<Assembly>();
-        foreach (var service in Services)
+        foreach (var service in _services)
         {
             var ass = service.Assembly;
             if (list.Contains(ass))
