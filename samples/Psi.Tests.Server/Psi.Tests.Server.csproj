@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="_logs\**" />
+    <EmbeddedResource Remove="_logs\**" />
+    <None Remove="_logs\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Psi.Codec.MessagePack\Psi.Codec.MessagePack.csproj" />
+    <ProjectReference Include="..\..\src\Psi.Discovery.Consul\Psi.Discovery.Consul.csproj" />
+    <ProjectReference Include="..\..\src\Psi\Psi.csproj" />
+    <ProjectReference Include="..\..\src\Psi.Protocol.Tcp\Psi.Protocol.Tcp.csproj" />
+    <ProjectReference Include="..\Psi.Tests.Contracts\Psi.Tests.Contracts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>
