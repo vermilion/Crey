@@ -1,6 +1,7 @@
 ﻿<Project>
 	<PropertyGroup>
 		<Version>0.1.0</Version>
+		<IsPackable>false</IsPackable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<LangVersion>latest</LangVersion>
 		<Nullable>enable</Nullable>
