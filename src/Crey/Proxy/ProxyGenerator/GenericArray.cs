@@ -1,6 +1,6 @@
 ﻿using System.Reflection.Emit;
 
-namespace Psi.Proxy.Proxy;
+namespace Crey.Proxy.ProxyGenerator;
 
 internal class GenericArray<T>
 {

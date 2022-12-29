@@ -4,15 +4,15 @@ using DotNetty.Transport.Bootstrapping;
 using DotNetty.Transport.Channels;
 using DotNetty.Transport.Channels.Sockets;
 using Microsoft.Extensions.Logging;
-using Psi.Message.Abstractions;
-using Psi.Message.Models;
-using Psi.ServiceDiscovery.Extensions;
-using Psi.ServiceDiscovery.Models;
-using Psi.Protocol.Tcp.Adapter;
-using Psi.Protocol.Tcp.Sender;
-using Psi.Micro;
+using Crey.Message.Abstractions;
+using Crey.Message.Models;
+using Crey.ServiceDiscovery.Extensions;
+using Crey.ServiceDiscovery.Models;
+using Crey.Protocol.Tcp.Adapter;
+using Crey.Protocol.Tcp.Sender;
+using Crey.Micro;
 
-namespace Psi.Protocol.Tcp;
+namespace Crey.Protocol.Tcp;
 
 public class DotNettyMicroListener : MicroListener, IDisposable
 {

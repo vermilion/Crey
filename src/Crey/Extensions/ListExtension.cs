@@ -1,6 +1,6 @@
-﻿using Psi.Helper;
+﻿using Crey.Helper;
 
-namespace Psi.Extensions;
+namespace Crey.Extensions;
 
 public static class ListExtension
 {

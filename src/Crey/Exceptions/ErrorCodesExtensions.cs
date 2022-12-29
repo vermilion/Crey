@@ -1,9 +1,9 @@
 ﻿using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Reflection;
-using Psi.Extensions;
+using Crey.Extensions;
 
-namespace Psi.Exceptions;
+namespace Crey.Exceptions;
 
 public static class ErrorCodesExtension
 {
@@ -17,13 +17,13 @@ public static class ErrorCodesExtension
         return codes.TryGetValue(code, out var message) ? message : ErrorCodes.SystemError.Message<ErrorCodes>();
     }
 
-    public static PsiException CodeException<T>(this int code, string message = null) where T : ErrorCodes
+    public static FaultException CodeException<T>(this int code, string message = null) where T : ErrorCodes
     {
         message = string.IsNullOrWhiteSpace(message) ? code.Message<T>() : message;
-        return new PsiException(message, code);
+        return new FaultException(message, code);
     }
 
-    public static PsiException CodeException(this int code, string message = null)
+    public static FaultException CodeException(this int code, string message = null)
     {
         return code.CodeException<ErrorCodes>(message);
     }

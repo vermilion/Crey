@@ -1,8 +1,8 @@
-﻿using Psi.Extensions;
-using Psi.Micro.Abstractions;
-using Psi.ServiceDiscovery.Models;
+﻿using Crey.Extensions;
+using Crey.Micro.Abstractions;
+using Crey.ServiceDiscovery.Models;
 
-namespace Psi.ServiceDiscovery.StaticRouter.Options;
+namespace Crey.ServiceDiscovery.StaticRouter.Options;
 
 public class StaticRouterOptions
 {

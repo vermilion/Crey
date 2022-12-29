@@ -3,15 +3,15 @@ using System.Reflection;
 using Consul;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Psi.Discovery.Consul.Options;
-using Psi.Extensions;
-using Psi.Extensions.StringExtension;
-using Psi.Helper;
-using Psi.ServiceDiscovery;
-using Psi.ServiceDiscovery.Constants;
-using Psi.ServiceDiscovery.Models;
+using Crey.Discovery.Consul.Options;
+using Crey.Extensions;
+using Crey.Extensions.StringExtension;
+using Crey.Helper;
+using Crey.ServiceDiscovery;
+using Crey.ServiceDiscovery.Constants;
+using Crey.ServiceDiscovery.Models;
 
-namespace Psi.Discovery.Consul;
+namespace Crey.Discovery.Consul;
 
 public class ConsulServiceRegister : ServiceRegister
 {

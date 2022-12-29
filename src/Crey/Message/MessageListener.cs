@@ -1,7 +1,7 @@
-﻿using Psi.Message.Abstractions;
-using Psi.Message.Models;
+﻿using Crey.Message.Abstractions;
+using Crey.Message.Models;
 
-namespace Psi.Message;
+namespace Crey.Message;
 
 public class MessageListener : IMessageListener
 {

@@ -1,12 +1,12 @@
 ﻿using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
-using Psi.Micro.Abstractions;
-using Psi.Micro.Constants;
-using Psi.Proxy.Abstractions;
+using Crey.Micro.Abstractions;
+using Crey.Micro.Constants;
+using Crey.Proxy.Abstractions;
 
-namespace Psi.Extensions;
+namespace Crey.Extensions;
 
-public static class PsiExtensions
+public static class CreyExtensions
 {
     /// <summary>
     /// Invoke service "OneWay", without waiting for result

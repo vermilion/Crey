@@ -1,9 +1,9 @@
-﻿using Psi.Micro.Extensions;
-using Psi.Micro.Constants;
-using Psi.Micro.Abstractions;
-using Psi.Tests.Contracts;
+﻿using Crey.Micro.Extensions;
+using Crey.Micro.Constants;
+using Crey.Micro.Abstractions;
+using Crey.Tests.Contracts;
 
-namespace Psi.Tests.Server.Services;
+namespace Crey.Tests.Server.Services;
 
 public class TestService : ITestContract
 {

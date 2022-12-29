@@ -1,4 +1,4 @@
-﻿namespace Psi.ServiceDiscovery.Models;
+﻿namespace Crey.ServiceDiscovery.Models;
 
 public class ServiceAddress
 {

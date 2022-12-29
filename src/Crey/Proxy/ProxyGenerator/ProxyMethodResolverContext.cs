@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Psi.Proxy.Proxy;
+namespace Crey.Proxy.ProxyGenerator;
 
 internal class ProxyMethodResolverContext
 {

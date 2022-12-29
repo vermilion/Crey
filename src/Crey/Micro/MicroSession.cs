@@ -1,6 +1,6 @@
-﻿using Psi.Micro.Abstractions;
+﻿using Crey.Micro.Abstractions;
 
-namespace Psi.Micro;
+namespace Crey.Micro;
 
 public class MicroSession : IMicroSession
 {

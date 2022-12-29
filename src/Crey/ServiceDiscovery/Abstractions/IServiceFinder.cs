@@ -1,6 +1,6 @@
-﻿using Psi.ServiceDiscovery.Models;
+﻿using Crey.ServiceDiscovery.Models;
 
-namespace Psi.ServiceDiscovery.Abstractions;
+namespace Crey.ServiceDiscovery.Abstractions;
 
 /// <summary>
 /// Service discovery finder

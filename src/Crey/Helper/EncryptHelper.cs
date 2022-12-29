@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace Psi.Helper;
+namespace Crey.Helper;
 
 public static class EncryptHelper
 {

@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Reflection.Emit;
 
-namespace Psi.Proxy.Helpers;
+namespace Crey.Proxy.Helpers;
 
 public class FastInvokeHelper
 {

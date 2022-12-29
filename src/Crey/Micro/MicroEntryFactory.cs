@@ -2,11 +2,11 @@
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Psi.Extensions;
-using Psi.Micro.Abstractions;
-using Psi.Proxy.Helpers;
+using Crey.Extensions;
+using Crey.Micro.Abstractions;
+using Crey.Proxy.Helpers;
 
-namespace Psi.Micro;
+namespace Crey.Micro;
 
 public class MicroEntryFactory : IMicroEntryFactory
 {

@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace Psi.Extensions;
+namespace Crey.Extensions;
 
 public static class CommonExtensions
 {

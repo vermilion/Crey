@@ -1,8 +1,8 @@
-﻿using Psi.Extensions;
-using Psi.Helper;
-using Psi.Message.Abstractions;
+﻿using Crey.Extensions;
+using Crey.Helper;
+using Crey.Message.Abstractions;
 
-namespace Psi.Message.Models;
+namespace Crey.Message.Models;
 
 public class DMessageDynamic
 {

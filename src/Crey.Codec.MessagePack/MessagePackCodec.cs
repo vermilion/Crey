@@ -1,8 +1,8 @@
-﻿using Psi.Codec.MessagePack.Models;
-using Psi.Message;
-using Psi.Message.Abstractions;
+﻿using Crey.Codec.MessagePack.Models;
+using Crey.Message;
+using Crey.Message.Abstractions;
 
-namespace Psi.Codec.MessagePack;
+namespace Crey.Codec.MessagePack;
 
 public class MessagePackCodec : MessageCodec<MessagePackDynamic, MessagePackInvoke, MessagePackResult>
 {

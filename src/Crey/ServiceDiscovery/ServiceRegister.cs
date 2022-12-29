@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
-using Psi.ServiceDiscovery.Abstractions;
-using Psi.ServiceDiscovery.Models;
+using Crey.ServiceDiscovery.Abstractions;
+using Crey.ServiceDiscovery.Models;
 
-namespace Psi.ServiceDiscovery;
+namespace Crey.ServiceDiscovery;
 
 public abstract class ServiceRegister : IServiceRegister
 {

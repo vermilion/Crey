@@ -1,7 +1,7 @@
-﻿using Psi.Message.Abstractions;
-using Psi.ServiceDiscovery.Models;
+﻿using Crey.Message.Abstractions;
+using Crey.ServiceDiscovery.Models;
 
-namespace Psi.Micro.Abstractions;
+namespace Crey.Micro.Abstractions;
 
 public interface IMicroListener : IMessageListener
 {

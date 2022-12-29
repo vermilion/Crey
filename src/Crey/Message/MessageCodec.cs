@@ -1,8 +1,8 @@
-﻿using Psi.Extensions;
-using Psi.Message.Abstractions;
-using Psi.Message.Models;
+﻿using Crey.Extensions;
+using Crey.Message.Abstractions;
+using Crey.Message.Models;
 
-namespace Psi.Message;
+namespace Crey.Message;
 
 public abstract class MessageCodec<TDynamic, TInvoke, TResult> : IMessageCodec
     where TDynamic : DMessageDynamic, new()

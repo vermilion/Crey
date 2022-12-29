@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Psi.Builder;
-using Psi.Proxy.Abstractions;
+using Crey.Builder;
+using Crey.Proxy.Abstractions;
 
-namespace Psi.Client;
+namespace Crey.Client;
 
 /// <summary>
 /// Default client builder

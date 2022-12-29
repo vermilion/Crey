@@ -1,6 +1,6 @@
-﻿using Psi.ServiceDiscovery.Models;
+﻿using Crey.ServiceDiscovery.Models;
 
-namespace Psi.Micro.Abstractions;
+namespace Crey.Micro.Abstractions;
 
 public interface IMicroHost
 {

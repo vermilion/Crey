@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Psi.Builder.Abstractions;
-using Psi.Codec.MessagePack;
-using Psi.Message.Abstractions;
+using Crey.Builder.Abstractions;
+using Crey.Codec.MessagePack;
+using Crey.Message.Abstractions;
 
-namespace Psi.Codec.MessagePack.Extensions;
+namespace Crey.Codec.MessagePack.Extensions;
 
 public static class MicroBuilderExtensions
 {

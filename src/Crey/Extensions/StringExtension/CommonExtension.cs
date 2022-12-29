@@ -1,6 +1,6 @@
-﻿using Psi.Helper;
+﻿using Crey.Helper;
 
-namespace Psi.Extensions.StringExtension;
+namespace Crey.Extensions.StringExtension;
 
 public static class CommonExtension
 {

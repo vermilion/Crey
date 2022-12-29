@@ -1,6 +1,6 @@
-﻿using Psi.Message.Models;
+﻿using Crey.Message.Models;
 
-namespace Psi.Message.Abstractions;
+namespace Crey.Message.Abstractions;
 
 public interface IMessageSender
 {

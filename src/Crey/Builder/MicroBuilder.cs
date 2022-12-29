@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Psi.Builder.Abstractions;
+using Crey.Builder.Abstractions;
 
-namespace Psi.Builder;
+namespace Crey.Builder;
 
 public class MicroBuilder : IMicroBuilder
 {

@@ -1,4 +1,4 @@
-﻿namespace Psi.Proxy.Proxy;
+﻿namespace Crey.Proxy.ProxyGenerator;
 
 internal class PackedArgs
 {

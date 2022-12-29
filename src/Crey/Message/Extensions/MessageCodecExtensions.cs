@@ -1,7 +1,7 @@
-﻿using Psi.Extensions;
-using Psi.Message.Abstractions;
+﻿using Crey.Extensions;
+using Crey.Message.Abstractions;
 
-namespace Psi.Message.Extensions;
+namespace Crey.Message.Extensions;
 
 public static class MessageCodecExtensions
 {

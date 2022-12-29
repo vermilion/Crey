@@ -5,17 +5,17 @@ using DotNetty.Transport.Bootstrapping;
 using DotNetty.Transport.Channels;
 using DotNetty.Transport.Channels.Sockets;
 using Microsoft.Extensions.Logging;
-using Psi.Message;
-using Psi.Message.Abstractions;
-using Psi.Message.Models;
-using Psi.Micro;
-using Psi.Micro.Abstractions;
-using Psi.Protocol.Tcp.Adapter;
-using Psi.Protocol.Tcp.Sender;
-using Psi.ServiceDiscovery.Extensions;
-using Psi.ServiceDiscovery.Models;
+using Crey.Message;
+using Crey.Message.Abstractions;
+using Crey.Message.Models;
+using Crey.Micro;
+using Crey.Micro.Abstractions;
+using Crey.Protocol.Tcp.Adapter;
+using Crey.Protocol.Tcp.Sender;
+using Crey.ServiceDiscovery.Extensions;
+using Crey.ServiceDiscovery.Models;
 
-namespace Psi.Protocol.Tcp;
+namespace Crey.Protocol.Tcp;
 
 public class DotNettyClientFactory : MicroClientFactory
 {

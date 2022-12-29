@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Psi.Micro.Abstractions;
+namespace Crey.Micro.Abstractions;
 
 public delegate Task<object> MicroEntryDelegate(IServiceProvider provider, IDictionary<string, object> parameters);
 

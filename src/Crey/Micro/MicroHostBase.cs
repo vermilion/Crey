@@ -1,12 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Psi.Helper;
-using Psi.Message.Abstractions;
-using Psi.Message.Models;
-using Psi.Micro.Abstractions;
-using Psi.ServiceDiscovery.Models;
+using Crey.Helper;
+using Crey.Message.Abstractions;
+using Crey.Message.Models;
+using Crey.Micro.Abstractions;
+using Crey.ServiceDiscovery.Models;
 
-namespace Psi.Micro;
+namespace Crey.Micro;
 
 public abstract class MicroHostBase : IMicroHost
 {

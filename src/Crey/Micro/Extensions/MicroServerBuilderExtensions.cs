@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Psi.Builder.Abstractions;
-using Psi.Micro.Abstractions;
+using Crey.Builder.Abstractions;
+using Crey.Micro.Abstractions;
 
-namespace Psi.Micro.Extensions;
+namespace Crey.Micro.Extensions;
 
 public static class MicroServerBuilderExtensions
 {

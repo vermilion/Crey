@@ -1,7 +1,7 @@
 ﻿using System;
-using Psi.Message.Abstractions;
+using Crey.Message.Abstractions;
 
-namespace Psi.Message;
+namespace Crey.Message;
 
 public abstract class MessageSerializer : IMessageSerializer
 {

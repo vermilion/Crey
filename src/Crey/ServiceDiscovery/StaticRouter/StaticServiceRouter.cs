@@ -1,14 +1,14 @@
 ﻿using System.Reflection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Psi.Extensions;
-using Psi.Extensions.StringExtension;
-using Psi.ServiceDiscovery;
-using Psi.ServiceDiscovery.Abstractions;
-using Psi.ServiceDiscovery.Models;
-using Psi.ServiceDiscovery.StaticRouter.Options;
+using Crey.Extensions;
+using Crey.Extensions.StringExtension;
+using Crey.ServiceDiscovery;
+using Crey.ServiceDiscovery.Abstractions;
+using Crey.ServiceDiscovery.Models;
+using Crey.ServiceDiscovery.StaticRouter.Options;
 
-namespace Psi.ServiceDiscovery.StaticRouter;
+namespace Crey.ServiceDiscovery.StaticRouter;
 
 public class StaticServiceRouter : ServiceFinder, IServiceRegister
 {

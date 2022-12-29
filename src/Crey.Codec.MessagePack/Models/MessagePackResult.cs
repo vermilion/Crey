@@ -1,7 +1,7 @@
 ﻿using MessagePack;
-using Psi.Message.Models;
+using Crey.Message.Models;
 
-namespace Psi.Codec.MessagePack.Models;
+namespace Crey.Codec.MessagePack.Models;
 
 [MessagePackObject(keyAsPropertyName: true)]
 public class MessagePackResult : DMessageResult<MessagePackDynamic>

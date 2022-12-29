@@ -1,4 +1,4 @@
-﻿namespace Psi.Micro.Constants;
+﻿namespace Crey.Micro.Constants;
 
 public class MicroConstants
 {

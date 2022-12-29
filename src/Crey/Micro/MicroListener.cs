@@ -1,8 +1,8 @@
-﻿using Psi.Message;
-using Psi.Micro.Abstractions;
-using Psi.ServiceDiscovery.Models;
+﻿using Crey.Message;
+using Crey.Micro.Abstractions;
+using Crey.ServiceDiscovery.Models;
 
-namespace Psi.Micro;
+namespace Crey.Micro;
 
 public abstract class MicroListener : MessageListener, IMicroListener
 {

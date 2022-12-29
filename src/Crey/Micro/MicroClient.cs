@@ -1,13 +1,13 @@
 ﻿using System.Collections.Concurrent;
 using System.Diagnostics;
 using Microsoft.Extensions.Logging;
-using Psi.Exceptions;
-using Psi.Helper;
-using Psi.Message.Abstractions;
-using Psi.Message.Models;
-using Psi.Micro.Abstractions;
+using Crey.Exceptions;
+using Crey.Helper;
+using Crey.Message.Abstractions;
+using Crey.Message.Models;
+using Crey.Micro.Abstractions;
 
-namespace Psi.Micro;
+namespace Crey.Micro;
 
 public class MicroClient : IMicroClient, IDisposable
 {
@@ -36,7 +36,7 @@ public class MicroClient : IMicroClient, IDisposable
         {
             if (result.Code != 200)
             {
-                task.TrySetException(new PsiException(result.Message, result.Code));
+                task.TrySetException(new FaultException(result.Message, result.Code));
             }
             else
             {

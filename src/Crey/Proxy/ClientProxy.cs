@@ -3,18 +3,18 @@ using System.Net.Sockets;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using Polly;
-using Psi.Exceptions;
-using Psi.Extensions;
-using Psi.Helper;
-using Psi.Message.Models;
-using Psi.Micro.Abstractions;
-using Psi.Micro.Constants;
-using Psi.Proxy.Abstractions;
-using Psi.ServiceDiscovery.Abstractions;
-using Psi.ServiceDiscovery.Extensions;
-using Psi.ServiceDiscovery.Models;
+using Crey.Exceptions;
+using Crey.Extensions;
+using Crey.Helper;
+using Crey.Message.Models;
+using Crey.Micro.Abstractions;
+using Crey.Micro.Constants;
+using Crey.Proxy.Abstractions;
+using Crey.ServiceDiscovery.Abstractions;
+using Crey.ServiceDiscovery.Extensions;
+using Crey.ServiceDiscovery.Models;
 
-namespace Psi.Proxy;
+namespace Crey.Proxy;
 
 public class ClientProxy : IProxyProvider
 {
@@ -60,13 +60,13 @@ public class ClientProxy : IProxyProvider
             throw ErrorCodes.NoService.CodeException();
 
         var invokeMessage = CreateMessage(targetMethod, args);
-        ServiceAddress service = null;
+        ServiceAddress? service = null;
 
         var builder = Policy
             .Handle<Exception>(ex =>
                 ex.GetBaseException() is SocketException ||
                 ex.GetBaseException() is HttpRequestException ||
-                ex.GetBaseException() is PsiException psiEx && psiEx.Code == ErrorCodes.SystemError)
+                ex.GetBaseException() is FaultException faultEx && faultEx.Code == ErrorCodes.SystemError)
             .OrResult<MessageResult>(r => r.Code != 200);
 
         // retry 3 times

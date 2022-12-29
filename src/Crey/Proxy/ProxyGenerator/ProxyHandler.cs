@@ -1,4 +1,4 @@
-﻿namespace Psi.Proxy.Proxy;
+﻿namespace Crey.Proxy.ProxyGenerator;
 
 public class ProxyHandler
 {

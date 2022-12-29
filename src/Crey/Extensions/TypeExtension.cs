@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Psi.Extensions;
+namespace Crey.Extensions;
 
 /// <summary>
 /// 类型<see cref="Type"/>辅助扩展方法类

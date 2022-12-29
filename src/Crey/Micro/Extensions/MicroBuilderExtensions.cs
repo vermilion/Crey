@@ -1,14 +1,14 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Psi.BackgroundServices;
-using Psi.Builder.Abstractions;
-using Psi.Micro;
-using Psi.Micro.Abstractions;
-using Psi.Proxy;
-using Psi.Proxy.Proxy;
-using Psi.Proxy.Abstractions;
-using Psi.ServiceDiscovery.Models;
+using Crey.BackgroundServices;
+using Crey.Builder.Abstractions;
+using Crey.Micro;
+using Crey.Micro.Abstractions;
+using Crey.Proxy;
+using Crey.Proxy.Abstractions;
+using Crey.ServiceDiscovery.Models;
+using Crey.Proxy.ProxyGenerator;
 
-namespace Psi.Micro.Extensions;
+namespace Crey.Micro.Extensions;
 
 public static class ServiceCollectionExtensions
 {

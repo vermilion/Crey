@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Psi.Message.Abstractions;
+namespace Crey.Message.Abstractions;
 
 public interface IMessageSerializer
 {

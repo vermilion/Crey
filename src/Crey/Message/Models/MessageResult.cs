@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace Psi.Message.Models;
+namespace Crey.Message.Models;
 
 public class MessageResult : DMessage
 {

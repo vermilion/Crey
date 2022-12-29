@@ -1,11 +1,11 @@
 ﻿using DotNetty.Buffers;
 using DotNetty.Common.Utilities;
 using DotNetty.Transport.Channels;
-using Psi.Message.Abstractions;
-using Psi.Message.Extensions;
-using Psi.Message.Models;
+using Crey.Message.Abstractions;
+using Crey.Message.Extensions;
+using Crey.Message.Models;
 
-namespace Psi.Protocol.Tcp.Adapter;
+namespace Crey.Protocol.Tcp.Adapter;
 
 public class MicroMessageHandler<T> : ChannelHandlerAdapter
     where T : DMessage

@@ -1,6 +1,6 @@
-﻿using Psi.Message.Models;
+﻿using Crey.Message.Models;
 
-namespace Psi.Micro.Abstractions;
+namespace Crey.Micro.Abstractions;
 
 public interface IMicroClient
 {

@@ -1,8 +1,8 @@
-﻿using Psi.Micro.Abstractions;
-using Psi.Proxy.Abstractions;
-using Psi.Proxy.Proxy;
+﻿using Crey.Micro.Abstractions;
+using Crey.Proxy.Abstractions;
+using Crey.Proxy.ProxyGenerator;
 
-namespace Psi.Proxy;
+namespace Crey.Proxy;
 
 public class ProxyFactory : IProxyFactory
 {

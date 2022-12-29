@@ -1,4 +1,4 @@
-﻿namespace Psi.ServiceDiscovery.Constants;
+﻿namespace Crey.ServiceDiscovery.Constants;
 
 public class ServiceRouteConstants
 {

@@ -2,7 +2,7 @@
 using System.Net.Sockets;
 using System.Net;
 
-namespace Psi.Helper;
+namespace Crey.Helper;
 
 public static class IpAddressHelper
 {

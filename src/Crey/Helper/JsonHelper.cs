@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace Psi.Helper;
+namespace Crey.Helper;
 
 public static class JsonHelper
 {

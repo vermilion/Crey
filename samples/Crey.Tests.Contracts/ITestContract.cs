@@ -1,6 +1,6 @@
-﻿using Psi.Micro.Abstractions;
+﻿using Crey.Micro.Abstractions;
 
-namespace Psi.Tests.Contracts;
+namespace Crey.Tests.Contracts;
 
 public interface ITestContract : IMicroService
 {

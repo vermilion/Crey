@@ -1,7 +1,7 @@
-﻿using Psi.Message.Abstractions;
-using Psi.Message.Models;
+﻿using Crey.Message.Abstractions;
+using Crey.Message.Models;
 
-namespace Psi.Micro.Abstractions;
+namespace Crey.Micro.Abstractions;
 
 public interface IMicroExecutor
 {

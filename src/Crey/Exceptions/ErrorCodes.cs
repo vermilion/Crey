@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Psi.Exceptions;
+namespace Crey.Exceptions;
 
 public abstract class ErrorCodes
 {

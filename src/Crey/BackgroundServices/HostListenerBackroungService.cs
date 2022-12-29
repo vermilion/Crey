@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Psi.Micro.Abstractions;
-using Psi.ServiceDiscovery.Models;
+using Crey.Micro.Abstractions;
+using Crey.ServiceDiscovery.Models;
 
-namespace Psi.BackgroundServices;
+namespace Crey.BackgroundServices;
 
 public class HostListenerBackroungService : BackgroundService
 {

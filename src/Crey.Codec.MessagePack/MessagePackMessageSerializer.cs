@@ -1,9 +1,9 @@
 ﻿using System;
 using MessagePack;
 using MessagePack.Resolvers;
-using Psi.Message.Abstractions;
+using Crey.Message.Abstractions;
 
-namespace Psi.Codec.MessagePack;
+namespace Crey.Codec.MessagePack;
 
 public class MessagePackMessageSerializer : IMessageSerializer
 {

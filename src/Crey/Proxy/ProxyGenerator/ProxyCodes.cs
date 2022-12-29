@@ -2,7 +2,7 @@
 using System.Reflection;
 using System.Reflection.Emit;
 
-namespace Psi.Proxy.Proxy;
+namespace Crey.Proxy.ProxyGenerator;
 
 internal enum OpCodeType
 {

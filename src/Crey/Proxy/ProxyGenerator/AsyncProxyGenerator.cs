@@ -2,9 +2,9 @@
 using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
-using Psi.Proxy.Abstractions;
+using Crey.Proxy.Abstractions;
 
-namespace Psi.Proxy.Proxy;
+namespace Crey.Proxy.ProxyGenerator;
 
 /// <summary>
 /// Reflection-based proxy generator

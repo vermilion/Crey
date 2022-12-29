@@ -1,9 +1,9 @@
 ﻿using DotNetty.Transport.Channels;
 using Microsoft.Extensions.Logging;
-using Psi.Helper;
-using Psi.Message.Models;
+using Crey.Helper;
+using Crey.Message.Models;
 
-namespace Psi.Protocol.Tcp.Adapter;
+namespace Crey.Protocol.Tcp.Adapter;
 
 public class ClientHandler : ChannelHandlerAdapter
 {

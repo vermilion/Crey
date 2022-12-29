@@ -1,4 +1,4 @@
-﻿namespace Psi.Micro.Abstractions;
+﻿namespace Crey.Micro.Abstractions;
 
 /// <summary>
 /// Service marker interface

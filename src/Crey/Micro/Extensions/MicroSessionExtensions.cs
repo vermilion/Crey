@@ -1,7 +1,7 @@
-﻿using Psi.Extensions;
-using Psi.Micro.Abstractions;
+﻿using Crey.Extensions;
+using Crey.Micro.Abstractions;
 
-namespace Psi.Micro.Extensions;
+namespace Crey.Micro.Extensions;
 
 public static class MicroSessionExtensions
 {

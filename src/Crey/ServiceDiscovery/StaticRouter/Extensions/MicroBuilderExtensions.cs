@@ -1,12 +1,12 @@
 ﻿using System;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Psi.Builder.Abstractions;
-using Psi.ServiceDiscovery.Abstractions;
-using Psi.ServiceDiscovery.StaticRouter;
-using Psi.ServiceDiscovery.StaticRouter.Options;
+using Crey.Builder.Abstractions;
+using Crey.ServiceDiscovery.Abstractions;
+using Crey.ServiceDiscovery.StaticRouter;
+using Crey.ServiceDiscovery.StaticRouter.Options;
 
-namespace Psi.ServiceDiscovery.StaticRouter.Extensions;
+namespace Crey.ServiceDiscovery.StaticRouter.Extensions;
 
 public static class MicroBuilderExtensions
 {

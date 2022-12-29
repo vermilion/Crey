@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-namespace Psi.Helper;
+namespace Crey.Helper;
 
 public static class RandomHelper
 {

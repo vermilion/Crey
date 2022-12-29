@@ -1,11 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Psi.Builder.Abstractions;
-using Psi.Discovery.Consul;
-using Psi.Discovery.Consul.Options;
-using Psi.ServiceDiscovery.Abstractions;
+using Crey.Builder.Abstractions;
+using Crey.Discovery.Consul;
+using Crey.Discovery.Consul.Options;
+using Crey.ServiceDiscovery.Abstractions;
 
-namespace Psi.Discovery.Consul.Extensions;
+namespace Crey.Discovery.Consul.Extensions;
 
 public static class ServiceCollectionExtensions
 {

@@ -1,10 +1,10 @@
 ﻿using System.Net;
 using System.Text.RegularExpressions;
-using Psi.Extensions;
-using Psi.Helper;
-using Psi.ServiceDiscovery.Models;
+using Crey.Extensions;
+using Crey.Helper;
+using Crey.ServiceDiscovery.Models;
 
-namespace Psi.ServiceDiscovery.Extensions;
+namespace Crey.ServiceDiscovery.Extensions;
 
 public static class ServiceAddressExtensions
 {

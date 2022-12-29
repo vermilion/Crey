@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
-using Psi.Micro.Abstractions;
-using Psi.ServiceDiscovery.Abstractions;
-using Psi.ServiceDiscovery.Models;
+using Crey.Micro.Abstractions;
+using Crey.ServiceDiscovery.Abstractions;
+using Crey.ServiceDiscovery.Models;
 
-namespace Psi.Micro;
+namespace Crey.Micro;
 
 public class MicroHost : MicroHostBase
 {

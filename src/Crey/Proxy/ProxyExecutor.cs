@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
-using Psi.Proxy.Abstractions;
+using Crey.Proxy.Abstractions;
 
-namespace Psi.Proxy;
+namespace Crey.Proxy;
 
 public class ProxyExecutor
 {

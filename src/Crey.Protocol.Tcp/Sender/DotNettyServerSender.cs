@@ -1,8 +1,8 @@
 ﻿using DotNetty.Transport.Channels;
-using Psi.Message.Abstractions;
-using Psi.Message.Models;
+using Crey.Message.Abstractions;
+using Crey.Message.Models;
 
-namespace Psi.Protocol.Tcp.Sender;
+namespace Crey.Protocol.Tcp.Sender;
 
 public class DotNettyServerSender : DotNettyMessageSender, IMessageSender
 {

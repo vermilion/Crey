@@ -1,4 +1,4 @@
-﻿namespace Psi.Message.Models;
+﻿namespace Crey.Message.Models;
 
 public class DMessageResult<TDynamic>
     where TDynamic : DMessageDynamic, new()

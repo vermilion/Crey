@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
 using System.Reflection.Emit;
-using Psi.Proxy.Abstractions;
+using Crey.Proxy.Abstractions;
 
-namespace Psi.Proxy.Proxy;
+namespace Crey.Proxy.ProxyGenerator;
 
 internal class ProxyBuilder
 {

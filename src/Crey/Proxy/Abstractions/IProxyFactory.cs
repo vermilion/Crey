@@ -1,6 +1,6 @@
-﻿using Psi.Micro.Abstractions;
+﻿using Crey.Micro.Abstractions;
 
-namespace Psi.Proxy.Abstractions;
+namespace Crey.Proxy.Abstractions;
 
 /// <summary>
 /// Proxy factory generator

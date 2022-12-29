@@ -1,4 +1,4 @@
-﻿namespace Psi.Message.Abstractions;
+﻿namespace Crey.Message.Abstractions;
 
 public interface IMessageEncoder
 {

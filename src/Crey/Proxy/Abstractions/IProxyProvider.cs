@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Psi.Proxy.Abstractions;
+namespace Crey.Proxy.Abstractions;
 
 public interface IProxyProvider
 {

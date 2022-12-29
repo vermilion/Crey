@@ -1,15 +1,15 @@
-﻿using Psi.Builder;
-using Psi.Client;
-using Psi.Codec.MessagePack.Extensions;
-using Psi.Extensions;
-using Psi.Micro.Extensions;
-using Psi.Protocol.Tcp.Extensions;
-using Psi.ServiceDiscovery.Models;
-using Psi.ServiceDiscovery.StaticRouter.Extensions;
-using Psi.Tests.Contracts;
-using Psi.Tests.Server.Services;
+﻿using Crey.Builder;
+using Crey.Client;
+using Crey.Codec.MessagePack.Extensions;
+using Crey.Extensions;
+using Crey.Micro.Extensions;
+using Crey.Protocol.Tcp.Extensions;
+using Crey.ServiceDiscovery.Models;
+using Crey.ServiceDiscovery.StaticRouter.Extensions;
+using Crey.Tests.Contracts;
+using Crey.Tests.Server.Services;
 
-namespace Psi.Tests.Server;
+namespace Crey.Tests.Server;
 
 internal class Program
 {
@@ -89,7 +89,7 @@ internal class Program
             {
                 var command = cmd.Replace("one:", "");
 
-                await PsiExtensions.InvokeOneWay<ITestContract>(provider, (x) => x.Say(command));
+                await CreyExtensions.InvokeOneWay<ITestContract>(provider, (x) => x.Say(command));
             }
             else
             {

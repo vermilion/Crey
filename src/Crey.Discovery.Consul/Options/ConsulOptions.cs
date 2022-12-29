@@ -1,4 +1,4 @@
-﻿namespace Psi.Discovery.Consul.Options;
+﻿namespace Crey.Discovery.Consul.Options;
 
 public class ConsulOptions
 {
