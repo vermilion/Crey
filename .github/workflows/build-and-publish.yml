@@ -1,4 +1,4 @@
-name: Packages build and publish to NuGet
+﻿name: Packages build and publish to NuGet
 
 on:
   push:
@@ -6,31 +6,38 @@ on:
   pull_request:
     branches: [ main ]
 
+env:
+  NUGET_REPO_URL: 'https://api.nuget.org/v3/index.json'
+
 jobs:
   build:
 
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Setup .NET Core
+    - name: 🛒 Checkout repository
+      uses: actions/checkout@v2
+
+    - name: ⚙️ Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '6.0.x'
-    - name: Install dependencies
+
+    - name: 🧹 Clean
+      run: dotnet clean -c Release && dotnet nuget locals all --clear
+
+    - name: 🔁 Restore packages
       run: dotnet restore
-    - name: Build
+
+    - name: 🛠️ Building in release mode
       run: dotnet build --configuration Release --no-restore
-    - name: Test
+
+    - name: 🧪 Test
       run: dotnet test --no-restore --verbosity normal
-    - name: Pack Pharos
-      run: dotnet pack src/Pharos/Pharos.csproj --output nuget-packages --configuration Release
-    - name: Pack Pharos.Codec.MessagePack
-      run: dotnet pack src/Pharos.Codec.MessagePack/Pharos.Codec.MessagePack.csproj --output nuget-packages --configuration Release
-    - name: Pack Pharos.Discovery.Consul
-      run: dotnet pack src/Pharos.Discovery.Consul/Pharos.Discovery.Consul.csproj --output nuget-packages --configuration Release
-    - name: Pack Pharos.Protocol.Tcp
-      run: dotnet pack src/Pharos.Protocol.Tcp/Pharos.Protocol.Tcp.csproj --output nuget-packages --configuration Release
-    - name: Push to NuGet
-      run: dotnet nuget push 'nuget-packages/*.nupkg' --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate --no-symbols
+
+    - name: 🗳️ Creating library package for release
+      run: dotnet pack -c Release --no-restore -o ${GITHUB_WORKSPACE}/nuget-packages /p:PublicRelease=true
+
+    - name: 📦 Push packages to NuGet
+      run: dotnet nuget push '${GITHUB_WORKSPACE}/nuget-packages/*.nupkg' --api-key ${{ secrets.NUGET_API_KEY }} --source ${{ env.NUGET_REPO_URL }} --skip-duplicate --no-symbols
 
