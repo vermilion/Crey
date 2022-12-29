@@ -5,7 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Pharos\Pharos.csproj" />
+    <PackageReference Include="DotNetty.Codecs" Version="0.7.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Crey\Crey.csproj" />
   </ItemGroup>
 
 </Project>

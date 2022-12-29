@@ -5,11 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DotNetty.Codecs" Version="0.7.5" />
+    <PackageReference Include="MessagePack" Version="2.4.59" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Pharos\Pharos.csproj" />
+    <ProjectReference Include="..\Crey\Crey.csproj" />
   </ItemGroup>
 
 </Project>
