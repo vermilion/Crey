@@ -9,7 +9,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Psi\Psi.csproj" />
+		<ProjectReference Include="..\Pharos\Pharos.csproj" />
 	</ItemGroup>
 
 </Project>

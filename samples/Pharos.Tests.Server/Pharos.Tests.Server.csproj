@@ -18,11 +18,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Psi.Codec.MessagePack\Psi.Codec.MessagePack.csproj" />
-    <ProjectReference Include="..\..\src\Psi.Discovery.Consul\Psi.Discovery.Consul.csproj" />
-    <ProjectReference Include="..\..\src\Psi\Psi.csproj" />
-    <ProjectReference Include="..\..\src\Psi.Protocol.Tcp\Psi.Protocol.Tcp.csproj" />
-    <ProjectReference Include="..\Psi.Tests.Contracts\Psi.Tests.Contracts.csproj" />
+    <ProjectReference Include="..\..\src\Pharos.Codec.MessagePack\Pharos.Codec.MessagePack.csproj" />
+    <ProjectReference Include="..\..\src\Pharos.Discovery.Consul\Pharos.Discovery.Consul.csproj" />
+    <ProjectReference Include="..\..\src\Pharos\Pharos.csproj" />
+    <ProjectReference Include="..\..\src\Pharos.Protocol.Tcp\Pharos.Protocol.Tcp.csproj" />
+    <ProjectReference Include="..\Pharos.Tests.Contracts\Pharos.Tests.Contracts.csproj" />
   </ItemGroup>
 
   <ItemGroup>

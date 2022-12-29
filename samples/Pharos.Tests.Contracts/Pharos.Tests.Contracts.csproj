@@ -5,11 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MessagePack" Version="2.4.59" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Psi\Psi.csproj" />
+    <ProjectReference Include="..\..\src\Pharos\Pharos.csproj" />
   </ItemGroup>
 
 </Project>
