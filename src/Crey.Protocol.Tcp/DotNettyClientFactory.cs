@@ -17,7 +17,7 @@ using Crey.ServiceDiscovery.Models;
 
 namespace Crey.Protocol.Tcp;
 
-public class DotNettyClientFactory : MicroClientFactory
+internal class DotNettyClientFactory : MicroClientFactory
 {
     private static readonly AttributeKey<ServiceAddress> ServiceAddressKey =
         AttributeKey<ServiceAddress>.ValueOf(typeof(DotNettyClientFactory), nameof(ServiceAddress));

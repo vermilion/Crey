@@ -1,11 +1,10 @@
-﻿using System;
+﻿using Crey.Message.Abstractions;
 using MessagePack;
 using MessagePack.Resolvers;
-using Crey.Message.Abstractions;
 
 namespace Crey.Codec.MessagePack;
 
-public class MessagePackMessageSerializer : IMessageSerializer
+internal class MessagePackMessageSerializer : IMessageSerializer
 {
     public byte[] Serialize(object value)
     {

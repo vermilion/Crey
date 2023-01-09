@@ -5,7 +5,7 @@ using Crey.Message.Models;
 
 namespace Crey.Protocol.Tcp.Adapter;
 
-public class ClientHandler : ChannelHandlerAdapter
+internal class ClientHandler : ChannelHandlerAdapter
 {
     private readonly Action<IChannel> _removeAction;
     private readonly Action<IChannelHandlerContext, DMessage> _readAction;

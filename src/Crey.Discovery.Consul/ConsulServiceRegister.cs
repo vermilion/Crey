@@ -13,7 +13,7 @@ using Crey.ServiceDiscovery.Models;
 
 namespace Crey.Discovery.Consul;
 
-public class ConsulServiceRegister : ServiceRegister
+internal class ConsulServiceRegister : ServiceRegister
 {
     private readonly List<string> _services;
     private readonly ConsulOptions _options;

@@ -14,7 +14,7 @@ using Crey.Micro;
 
 namespace Crey.Protocol.Tcp;
 
-public class DotNettyMicroListener : MicroListener, IDisposable
+internal class DotNettyMicroListener : MicroListener, IDisposable
 {
     private IChannel? _channel;
     private readonly ILogger<DotNettyMicroListener> _logger;

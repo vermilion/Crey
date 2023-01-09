@@ -7,7 +7,7 @@ using Crey.Message.Models;
 
 namespace Crey.Protocol.Tcp.Adapter;
 
-public class MicroMessageHandler<T> : ChannelHandlerAdapter
+internal class MicroMessageHandler<T> : ChannelHandlerAdapter
     where T : DMessage
 {
     private readonly IMessageCodec _codec;

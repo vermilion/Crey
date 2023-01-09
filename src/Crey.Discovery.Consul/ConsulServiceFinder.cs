@@ -10,7 +10,7 @@ using Crey.ServiceDiscovery.Models;
 
 namespace Crey.Discovery.Consul;
 
-public class ConsulServiceFinder : ServiceFinder
+internal class ConsulServiceFinder : ServiceFinder
 {
     private readonly ConsulOptions _options;
 

@@ -1,9 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Crey.Builder.Abstractions;
-using Crey.Discovery.Consul;
+﻿using Crey.Builder.Abstractions;
 using Crey.Discovery.Consul.Options;
 using Crey.ServiceDiscovery.Abstractions;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Crey.Discovery.Consul.Extensions;
 

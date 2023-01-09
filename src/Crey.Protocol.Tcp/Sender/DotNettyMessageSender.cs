@@ -4,7 +4,7 @@ using Crey.Message.Models;
 
 namespace Crey.Protocol.Tcp.Sender;
 
-public abstract class DotNettyMessageSender
+internal abstract class DotNettyMessageSender
 {
     private readonly IMessageEncoder _messageEncoder;
 

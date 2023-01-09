@@ -4,7 +4,7 @@ using Crey.Message.Models;
 
 namespace Crey.Protocol.Tcp.Sender;
 
-public class DotNettyClientSender : DotNettyMessageSender, IMessageSender, IDisposable
+internal class DotNettyClientSender : DotNettyMessageSender, IMessageSender, IDisposable
 {
     private readonly IChannel _channel;
 
