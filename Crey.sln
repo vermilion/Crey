@@ -25,6 +25,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.github\workflows\build-and-publish.yml = .github\workflows\build-and-publish.yml
 		Directory.Build.props = Directory.Build.props
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crey.Protocol.Tcp", "src\Crey.Protocol.Tcp\Crey.Protocol.Tcp.csproj", "{64E3B24D-FA28-44B0-88FE-E86EC412E69C}"

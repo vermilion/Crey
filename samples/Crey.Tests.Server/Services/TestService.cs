@@ -16,13 +16,13 @@ public class TestService : ITestContract
         _callContextAccessor = callContextAccessor;
     }
 
-    public async Task<string> Say(string name)
+    public async Task<string> Say(string message)
     {
         //await Task.Delay(3000);
 
         //var res = _callContextAccessor.GetValue<bool>(MicroConstants.LongRunning);
         //_logger.LogWarning($"Server says: {name}, longRunning: {res}");
 
-        return await Task.FromResult($"get name:{name}");
+        return await Task.FromResult($"pong: {message}");
     }
 }
