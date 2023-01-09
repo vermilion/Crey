@@ -1,5 +1,16 @@
 **Crey - netstandard2.0 microservice framework**
 
+![workflow](https://img.shields.io/github/actions/workflow/status/vermilion/Crey/build-and-publish.yml) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/vermilion/Crey?style=flat-square)
+
+
+### How to install
+```code
+PM> Install-Package Crey
+PM> Install-Package Crey.Protocol.Tcp
+PM> Install-Package Crey.Discovery.Consul
+PM> Install-Package Crey.Codec.MessagePack
+```
+
 | Package Name           | NuGet                                                                                                                                          | Downloads                                                                                                                                                             |
 | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Crey                   | [![nuget](https://img.shields.io/nuget/v/Crey.svg?style=flat-square)](https://www.nuget.org/packages/Crey)                                     | [![stats](https://img.shields.io/nuget/dt/Crey.svg?style=flat-square)](https://www.nuget.org/stats/packages/Crey?groupby=Version)                                     |
@@ -7,12 +18,15 @@
 | Crey.Discovery.Consul  | [![nuget](https://img.shields.io/nuget/v/Crey.Discovery.Consul.svg?style=flat-square)](https://www.nuget.org/packages/Crey.Discovery.Consul)   | [![stats](https://img.shields.io/nuget/dt/Crey.Discovery.Consul.svg?style=flat-square)](https://www.nuget.org/stats/packages/Crey.Discovery.Consul?groupby=Version)   |
 | Crey.Codec.MessagePack | [![nuget](https://img.shields.io/nuget/v/Crey.Codec.MessagePack.svg?style=flat-square)](https://www.nuget.org/packages/Crey.Codec.MessagePack) | [![stats](https://img.shields.io/nuget/dt/Crey.Codec.MessagePack.svg?style=flat-square)](https://www.nuget.org/stats/packages/Crey.Codec.MessagePack?groupby=Version) |
 
+
 - [Technologies](#technologies)
-- [Example](#example)
+- [Usage samples](#usage-samples)
   - [Contract](#contract)
   - [Server](#server)
   - [Client](#client)
+- [Roadmap](#roadmap)
 - [Benchmark](#benchmark)
+- [Licences](#licences)
 
 
 ## Technologies
@@ -22,11 +36,11 @@
 - **Castle.Core** (for building DynamicProxy)
 - **Polly** (retry strategy)
 
-## Example
+## Usage samples
 
 ### Contract
 ``` c#
-// define contract
+// contract is referenced by client and service
 public interface ITestContract : IMicroService
 {
     Task<string> Say(string name);
@@ -138,6 +152,13 @@ var res = await contract.Say("Hello world");
 }
 ```
 
+## Roadmap
+- Middleware
+- Tests
+- ContextValuesAccessor docs
+- OneWay docs
+- retry policy abstraction
+
 ## Benchmark
 
 ``` ini
@@ -153,3 +174,7 @@ Intel Core i7-8550U CPU 1.80GHz (Kaby Lake R), 1 CPU, 8 logical and 4 physical c
 | Method                      |     Mean |    Error |   StdDev |    Gen0 |    Gen1 | Allocated |
 | --------------------------- | -------: | -------: | -------: | ------: | ------: | --------: |
 | CreateContractAndCallMethod | 113.2 ms | 18.02 ms | 53.13 ms | 93.7500 | 31.2500 | 491.28 KB |
+
+## Licences
+
+Licenced under [MIT](LICENSE)
