@@ -18,10 +18,10 @@ public class TestService : ITestContract
 
     public async Task<string> Say(string name)
     {
-        await Task.Delay(3000);
+        //await Task.Delay(3000);
 
-        var res = _callContextAccessor.GetValue<bool>(MicroConstants.LongRunning);
-        _logger.LogWarning($"Server says: {name}, longRunning: {res}");
+        //var res = _callContextAccessor.GetValue<bool>(MicroConstants.LongRunning);
+        //_logger.LogWarning($"Server says: {name}, longRunning: {res}");
 
         return await Task.FromResult($"get name:{name}");
     }

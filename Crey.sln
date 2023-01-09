@@ -29,6 +29,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crey.Protocol.Tcp", "src\Crey.Protocol.Tcp\Crey.Protocol.Tcp.csproj", "{64E3B24D-FA28-44B0-88FE-E86EC412E69C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crey.Benchmarks", "Crey.Benchmarks\Crey.Benchmarks.csproj", "{87EC4A01-7FA3-44D0-AD3E-68AC2E2C8B0C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,10 @@ Global
 		{64E3B24D-FA28-44B0-88FE-E86EC412E69C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64E3B24D-FA28-44B0-88FE-E86EC412E69C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{64E3B24D-FA28-44B0-88FE-E86EC412E69C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87EC4A01-7FA3-44D0-AD3E-68AC2E2C8B0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87EC4A01-7FA3-44D0-AD3E-68AC2E2C8B0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87EC4A01-7FA3-44D0-AD3E-68AC2E2C8B0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87EC4A01-7FA3-44D0-AD3E-68AC2E2C8B0C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -69,6 +75,7 @@ Global
 		{0734F726-EB5B-4529-A8E2-65BF2BF20A15} = {67C57E6D-E13C-4053-AA48-F72DD00FA398}
 		{4CE49E02-41CA-4242-99F5-5565AB238D10} = {B45E051E-8136-4EB3-AE13-1D1884E1D016}
 		{64E3B24D-FA28-44B0-88FE-E86EC412E69C} = {D7FA77A3-C7C2-4F40-B252-BB9330740DEA}
+		{87EC4A01-7FA3-44D0-AD3E-68AC2E2C8B0C} = {3D9793B2-FFDF-466B-8574-A6EC15B07CE2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {80C90B42-B34C-4BE9-8695-96E316D751E9}

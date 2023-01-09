@@ -5,9 +5,10 @@ using Crey.Extensions;
 using Crey.Micro.Extensions;
 using Crey.Protocol.Tcp.Extensions;
 using Crey.ServiceDiscovery.Models;
-using Crey.ServiceDiscovery.StaticRouter.Extensions;
+using Crey.Discovery.Consul.Extensions;
 using Crey.Tests.Contracts;
 using Crey.Tests.Server.Services;
+using Crey.ServiceDiscovery.StaticRouter.Extensions;
 
 namespace Crey.Tests.Server;
 
@@ -30,8 +31,8 @@ internal class Program
                 builder
                     .AddTcpProtocol()
                     .AddMessagePackCodec()
-                    .AddStaticServiceDiscovery()
-                    //.AddConsulDiscovery()
+                    //.AddStaticServiceDiscovery()
+                    .AddConsulDiscovery()
 
                     .AddMicroService(builder =>
                     {
@@ -64,14 +65,17 @@ internal class Program
             builder
                 .AddTcpProtocol()
                 .AddMessagePackCodec()
+#if DEBUG
                 .AddStaticServiceDiscovery(x =>
                 {
                     x.Set<ITestContract>(new[] { new ServiceAddress("192.168.1.24", 5003) });
                 })
-                /*.AddConsulDiscovery(x =>
+#else
+                .AddConsulDiscovery(x =>
                 {
                     x.Server = "http://192.168.1.24:8500";
-                })*/
+                })
+#endif
                 .AddMicroClient();
         })
         .CreateProxyFactory();
