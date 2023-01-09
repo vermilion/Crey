@@ -1,24 +1,22 @@
-﻿using Crey.Micro.Abstractions;
+﻿using Castle.DynamicProxy;
+using Crey.Micro.Abstractions;
 using Crey.Proxy.Abstractions;
-using Crey.Proxy.ProxyGenerator;
 
 namespace Crey.Proxy;
 
 public class ProxyFactory : IProxyFactory
 {
-    private readonly IProxyProvider _proxyProvider;
-    private readonly AsyncProxyGenerator _proxyGenerator;
+    private readonly ClientProxyInterceptor _interceptor;
+    private readonly ProxyGenerator _proxyGenerator = new();
 
-    public ProxyFactory(IProxyProvider proxyProvider, AsyncProxyGenerator proxyGenerator)
+    public ProxyFactory(ClientProxyInterceptor interceptor)
     {
-        _proxyProvider = proxyProvider;
-        _proxyGenerator = proxyGenerator;
+        _interceptor = interceptor;
     }
-
 
     public T Create<T>()
         where T : class, IMicroService
     {
-        return (T)_proxyGenerator.CreateProxy(typeof(T), typeof(ProxyExecutor), _proxyProvider);
+        return _proxyGenerator.CreateInterfaceProxyWithoutTarget<T>(_interceptor.ToInterceptor());
     }
 }

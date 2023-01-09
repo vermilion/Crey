@@ -11,6 +11,7 @@ public class FastInvokeHelper
     {
         var dynamicMethod = new DynamicMethod(string.Empty, typeof(object),
             new[] { typeof(object), typeof(object[]) }, methodInfo.DeclaringType?.Module);
+
         var il = dynamicMethod.GetILGenerator();
         var ps = methodInfo.GetParameters();
         var paramTypes = new Type[ps.Length];

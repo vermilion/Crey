@@ -1,12 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Crey.BackgroundServices;
+﻿using Crey.BackgroundServices;
 using Crey.Builder.Abstractions;
-using Crey.Micro;
 using Crey.Micro.Abstractions;
 using Crey.Proxy;
 using Crey.Proxy.Abstractions;
 using Crey.ServiceDiscovery.Models;
-using Crey.Proxy.ProxyGenerator;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Crey.Micro.Extensions;
 
@@ -21,9 +19,9 @@ public static class ServiceCollectionExtensions
         services.AddBase();
 
         // proxy services
-        services.AddSingleton<AsyncProxyGenerator>();
+        services.AddSingleton<ClientProxyInterceptor>();
+        services.AddSingleton<IProxyFactory, ProxyFactory>();
         services.AddScoped<IProxyProvider, ClientProxy>();
-        services.AddScoped<IProxyFactory, ProxyFactory>();
 
         return builder;
     }
