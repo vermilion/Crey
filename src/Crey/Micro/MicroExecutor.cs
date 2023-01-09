@@ -1,27 +1,32 @@
 ﻿using System.Reflection;
-using Microsoft.Extensions.Logging;
 using Crey.Helper;
 using Crey.Message.Abstractions;
 using Crey.Message.Models;
 using Crey.Micro.Abstractions;
 using Crey.Micro.Constants;
 using Crey.Micro.Extensions;
+using Crey.Session.Abstractions;
+using Microsoft.Extensions.Logging;
 
 namespace Crey.Micro;
 
 public class MicroExecutor : IMicroExecutor
 {
     private readonly ILogger<MicroExecutor> _logger;
-    private readonly IMicroSession _session;
     private readonly IServiceProvider _provider;
     private readonly IMicroEntryFactory _entryFactory;
+    private readonly ISessionValuesAccessor _sessionValuesAccessor;
 
-    public MicroExecutor(ILogger<MicroExecutor> logger, IServiceProvider provider, IMicroSession session, IMicroEntryFactory entryFactory)
+    public MicroExecutor(
+        ILogger<MicroExecutor> logger,
+        IServiceProvider provider,
+        ISessionValuesAccessor sessionValuesAccessor,
+        IMicroEntryFactory entryFactory)
     {
         _provider = provider;
         _entryFactory = entryFactory;
+        _sessionValuesAccessor = sessionValuesAccessor;
         _logger = logger;
-        _session = session;
     }
 
     private async Task LocalExecute(MicroEntryDelegate entry, InvokeMessage invokeMessage, MessageResult messageResult)
@@ -29,6 +34,7 @@ public class MicroExecutor : IMicroExecutor
         try
         {
             var data = await entry(_provider, invokeMessage.Parameters);
+
             if (data is not Task task)
             {
                 messageResult.Content = data;
@@ -74,7 +80,7 @@ public class MicroExecutor : IMicroExecutor
         {
             foreach (var item in message.Headers)
             {
-                _session.Values.Add(item.Key, item.Value);
+                _sessionValuesAccessor.Values.Add(item.Key, item.Value);
             }
         }
 
@@ -88,7 +94,7 @@ public class MicroExecutor : IMicroExecutor
             return;
         }
 
-        var isLongRunning = _session.GetValue(MicroConstants.LongRunning, false);
+        var isLongRunning = _sessionValuesAccessor.GetValue(MicroConstants.LongRunning, false);
 
         _logger.LogInformation($"Execute, LongRunning: {isLongRunning}");
 

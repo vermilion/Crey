@@ -13,24 +13,22 @@ public class MicroClient : IMicroClient, IDisposable
 {
     private readonly IMessageSender _sender;
     private readonly IMessageListener _listener;
-    private readonly IMicroExecutor _executor;
     private readonly ILogger<MicroClient> _logger;
 
     private readonly ConcurrentDictionary<string, TaskCompletionSource<MessageResult>> _resultDictionary = new();
 
-    public MicroClient(IMessageSender sender, IMessageListener listener, IMicroExecutor executor, ILoggerFactory loggerFactory)
+    public MicroClient(IMessageSender sender, IMessageListener listener, ILoggerFactory loggerFactory)
     {
         _sender = sender;
         _listener = listener;
-        _executor = executor;
         _logger = loggerFactory.CreateLogger<MicroClient>();
         listener.Received += ListenerOnReceived;
     }
 
-    private async Task ListenerOnReceived(IMessageSender sender, DMessage message)
+    private Task ListenerOnReceived(IMessageSender sender, DMessage message)
     {
         if (!_resultDictionary.TryGetValue(message.Id, out var task))
-            return;
+            return Task.CompletedTask;
 
         if (message is MessageResult result)
         {
@@ -44,8 +42,7 @@ public class MicroClient : IMicroClient, IDisposable
             }
         }
 
-        if (_executor != null && message is InvokeMessage invokeMessage)
-            await _executor.Execute(sender, invokeMessage);
+        return Task.CompletedTask;
     }
 
     private async Task<MessageResult> RegisterCallbackAsync(string messageId)
@@ -70,6 +67,7 @@ public class MicroClient : IMicroClient, IDisposable
     public async Task<MessageResult> Send(InvokeMessage message)
     {
         var watch = Stopwatch.StartNew();
+
         try
         {
             if (_logger.IsEnabled(LogLevel.Debug))
@@ -91,6 +89,7 @@ public class MicroClient : IMicroClient, IDisposable
         finally
         {
             watch.Stop();
+
             if (_logger.IsEnabled(LogLevel.Debug))
                 _logger.LogDebug($"send message {watch.ElapsedMilliseconds} ms");
         }

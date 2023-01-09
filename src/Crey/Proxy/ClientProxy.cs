@@ -1,8 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Net.Sockets;
 using System.Reflection;
-using Microsoft.Extensions.Logging;
-using Polly;
 using Crey.Exceptions;
 using Crey.Extensions;
 using Crey.Helper;
@@ -13,26 +11,29 @@ using Crey.Proxy.Abstractions;
 using Crey.ServiceDiscovery.Abstractions;
 using Crey.ServiceDiscovery.Extensions;
 using Crey.ServiceDiscovery.Models;
+using Crey.Session.Abstractions;
+using Microsoft.Extensions.Logging;
+using Polly;
 
 namespace Crey.Proxy;
 
 public class ClientProxy : IProxyProvider
 {
     private readonly ILogger<ClientProxy> _logger;
-    private readonly IMicroSession _session;
     private readonly IMicroClientFactory _clientFactory;
+    private readonly ISessionValuesProvider _sessionValuesProvider;
     private readonly IServiceFinder _serviceFinder;
 
     public ClientProxy(
         ILogger<ClientProxy> logger,
-        IMicroSession session,
         IMicroClientFactory clientFactory,
-        IServiceFinder finder)
+        ISessionValuesProvider sessionValuesProvider,
+        IServiceFinder serviceFinder)
     {
         _logger = logger;
-        _session = session;
         _clientFactory = clientFactory;
-        _serviceFinder = finder;
+        _sessionValuesProvider = sessionValuesProvider;
+        _serviceFinder = serviceFinder;
     }
 
     private async Task<MessageResult> ClientInvokeAsync(ServiceAddress serviceAddress, InvokeMessage message)
@@ -92,12 +93,12 @@ public class ClientProxy : IProxyProvider
 
     private InvokeMessage CreateMessage(MethodInfo targetMethod, IDictionary<string, object> args)
     {
-        var headers = new Dictionary<string, string>
+        var headers = new Dictionary<string, string?>
         {
-            { MicroConstants.UserIp, IpAddressHelper.LocalIp() }
+            [MicroConstants.UserIp] = IpAddressHelper.LocalIp()
         };
 
-        foreach (var item in _session.Values)
+        foreach (var item in _sessionValuesProvider.Values)
         {
             headers.Add(item.Key, item.Value);
         }

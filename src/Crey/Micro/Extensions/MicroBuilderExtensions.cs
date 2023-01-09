@@ -4,6 +4,8 @@ using Crey.Micro.Abstractions;
 using Crey.Proxy;
 using Crey.Proxy.Abstractions;
 using Crey.ServiceDiscovery.Models;
+using Crey.Session;
+using Crey.Session.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Crey.Micro.Extensions;
@@ -18,10 +20,12 @@ public static class ServiceCollectionExtensions
 
         services.AddBase();
 
+        services.AddScoped<ISessionValuesProvider, SessionValuesProvider>();
+
         // proxy services
         services.AddSingleton<ClientProxyInterceptor>();
         services.AddSingleton<IProxyFactory, ProxyFactory>();
-        services.AddScoped<IProxyProvider, ClientProxy>();
+        services.AddSingleton<IProxyProvider, ClientProxy>();
 
         return builder;
     }
@@ -34,6 +38,10 @@ public static class ServiceCollectionExtensions
 
         services.AddBase();
         services.AddSingleton<IMicroHost, MicroHost>();
+        services.AddScoped<IMicroExecutor, MicroExecutor>();
+        services.AddSingleton<IMicroEntryFactory, MicroEntryFactory>();
+
+        services.AddScoped<ISessionValuesAccessor, SessionValuesAccessor>();
 
         services.AddHostedService<HostListenerBackroungService>();
 
@@ -45,8 +53,5 @@ public static class ServiceCollectionExtensions
     private static void AddBase(this IServiceCollection services)
     {
         services.AddSingleton(services);
-        services.AddScoped<IMicroSession, MicroSession>();
-        services.AddScoped<IMicroExecutor, MicroExecutor>();
-        services.AddSingleton<IMicroEntryFactory, MicroEntryFactory>();
     }
 }

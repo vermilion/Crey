@@ -4,31 +4,35 @@ namespace Crey.Extensions;
 
 public static class CommonExtensions
 {
-    public static T CastTo<T>(this object obj)
+    public static T? CastTo<T>(this object obj)
     {
-        return obj.CastTo(default(T));
+        return obj.CastTo(default(T?));
     }
 
-    public static T CastTo<T>(this object obj, T def)
+    public static T? CastTo<T>(this object obj, T def)
     {
-        var value = obj.CastTo(typeof(T));
+        var value = obj.CastTo(typeof(T?));
         if (value == null)
             return def;
-        return (T)value;
+
+        return (T?)value;
     }
 
-    public static object CastTo(this object obj, Type conversionType)
+    public static object? CastTo(this object obj, Type conversionType)
     {
         if (obj == null)
         {
             return conversionType.IsGenericType ? Activator.CreateInstance(conversionType) : null;
         }
+
         if (conversionType.IsNullableType())
             conversionType = conversionType.GetUnNullableType();
+
         try
         {
             if (conversionType == obj.GetType())
                 return obj;
+
             if (conversionType.IsEnum)
             {
                 return obj is string s
@@ -54,10 +58,13 @@ public static class CommonExtensions
             {
                 if (Version.TryParse(obj.ToString(), out var version))
                     return version;
+
                 return null;
             }
 
-            return !(obj is IConvertible) ? obj : Convert.ChangeType(obj, conversionType);
+            return obj is IConvertible 
+                ? Convert.ChangeType(obj, conversionType) 
+                : obj;
         }
         catch
         {

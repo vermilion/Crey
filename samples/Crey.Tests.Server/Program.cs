@@ -59,7 +59,7 @@ internal class Program
         var res = await c.Say("Hello existing");
 
         // create separate client
-        var f2 = ClientBuilder.Create(builder =>
+        var proxyFactory = ClientBuilder.Create(builder =>
         {
             builder
                 .AddTcpProtocol()
@@ -76,7 +76,7 @@ internal class Program
         })
         .CreateProxyFactory();
 
-        var contract = f2.Create<ITestContract>();
+        var contract = proxyFactory.Create<ITestContract>();
 
         Console.WriteLine("Ready");
 
@@ -85,11 +85,11 @@ internal class Program
             var cmd = Console.ReadLine();
             if (cmd == "exit") break;
 
-            if (cmd.StartsWith("one:"))
+            if (cmd?.StartsWith("one:") == true)
             {
                 var command = cmd.Replace("one:", "");
 
-                await CreyExtensions.InvokeOneWay<ITestContract>(provider, (x) => x.Say(command));
+                await contract.InvokeOneWay((x) => x.Say(command));
             }
             else
             {

@@ -31,9 +31,8 @@ internal class DotNettyClientFactory : MicroClientFactory
     public DotNettyClientFactory(
         ILoggerFactory loggerFactory,
         IServiceProvider provider,
-        IMessageCodec codec,
-        IMicroExecutor executor)
-        : base(loggerFactory, provider, executor)
+        IMessageCodec codec)
+        : base(loggerFactory, provider)
     {
         _codec = codec;
     }
@@ -49,7 +48,7 @@ internal class DotNettyClientFactory : MicroClientFactory
         channel.GetAttribute(SenderKey).Set(sender);
         channel.GetAttribute(ServiceAddressKey).Set(serviceAddress);
 
-        return new MicroClient(sender, listener, MicroExecutor, LoggerFactory);
+        return new MicroClient(sender, listener, LoggerFactory);
     }
 
     private Bootstrap CreateBootstrap()
