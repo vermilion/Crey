@@ -1,5 +1,4 @@
 ﻿using Crey.Builder;
-using Crey.ServiceDiscovery.Abstractions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

@@ -2,9 +2,8 @@
 using System.Text.RegularExpressions;
 using Crey.Extensions;
 using Crey.Helper;
-using Crey.ServiceDiscovery.Models;
 
-namespace Crey.ServiceDiscovery.Extensions;
+namespace Crey.Discovery;
 
 public static class ServiceAddressExtensions
 {

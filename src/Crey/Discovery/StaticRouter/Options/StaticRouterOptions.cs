@@ -1,8 +1,8 @@
 ﻿using Crey.Extensions;
 using Crey.Micro;
-using Crey.ServiceDiscovery.Models;
+using Crey.Discovery;
 
-namespace Crey.ServiceDiscovery.StaticRouter.Options;
+namespace Crey.Discovery.StaticRouter;
 
 public class StaticRouterOptions
 {

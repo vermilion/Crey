@@ -7,8 +7,8 @@ using Crey.Protocol.Tcp;
 using Crey.Proxy;
 using Crey.Discovery.Consul;
 using Crey.Tests.Contracts;
-using Crey.ServiceDiscovery.StaticRouter.Extensions;
-using Crey.ServiceDiscovery.Models;
+using Crey.Discovery.StaticRouter;
+using Crey.Discovery;
 
 namespace Crey.Benchmarks;
 

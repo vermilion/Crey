@@ -1,4 +1,4 @@
-﻿namespace Crey.ServiceDiscovery.Constants;
+﻿namespace Crey.Discovery;
 
 public class ServiceRouteConstants
 {

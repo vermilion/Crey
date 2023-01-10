@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
-using Crey.ServiceDiscovery.Models;
 
-namespace Crey.ServiceDiscovery.Abstractions;
+namespace Crey.Discovery;
 
 /// <summary>
 /// Allows to manage server services

@@ -3,9 +3,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Crey.Extensions;
 using Crey.Helper;
-using Crey.ServiceDiscovery;
-using Crey.ServiceDiscovery.Constants;
-using Crey.ServiceDiscovery.Models;
 
 namespace Crey.Discovery.Consul;
 

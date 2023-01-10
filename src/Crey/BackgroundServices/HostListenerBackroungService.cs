@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Crey.Micro;
-using Crey.ServiceDiscovery.Models;
+using Crey.Discovery;
 
 namespace Crey.BackgroundServices;
 

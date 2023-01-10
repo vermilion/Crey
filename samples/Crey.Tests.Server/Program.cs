@@ -4,11 +4,11 @@ using Crey.Codec.MessagePack;
 using Crey.Extensions;
 using Crey.Micro;
 using Crey.Protocol.Tcp;
-using Crey.ServiceDiscovery.Models;
+using Crey.Discovery;
 using Crey.Discovery.Consul;
 using Crey.Tests.Contracts;
 using Crey.Tests.Server.Services;
-using Crey.ServiceDiscovery.StaticRouter.Extensions;
+using Crey.Discovery.StaticRouter;
 
 namespace Crey.Tests.Server;
 

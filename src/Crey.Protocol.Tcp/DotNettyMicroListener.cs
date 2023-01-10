@@ -5,8 +5,7 @@ using DotNetty.Transport.Channels;
 using DotNetty.Transport.Channels.Sockets;
 using Microsoft.Extensions.Logging;
 using Crey.Message;
-using Crey.ServiceDiscovery.Extensions;
-using Crey.ServiceDiscovery.Models;
+using Crey.Discovery;
 using Crey.Micro;
 
 namespace Crey.Protocol.Tcp;

@@ -1,4 +1,4 @@
-﻿namespace Crey.ServiceDiscovery.Models;
+﻿namespace Crey.Discovery;
 
 public class ServiceAddress
 {

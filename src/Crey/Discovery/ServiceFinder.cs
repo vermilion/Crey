@@ -1,8 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
-using Crey.ServiceDiscovery.Abstractions;
-using Crey.ServiceDiscovery.Models;
 
-namespace Crey.ServiceDiscovery;
+namespace Crey.Discovery;
 
 public abstract class ServiceFinder : IServiceFinder
 {

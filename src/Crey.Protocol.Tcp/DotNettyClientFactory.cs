@@ -7,8 +7,7 @@ using DotNetty.Transport.Channels.Sockets;
 using Microsoft.Extensions.Logging;
 using Crey.Message;
 using Crey.Micro;
-using Crey.ServiceDiscovery.Extensions;
-using Crey.ServiceDiscovery.Models;
+using Crey.Discovery;
 
 namespace Crey.Protocol.Tcp;
 
@@ -21,6 +20,7 @@ internal class DotNettyClientFactory : MicroClientFactory
         AttributeKey<IMessageSender>.ValueOf(typeof(DotNettyClientFactory), nameof(IMessageSender));
     private static readonly AttributeKey<IMessageListener> ListenerKey =
         AttributeKey<IMessageListener>.ValueOf(typeof(DotNettyClientFactory), nameof(IMessageListener));
+
     private readonly IMessageCodec _codec;
 
     public DotNettyClientFactory(

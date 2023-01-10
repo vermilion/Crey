@@ -1,5 +1,5 @@
 ﻿using Crey.Message;
-using Crey.ServiceDiscovery.Models;
+using Crey.Discovery;
 
 namespace Crey.Micro;
 

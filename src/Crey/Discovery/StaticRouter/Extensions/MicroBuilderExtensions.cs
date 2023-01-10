@@ -1,12 +1,8 @@
-﻿using System;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Crey.Builder;
-using Crey.ServiceDiscovery.Abstractions;
-using Crey.ServiceDiscovery.StaticRouter;
-using Crey.ServiceDiscovery.StaticRouter.Options;
 
-namespace Crey.ServiceDiscovery.StaticRouter.Extensions;
+namespace Crey.Discovery.StaticRouter;
 
 public static class MicroBuilderExtensions
 {
@@ -16,7 +12,7 @@ public static class MicroBuilderExtensions
     /// <param name="builder">Builder instance</param>
     /// <param name="action">Action to configure options</param>
     /// <returns>Builder instance</returns>
-    public static IMicroBuilder AddStaticServiceDiscovery(this IMicroBuilder builder, Action<StaticRouterOptions> action = null)
+    public static IMicroBuilder AddStaticServiceDiscovery(this IMicroBuilder builder, Action<StaticRouterOptions>? action = null)
     {
         var services = builder.Services;
 

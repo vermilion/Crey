@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using Microsoft.Extensions.Logging;
-using Crey.ServiceDiscovery.Models;
+using Crey.Discovery;
 
 namespace Crey.Micro;
 

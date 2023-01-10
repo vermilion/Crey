@@ -1,8 +1,6 @@
 ﻿using System.Reflection;
-using Crey.ServiceDiscovery.Abstractions;
-using Crey.ServiceDiscovery.Models;
 
-namespace Crey.ServiceDiscovery;
+namespace Crey.Discovery;
 
 public abstract class ServiceRegister : IServiceRegister
 {

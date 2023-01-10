@@ -3,12 +3,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Crey.Extensions;
 using Crey.Extensions.StringExtension;
-using Crey.ServiceDiscovery;
-using Crey.ServiceDiscovery.Abstractions;
-using Crey.ServiceDiscovery.Models;
-using Crey.ServiceDiscovery.StaticRouter.Options;
 
-namespace Crey.ServiceDiscovery.StaticRouter;
+namespace Crey.Discovery.StaticRouter;
 
 public class StaticServiceRouter : ServiceFinder, IServiceRegister
 {

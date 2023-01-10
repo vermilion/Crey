@@ -6,9 +6,6 @@ using Microsoft.Extensions.Options;
 using Crey.Extensions;
 using Crey.Extensions.StringExtension;
 using Crey.Helper;
-using Crey.ServiceDiscovery;
-using Crey.ServiceDiscovery.Constants;
-using Crey.ServiceDiscovery.Models;
 
 namespace Crey.Discovery.Consul;
 

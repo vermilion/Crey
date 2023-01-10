@@ -1,7 +1,7 @@
 ﻿using Crey.BackgroundServices;
 using Crey.Builder;
 using Crey.Proxy;
-using Crey.ServiceDiscovery.Models;
+using Crey.Discovery;
 using Crey.Session;
 using Microsoft.Extensions.DependencyInjection;
 
