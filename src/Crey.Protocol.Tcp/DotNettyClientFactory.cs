@@ -6,12 +6,7 @@ using DotNetty.Transport.Channels;
 using DotNetty.Transport.Channels.Sockets;
 using Microsoft.Extensions.Logging;
 using Crey.Message;
-using Crey.Message.Abstractions;
-using Crey.Message.Models;
 using Crey.Micro;
-using Crey.Micro.Abstractions;
-using Crey.Protocol.Tcp.Adapter;
-using Crey.Protocol.Tcp.Sender;
 using Crey.ServiceDiscovery.Extensions;
 using Crey.ServiceDiscovery.Models;
 

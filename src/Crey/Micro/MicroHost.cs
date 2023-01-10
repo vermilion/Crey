@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using Crey.Micro.Abstractions;
 using Crey.ServiceDiscovery.Abstractions;
 using Crey.ServiceDiscovery.Models;
 

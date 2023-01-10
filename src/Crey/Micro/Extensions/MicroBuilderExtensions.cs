@@ -1,14 +1,11 @@
 ﻿using Crey.BackgroundServices;
-using Crey.Builder.Abstractions;
-using Crey.Micro.Abstractions;
+using Crey.Builder;
 using Crey.Proxy;
-using Crey.Proxy.Abstractions;
 using Crey.ServiceDiscovery.Models;
 using Crey.Session;
-using Crey.Session.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Crey.Micro.Extensions;
+namespace Crey.Micro;
 
 public static class ServiceCollectionExtensions
 {

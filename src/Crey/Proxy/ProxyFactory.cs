@@ -1,6 +1,5 @@
 ﻿using Castle.DynamicProxy;
-using Crey.Micro.Abstractions;
-using Crey.Proxy.Abstractions;
+using Crey.Micro;
 
 namespace Crey.Proxy;
 

@@ -1,7 +1,6 @@
 ﻿using Crey.Extensions;
-using Crey.Message.Abstractions;
 
-namespace Crey.Message.Extensions;
+namespace Crey.Message;
 
 public static class MessageCodecExtensions
 {

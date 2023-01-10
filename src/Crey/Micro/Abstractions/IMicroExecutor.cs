@@ -1,7 +1,6 @@
-﻿using Crey.Message.Abstractions;
-using Crey.Message.Models;
+﻿using Crey.Message;
 
-namespace Crey.Micro.Abstractions;
+namespace Crey.Micro;
 
 public interface IMicroExecutor
 {

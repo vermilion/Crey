@@ -1,4 +1,4 @@
-﻿namespace Crey.Session.Abstractions;
+﻿namespace Crey.Session;
 
 public interface ISessionValuesProvider : ISessionValuesAccessor
 {

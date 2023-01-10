@@ -7,28 +7,6 @@ namespace Crey.Extensions;
 /// </summary>
 public static class TypeExtension
 {
-    private static readonly List<Type> SimpleTypes = new List<Type>
-    {
-        typeof(byte),
-        typeof(sbyte),
-        typeof(short),
-        typeof(ushort),
-        typeof(int),
-        typeof(uint),
-        typeof(long),
-        typeof(ulong),
-        typeof(float),
-        typeof(double),
-        typeof(decimal),
-        typeof(bool),
-        typeof(string),
-        typeof(char),
-        typeof(Guid),
-        typeof(DateTime),
-        typeof(DateTimeOffset),
-        typeof(byte[])
-    };
-
     /// <summary>
     /// 判断类型是否为Nullable类型
     /// </summary>
@@ -50,14 +28,4 @@ public static class TypeExtension
         var nullableConverter = new NullableConverter(type);
         return nullableConverter.UnderlyingType;
     }
-
-    /// <summary> 是否是简单类型 </summary>
-    /// <param name="type"></param>
-    /// <returns></returns>
-    public static bool IsSimpleType(this Type type)
-    {
-        var actualType = type.GetUnNullableType();
-        return SimpleTypes.Contains(actualType);
-    }
-
 }

@@ -3,7 +3,6 @@ using System.Reflection;
 using Consul;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Crey.Discovery.Consul.Options;
 using Crey.Extensions;
 using Crey.Extensions.StringExtension;
 using Crey.Helper;
@@ -15,7 +14,7 @@ namespace Crey.Discovery.Consul;
 
 internal class ConsulServiceRegister : ServiceRegister
 {
-    private readonly List<string> _services;
+    private readonly List<string> _services = new();
     private readonly ConsulOptions _options;
     private readonly ILogger<ConsulServiceRegister> _logger;
 
@@ -25,7 +24,6 @@ internal class ConsulServiceRegister : ServiceRegister
     {
         _options = options.Value;
         _logger = logger;
-        _services = new List<string>();
     }
 
     private IConsulClient CreateClient()
@@ -66,8 +64,8 @@ internal class ConsulServiceRegister : ServiceRegister
                 },
                 Meta = new Dictionary<string, string>
                 {
-                    { ServiceRouteConstants.KeyService, JsonHelper.ToJson(serverAddress) },
-                    { ServiceRouteConstants.KeyVersion, ass.GetName().Version.ToString() }
+                    [ServiceRouteConstants.KeyService] = JsonHelper.ToJson(serverAddress),
+                    [ServiceRouteConstants.KeyVersion] = ass.GetName().Version.ToString()
                 }
             };
 

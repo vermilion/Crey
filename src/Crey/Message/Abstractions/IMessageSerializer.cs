@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Crey.Message.Abstractions;
+namespace Crey.Message;
 
 public interface IMessageSerializer
 {

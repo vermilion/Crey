@@ -4,12 +4,9 @@ using DotNetty.Transport.Bootstrapping;
 using DotNetty.Transport.Channels;
 using DotNetty.Transport.Channels.Sockets;
 using Microsoft.Extensions.Logging;
-using Crey.Message.Abstractions;
-using Crey.Message.Models;
+using Crey.Message;
 using Crey.ServiceDiscovery.Extensions;
 using Crey.ServiceDiscovery.Models;
-using Crey.Protocol.Tcp.Adapter;
-using Crey.Protocol.Tcp.Sender;
 using Crey.Micro;
 
 namespace Crey.Protocol.Tcp;

@@ -1,9 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Crey.Helper;
-using Crey.Message.Abstractions;
-using Crey.Message.Models;
-using Crey.Micro.Abstractions;
+using Crey.Message;
 using Crey.ServiceDiscovery.Models;
 
 namespace Crey.Micro;

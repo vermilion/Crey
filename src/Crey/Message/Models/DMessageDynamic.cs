@@ -1,8 +1,7 @@
 ﻿using Crey.Extensions;
 using Crey.Helper;
-using Crey.Message.Abstractions;
 
-namespace Crey.Message.Models;
+namespace Crey.Message;
 
 public class DMessageDynamic
 {

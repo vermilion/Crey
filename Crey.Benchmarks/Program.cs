@@ -1,11 +1,11 @@
 ﻿using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
 using Crey.Client;
-using Crey.Codec.MessagePack.Extensions;
-using Crey.Micro.Extensions;
-using Crey.Protocol.Tcp.Extensions;
-using Crey.Proxy.Abstractions;
-using Crey.Discovery.Consul.Extensions;
+using Crey.Codec.MessagePack;
+using Crey.Micro;
+using Crey.Protocol.Tcp;
+using Crey.Proxy;
+using Crey.Discovery.Consul;
 using Crey.Tests.Contracts;
 using Crey.ServiceDiscovery.StaticRouter.Extensions;
 using Crey.ServiceDiscovery.Models;

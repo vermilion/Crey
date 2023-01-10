@@ -3,8 +3,7 @@ using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Crey.Extensions;
-using Crey.Micro.Abstractions;
-using Crey.Proxy.Helpers;
+using Crey.Proxy;
 
 namespace Crey.Micro;
 
@@ -43,7 +42,7 @@ public class MicroEntryFactory : IMicroEntryFactory
 
     private MicroEntryDelegate CreateEntry(MethodInfo method)
     {
-        var fastInvoke = FastInvokeHelper.GetMethodInvoker(method);
+        var fastInvokeHandler = FastInvokeHelper.GetMethodInvoker(method);
 
         return (provider, param) =>
         {
@@ -65,7 +64,7 @@ public class MicroEntryFactory : IMicroEntryFactory
                 }
             }
 
-            return Task.FromResult(fastInvoke(instance, args.ToArray()));
+            return Task.FromResult(fastInvokeHandler(instance, args.ToArray()));
         };
     }
 

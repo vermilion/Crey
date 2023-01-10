@@ -1,4 +1,4 @@
-﻿using Crey.Micro.Abstractions;
+﻿using Crey.Micro;
 
 namespace Crey.Tests.Contracts;
 

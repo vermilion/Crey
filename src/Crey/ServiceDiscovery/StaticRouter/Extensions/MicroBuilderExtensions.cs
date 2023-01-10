@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Crey.Builder.Abstractions;
+using Crey.Builder;
 using Crey.ServiceDiscovery.Abstractions;
 using Crey.ServiceDiscovery.StaticRouter;
 using Crey.ServiceDiscovery.StaticRouter.Options;

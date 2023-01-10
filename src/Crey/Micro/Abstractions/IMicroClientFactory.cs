@@ -1,6 +1,6 @@
 ﻿using Crey.ServiceDiscovery.Models;
 
-namespace Crey.Micro.Abstractions;
+namespace Crey.Micro;
 
 public interface IMicroClientFactory
 {

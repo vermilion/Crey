@@ -1,4 +1,4 @@
-﻿using Crey.Message.Abstractions;
+﻿using Crey.Message;
 using MessagePack;
 using MessagePack.Resolvers;
 

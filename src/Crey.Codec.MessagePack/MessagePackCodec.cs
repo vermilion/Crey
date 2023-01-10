@@ -1,6 +1,5 @@
-﻿using Crey.Codec.MessagePack.Models;
+﻿using Crey.Codec.MessagePack;
 using Crey.Message;
-using Crey.Message.Abstractions;
 
 namespace Crey.Codec.MessagePack;
 

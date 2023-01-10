@@ -1,7 +1,7 @@
 ﻿using MessagePack;
-using Crey.Message.Models;
+using Crey.Message;
 
-namespace Crey.Codec.MessagePack.Models;
+namespace Crey.Codec.MessagePack;
 
 [MessagePackObject(keyAsPropertyName: true)]
 public class MessagePackDynamic : DMessageDynamic

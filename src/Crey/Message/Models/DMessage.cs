@@ -1,4 +1,4 @@
-﻿namespace Crey.Message.Models;
+﻿namespace Crey.Message;
 
 public class DMessage
 {

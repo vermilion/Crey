@@ -1,4 +1,4 @@
-﻿namespace Crey.Builder.Abstractions;
+﻿namespace Crey.Builder;
 
 public interface IMicroClientBuilder : IBuilder
 {

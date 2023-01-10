@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Crey.Builder.Abstractions;
-using Crey.Micro.Abstractions;
+using Crey.Builder;
+using Crey.Micro;
 
-namespace Crey.Protocol.Tcp.Extensions;
+namespace Crey.Protocol.Tcp;
 
 public static class MicroBuilderExtensions
 {

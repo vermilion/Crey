@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Crey.Builder;
-using Crey.Proxy.Abstractions;
+using Crey.Proxy;
 
 namespace Crey.Client;
 

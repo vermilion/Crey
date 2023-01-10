@@ -1,8 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Crey.Builder.Abstractions;
-using Crey.Micro.Abstractions;
+using Crey.Builder;
 
-namespace Crey.Micro.Extensions;
+namespace Crey.Micro;
 
 public static class MicroServerBuilderExtensions
 {

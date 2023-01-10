@@ -1,7 +1,7 @@
-﻿using Crey.Message.Abstractions;
+﻿using Crey.Message;
 using Crey.ServiceDiscovery.Models;
 
-namespace Crey.Micro.Abstractions;
+namespace Crey.Micro;
 
 public interface IMicroListener : IMessageListener
 {

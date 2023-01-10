@@ -1,11 +1,11 @@
 ﻿using Crey.Builder;
 using Crey.Client;
-using Crey.Codec.MessagePack.Extensions;
+using Crey.Codec.MessagePack;
 using Crey.Extensions;
-using Crey.Micro.Extensions;
-using Crey.Protocol.Tcp.Extensions;
+using Crey.Micro;
+using Crey.Protocol.Tcp;
 using Crey.ServiceDiscovery.Models;
-using Crey.Discovery.Consul.Extensions;
+using Crey.Discovery.Consul;
 using Crey.Tests.Contracts;
 using Crey.Tests.Server.Services;
 using Crey.ServiceDiscovery.StaticRouter.Extensions;

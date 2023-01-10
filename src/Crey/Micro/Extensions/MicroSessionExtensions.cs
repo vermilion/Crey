@@ -1,7 +1,7 @@
 ﻿using Crey.Extensions;
-using Crey.Session.Abstractions;
+using Crey.Session;
 
-namespace Crey.Micro.Extensions;
+namespace Crey.Micro;
 
 public static class MicroSessionExtensions
 {

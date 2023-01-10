@@ -1,4 +1,4 @@
-﻿namespace Crey.Micro.Constants;
+﻿namespace Crey.Micro;
 
 public class MicroConstants
 {

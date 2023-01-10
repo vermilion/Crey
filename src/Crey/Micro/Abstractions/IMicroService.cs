@@ -1,4 +1,4 @@
-﻿namespace Crey.Micro.Abstractions;
+﻿namespace Crey.Micro;
 
 /// <summary>
 /// Service marker interface

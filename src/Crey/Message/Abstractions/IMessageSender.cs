@@ -1,6 +1,4 @@
-﻿using Crey.Message.Models;
-
-namespace Crey.Message.Abstractions;
+﻿namespace Crey.Message;
 
 public interface IMessageSender
 {

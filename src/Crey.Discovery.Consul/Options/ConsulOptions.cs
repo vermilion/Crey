@@ -1,4 +1,4 @@
-﻿namespace Crey.Discovery.Consul.Options;
+﻿namespace Crey.Discovery.Consul;
 
 /// <summary>
 /// Options used to configure Consul provider

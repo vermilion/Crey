@@ -1,7 +1,4 @@
-﻿using Crey.Message.Abstractions;
-using Crey.Message.Models;
-
-namespace Crey.Message;
+﻿namespace Crey.Message;
 
 public class MessageListener : IMessageListener
 {

@@ -1,5 +1,4 @@
 ﻿using System;
-using Crey.Message.Abstractions;
 
 namespace Crey.Message;
 

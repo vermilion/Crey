@@ -1,5 +1,5 @@
 ﻿using Crey.Extensions;
-using Crey.Micro.Abstractions;
+using Crey.Micro;
 using Crey.ServiceDiscovery.Models;
 
 namespace Crey.ServiceDiscovery.StaticRouter.Options;

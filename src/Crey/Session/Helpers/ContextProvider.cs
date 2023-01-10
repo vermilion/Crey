@@ -1,4 +1,4 @@
-﻿namespace Crey.Session.Helpers;
+﻿namespace Crey.Session;
 
 public abstract class ContextProvider<T>
     where T : new()

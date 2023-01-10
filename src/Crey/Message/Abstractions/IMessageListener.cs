@@ -1,6 +1,4 @@
-﻿using Crey.Message.Models;
-
-namespace Crey.Message.Abstractions;
+﻿namespace Crey.Message;
 
 public delegate Task ReceivedDelegate(IMessageSender sender, DMessage message);
 

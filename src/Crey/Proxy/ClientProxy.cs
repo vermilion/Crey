@@ -4,14 +4,12 @@ using System.Reflection;
 using Crey.Exceptions;
 using Crey.Extensions;
 using Crey.Helper;
-using Crey.Message.Models;
-using Crey.Micro.Abstractions;
-using Crey.Micro.Constants;
-using Crey.Proxy.Abstractions;
+using Crey.Message;
+using Crey.Micro;
 using Crey.ServiceDiscovery.Abstractions;
 using Crey.ServiceDiscovery.Extensions;
 using Crey.ServiceDiscovery.Models;
-using Crey.Session.Abstractions;
+using Crey.Session;
 using Microsoft.Extensions.Logging;
 using Polly;
 

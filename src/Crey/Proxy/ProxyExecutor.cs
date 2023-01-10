@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Crey.Proxy.Abstractions;
 
 namespace Crey.Proxy;
 

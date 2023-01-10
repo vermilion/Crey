@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Crey.Builder.Abstractions;
+namespace Crey.Builder;
 
 /// <summary>
 /// Base builder interface

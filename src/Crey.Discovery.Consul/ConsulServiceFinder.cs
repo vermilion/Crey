@@ -1,7 +1,6 @@
 ﻿using Consul;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Crey.Discovery.Consul.Options;
 using Crey.Extensions;
 using Crey.Helper;
 using Crey.ServiceDiscovery;

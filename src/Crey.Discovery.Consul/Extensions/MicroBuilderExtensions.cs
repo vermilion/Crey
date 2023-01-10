@@ -1,10 +1,9 @@
-﻿using Crey.Builder.Abstractions;
-using Crey.Discovery.Consul.Options;
+﻿using Crey.Builder;
 using Crey.ServiceDiscovery.Abstractions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Crey.Discovery.Consul.Extensions;
+namespace Crey.Discovery.Consul;
 
 public static class ServiceCollectionExtensions
 {
@@ -14,7 +13,7 @@ public static class ServiceCollectionExtensions
     /// <param name="builder">Builder instance</param>
     /// <param name="action">Action to configure options</param>
     /// <returns>Builder instance</returns>
-    public static IMicroBuilder AddConsulDiscovery(this IMicroBuilder builder, Action<ConsulOptions> action = null)
+    public static IMicroBuilder AddConsulDiscovery(this IMicroBuilder builder, Action<ConsulOptions>? action = null)
     {
         var services = builder.Services;
 

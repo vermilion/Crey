@@ -1,6 +1,4 @@
-﻿using Crey.Session.Abstractions;
-
-namespace Crey.Session;
+﻿namespace Crey.Session;
 
 internal class SessionValuesAccessor : ISessionValuesAccessor
 {

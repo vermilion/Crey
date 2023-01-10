@@ -1,9 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Crey.Builder.Abstractions;
-using Crey.Codec.MessagePack;
-using Crey.Message.Abstractions;
+using Crey.Builder;
+using Crey.Message;
 
-namespace Crey.Codec.MessagePack.Extensions;
+namespace Crey.Codec.MessagePack;
 
 public static class MicroBuilderExtensions
 {

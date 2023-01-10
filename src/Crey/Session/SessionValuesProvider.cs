@@ -1,8 +1,4 @@
-﻿using Crey.Micro.Extensions;
-using Crey.Session.Abstractions;
-using Crey.Session.Helpers;
-
-namespace Crey.Session;
+﻿namespace Crey.Session;
 
 internal class SessionValuesProvider : ISessionValuesProvider
 {

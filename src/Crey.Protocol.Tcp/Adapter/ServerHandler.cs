@@ -1,9 +1,9 @@
 ﻿using System.Net;
 using DotNetty.Transport.Channels;
 using Microsoft.Extensions.Logging;
-using Crey.Message.Models;
+using Crey.Message;
 
-namespace Crey.Protocol.Tcp.Adapter;
+namespace Crey.Protocol.Tcp;
 
 internal class ServerHandler : ChannelHandlerAdapter
 {

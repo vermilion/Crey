@@ -1,6 +1,6 @@
-﻿using Crey.Micro.Abstractions;
+﻿using Crey.Micro;
 
-namespace Crey.Proxy.Abstractions;
+namespace Crey.Proxy;
 
 /// <summary>
 /// Proxy factory generator

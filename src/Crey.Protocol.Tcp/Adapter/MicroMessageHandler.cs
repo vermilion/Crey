@@ -1,11 +1,9 @@
 ﻿using DotNetty.Buffers;
 using DotNetty.Common.Utilities;
 using DotNetty.Transport.Channels;
-using Crey.Message.Abstractions;
-using Crey.Message.Extensions;
-using Crey.Message.Models;
+using Crey.Message;
 
-namespace Crey.Protocol.Tcp.Adapter;
+namespace Crey.Protocol.Tcp;
 
 internal class MicroMessageHandler<T> : ChannelHandlerAdapter
     where T : DMessage

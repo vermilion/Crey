@@ -1,12 +1,12 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Crey.Micro.Abstractions;
+using Crey.Micro;
 using Crey.ServiceDiscovery.Models;
 
 namespace Crey.BackgroundServices;
 
-public class HostListenerBackroungService : BackgroundService
+internal class HostListenerBackroungService : BackgroundService
 {
     private readonly IMicroHost _host;
     private readonly ServiceAddress _serviceAddress;
