@@ -39,7 +39,7 @@ public class ProxyExecutor
         return _proxyProvider.InvokeAsync(method, parameters);
     }
 
-    public Task<T> InvokeAsyncT<T>(MethodInfo method, object[] args)
+    public Task<T> InvokeAsync<T>(MethodInfo method, object[] args)
     {
         var parameters = GetParameters(method, args);
         return _proxyProvider.InvokeAsync<T>(method, parameters);

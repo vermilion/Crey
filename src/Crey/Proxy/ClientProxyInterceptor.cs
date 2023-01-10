@@ -18,7 +18,7 @@ public class ClientProxyInterceptor : IAsyncInterceptor
 
     public void InterceptAsynchronous<TResult>(IInvocation invocation)
     {
-        invocation.ReturnValue = _proxyExecutor.InvokeAsyncT<TResult>(invocation.Method, invocation.Arguments);
+        invocation.ReturnValue = _proxyExecutor.InvokeAsync<TResult>(invocation.Method, invocation.Arguments);
     }
 
     public void InterceptSynchronous(IInvocation invocation)

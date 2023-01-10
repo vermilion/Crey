@@ -158,6 +158,7 @@ var res = await contract.Say("Hello world");
 - ContextValuesAccessor docs
 - OneWay docs
 - retry policy abstraction
+- correlation id
 
 ## Benchmark
 
