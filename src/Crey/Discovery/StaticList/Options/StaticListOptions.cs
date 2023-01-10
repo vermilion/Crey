@@ -1,14 +1,13 @@
 ﻿using Crey.Extensions;
 using Crey.Micro;
-using Crey.Discovery;
 
 namespace Crey.Discovery.StaticRouter;
 
-public class StaticRouterOptions
+public class StaticListOptions
 {
     internal Dictionary<string, ServiceAddress[]> Services { get; set; } = new();
 
-    public StaticRouterOptions Set<T>(ServiceAddress[] addresses)
+    public StaticListOptions Set<T>(ServiceAddress[] addresses)
         where T : class, IMicroService
     {
         var contractName = typeof(T).Assembly.ServiceName();

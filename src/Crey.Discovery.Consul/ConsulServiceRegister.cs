@@ -1,15 +1,15 @@
 ﻿using System.Net;
 using System.Reflection;
 using Consul;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Crey.Extensions;
 using Crey.Extensions.StringExtension;
 using Crey.Helper;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace Crey.Discovery.Consul;
 
-internal class ConsulServiceRegister : ServiceRegister
+internal class ConsulServiceRegister : IServiceRegister
 {
     private readonly List<string> _services = new();
     private readonly ConsulOptions _options;
@@ -33,7 +33,7 @@ internal class ConsulServiceRegister : ServiceRegister
         });
     }
 
-    public override async Task Register(IEnumerable<Assembly> assemblyList, ServiceAddress serverAddress)
+    public async Task Register(IEnumerable<Assembly> assemblyList, ServiceAddress serverAddress)
     {
         using var client = CreateClient();
 
@@ -69,14 +69,14 @@ internal class ConsulServiceRegister : ServiceRegister
             _services.Add(service.ID);
 
             var result = await client.Agent.ServiceRegister(service);
-            if (result.StatusCode != HttpStatusCode.OK)
+            if (result.StatusCode == HttpStatusCode.OK)
                 _logger.LogWarning($"Service registration failed [{serviceName}@{serverAddress}]:{result.StatusCode}, {result.RequestTime}");
             else
                 _logger.LogInformation($"Service registered [{serviceName}@{serverAddress}]");
         }
     }
 
-    public override async Task Deregister()
+    public async Task Deregister()
     {
         using var client = CreateClient();
 

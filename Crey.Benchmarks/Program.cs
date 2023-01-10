@@ -35,7 +35,7 @@ public class ClientServerBenchmark
                 .AddTcpProtocol()
                 .AddMessagePackCodec()
 #if DEBUG
-                .AddStaticServiceDiscovery(x =>
+                .AddStaticListDiscovery(x =>
                 {
                     x.Set<ITestContract>(new[] { new ServiceAddress("192.168.1.24", 5003) });
                 })

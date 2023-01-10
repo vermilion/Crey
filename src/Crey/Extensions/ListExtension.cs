@@ -4,7 +4,7 @@ namespace Crey.Extensions;
 
 internal static class ListExtension
 {
-    public static bool IsNullOrEmpty<T>(this IEnumerable<T> source)
+    public static bool IsNullOrEmpty<T>(this IEnumerable<T>? source)
     {
         if (source == null)
             return true;

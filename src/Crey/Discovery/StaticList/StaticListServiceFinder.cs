@@ -6,19 +6,21 @@ using Crey.Extensions.StringExtension;
 
 namespace Crey.Discovery.StaticRouter;
 
-public class StaticServiceRouter : ServiceFinder, IServiceRegister
+public class StaticListServiceFinder : IServiceFinder, IServiceRegister
 {
-    private readonly Dictionary<string, List<ServiceAddress>> _serviceCenter = new();
+    private readonly Dictionary<string, List<ServiceAddress>> _serviceRegistry = new();
+    private readonly ILogger<StaticListServiceFinder> _logger;
 
-    public StaticServiceRouter(
-        IOptions<StaticRouterOptions> options,
-        ILogger<StaticServiceRouter> logger)
-        : base(logger)
+    public StaticListServiceFinder(
+        IOptions<StaticListOptions> options,
+        ILogger<StaticListServiceFinder> logger)
     {
+        _logger = logger;
+
         RegisterFromConfig(options.Value);
     }
 
-    private void RegisterFromConfig(StaticRouterOptions options)
+    private void RegisterFromConfig(StaticListOptions options)
     {
         if (options.Services.IsNullOrEmpty())
             return;
@@ -37,21 +39,8 @@ public class StaticServiceRouter : ServiceFinder, IServiceRegister
 
     public Task Deregister()
     {
-        _serviceCenter.Clear();
+        _serviceRegistry.Clear();
         return Task.CompletedTask;
-    }
-
-    public void Register(string serviceName, ServiceAddress address)
-    {
-        Logger?.LogInformation($"Register service: [{serviceName}@{address}]");
-
-        if (!_serviceCenter.TryGetValue(serviceName, out var list))
-        {
-            list = new List<ServiceAddress>();
-        }
-
-        list.Add(address);
-        _serviceCenter[serviceName] = list;
     }
 
     public Task Register(IEnumerable<Assembly> assemblyList, ServiceAddress serverAddress)
@@ -65,14 +54,27 @@ public class StaticServiceRouter : ServiceFinder, IServiceRegister
         return Task.CompletedTask;
     }
 
-    public override Task<List<ServiceAddress>> QueryService(Type serviceType)
+    public Task<List<ServiceAddress>> QueryService(Type serviceType)
     {
         var serviceName = serviceType.Assembly.ServiceName();
-        if (!_serviceCenter.TryGetValue(serviceName, out var list))
+        if (!_serviceRegistry.TryGetValue(serviceName, out var list))
         {
             list = new List<ServiceAddress>();
         }
 
         return Task.FromResult(list);
+    }
+
+    private void Register(string serviceName, ServiceAddress address)
+    {
+        _logger.LogInformation($"Register service: [{serviceName}@{address}]");
+
+        if (!_serviceRegistry.TryGetValue(serviceName, out var list))
+        {
+            list = new List<ServiceAddress>();
+        }
+
+        list.Add(address);
+        _serviceRegistry[serviceName] = list;
     }
 }

@@ -17,13 +17,6 @@ internal class Program
     private static async Task Main(string[] args)
     {
         var host = Host.CreateDefaultBuilder(args)
-            .ConfigureLogging(x =>
-            {
-                x.SetMinimumLevel(LogLevel.Information);
-                x.AddFilter("System", level => level >= LogLevel.Warning);
-                x.AddFilter("Microsoft", level => level >= LogLevel.Warning);
-                x.AddConsole();
-            })
             .ConfigureServices((context, services) =>
             {
                 var builder = new MicroBuilder(context.Configuration, services);
@@ -65,8 +58,8 @@ internal class Program
             builder
                 .AddTcpProtocol()
                 .AddMessagePackCodec()
-#if DEBUG
-                .AddStaticServiceDiscovery(x =>
+#if !DEBUG
+                .AddStaticListDiscovery(x =>
                 {
                     x.Set<ITestContract>(new[] { new ServiceAddress("192.168.1.24", 5003) });
                 })
