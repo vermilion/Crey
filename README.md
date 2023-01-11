@@ -50,13 +50,6 @@ public interface ITestContract : IMicroService
 ``` c#
 // using .net core's GenericHost
 var host = Host.CreateDefaultBuilder(args)
-    .ConfigureLogging(x =>
-    {
-        x.SetMinimumLevel(LogLevel.Information);
-        x.AddFilter("System", level => level >= LogLevel.Warning);
-        x.AddFilter("Microsoft", level => level >= LogLevel.Warning);
-        x.AddConsole();
-    })
     .ConfigureServices((context, services) =>
     {
         var builder = new MicroBuilder(context.Configuration, services);
@@ -65,7 +58,7 @@ var host = Host.CreateDefaultBuilder(args)
             .AddTcpProtocol()
             .AddMessagePackCodec()
             // choose either static discovery list or or Consul based one
-            //.AddStaticServiceDiscovery()
+            //.AddStaticListDiscovery()
             .AddConsulDiscovery()
 
             .AddMicroService(builder =>
@@ -98,7 +91,7 @@ public class TestService : ITestContract
     },
     "discovery": {
       "consul": {
-        "server": "http://192.168.1.24:8500", // consul address
+        "server": "http://localhost:8500", // consul address
         "token": ""
       }
     }
@@ -119,13 +112,13 @@ var proxyFactory = ClientBuilder.Create(builder =>
         .AddTcpProtocol()
         .AddMessagePackCodec()
         // choose either static discovery list or or Consul based one
-        //.AddStaticServiceDiscovery(x =>
+        //.AddStaticListDiscovery(x =>
         //{
         //    x.Set<ITestContract>(new[] { new ServiceAddress("192.168.1.24", 5003) });
         //})
         .AddConsulDiscovery(x =>
         {
-            x.Server = "http://192.168.1.24:8500";
+            x.Server = "http://localhost:8500";
         })
         .AddMicroClient();
 })
@@ -134,7 +127,7 @@ var proxyFactory = ClientBuilder.Create(builder =>
 // creating contract proxy instance
 var contract = proxyFactory.Create<ITestContract>();
 
-// use it like common .net method
+// use it like common .net method (RPC)
 var res = await contract.Say("Hello world");
 ```
 

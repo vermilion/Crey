@@ -69,7 +69,7 @@ internal class ConsulServiceRegister : IServiceRegister
             _services.Add(service.ID);
 
             var result = await client.Agent.ServiceRegister(service);
-            if (result.StatusCode == HttpStatusCode.OK)
+            if (result.StatusCode != HttpStatusCode.OK)
                 _logger.LogWarning($"Service registration failed [{serviceName}@{serverAddress}]:{result.StatusCode}, {result.RequestTime}");
             else
                 _logger.LogInformation($"Service registered [{serviceName}@{serverAddress}]");

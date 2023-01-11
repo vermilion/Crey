@@ -24,7 +24,7 @@ internal class Program
                 builder
                     .AddTcpProtocol()
                     .AddMessagePackCodec()
-                    //.AddStaticServiceDiscovery()
+                    //.AddStaticListDiscovery()
                     .AddConsulDiscovery()
 
                     .AddMicroService(builder =>
