@@ -2,7 +2,7 @@
 
 namespace Crey.Message;
 
-public class MessageResult : DMessage
+public class MessageResult : Message
 {
     public int Code { get; set; } = 200;
     public string Message { get; set; }

@@ -7,9 +7,9 @@ namespace Crey.Tests.Server.Services;
 public class TestService : ITestContract
 {
     private readonly ILogger<TestService> _logger;
-    private readonly ISessionValuesAccessor _callContextAccessor;
+    private readonly ICallContextAccessor _callContextAccessor;
 
-    public TestService(ILogger<TestService> logger, ISessionValuesAccessor callContextAccessor)
+    public TestService(ILogger<TestService> logger, ICallContextAccessor callContextAccessor)
     {
         _logger = logger;
         _callContextAccessor = callContextAccessor;

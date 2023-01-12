@@ -13,7 +13,7 @@ internal class DotNettyServerSender : DotNettyMessageSender, IMessageSender
         _context = context;
     }
 
-    public async Task Send(DMessage message, bool flush = true)
+    public async Task Send(Message.Message message, bool flush = true)
     {
         var buffer = await GetByteBuffer(message);
         if (flush)

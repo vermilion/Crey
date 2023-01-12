@@ -2,14 +2,11 @@
 
 namespace Crey.Message;
 
-public abstract class MessageCodec<TDynamic, TInvoke, TResult> : IMessageCodec
-    where TDynamic : DMessageDynamic, new()
-    where TInvoke : DMessageInvoke<TDynamic>, new()
-    where TResult : DMessageResult<TDynamic>, new()
+internal class MessageCodec : IMessageCodec
 {
     private readonly IMessageSerializer _serializer;
 
-    protected MessageCodec(IMessageSerializer serializer)
+    public MessageCodec(IMessageSerializer serializer)
     {
         _serializer = serializer;
     }
@@ -23,15 +20,15 @@ public abstract class MessageCodec<TDynamic, TInvoke, TResult> : IMessageCodec
 
         if (message is InvokeMessage invoke)
         {
-            var model = new TInvoke();
-            model.SetValue(invoke);
+            var model = new DMessageInvoke();
+            model.SetValue(invoke, _serializer);
             return _serializer.Serialize(model);
         }
 
         if (message is MessageResult result)
         {
-            var model = new TResult();
-            model.SetResult(result);
+            var model = new DMessageResult();
+            model.SetValue(result, _serializer);
             return _serializer.Serialize(model);
         }
 
@@ -45,14 +42,14 @@ public abstract class MessageCodec<TDynamic, TInvoke, TResult> : IMessageCodec
 
         if (type == typeof(InvokeMessage))
         {
-            var item = _serializer.Deserialize<TInvoke>(data);
-            return item.GetValue();
+            var item = _serializer.Deserialize<DMessageInvoke>(data);
+            return item.GetValue(_serializer);
         }
 
         if (type == typeof(MessageResult))
         {
-            var item = _serializer.Deserialize<TResult>(data);
-            return item.GetValue();
+            var item = _serializer.Deserialize<DMessageResult>(data);
+            return item.GetValue(_serializer);
         }
 
         return _serializer.DeserializeNoType(data, type);

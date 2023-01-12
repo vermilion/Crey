@@ -23,7 +23,7 @@ public class MicroClient : IMicroClient, IDisposable
         listener.Received += ListenerOnReceived;
     }
 
-    private Task ListenerOnReceived(IMessageSender sender, DMessage message)
+    private Task ListenerOnReceived(IMessageSender sender, Message.Message message)
     {
         if (!_resultDictionary.TryGetValue(message.Id, out var task))
             return Task.CompletedTask;
@@ -74,7 +74,7 @@ public class MicroClient : IMicroClient, IDisposable
             var callback = RegisterCallbackAsync(message.Id);
 
             if (_logger.IsEnabled(LogLevel.Debug))
-                _logger.LogDebug($"{_sender.GetType()}:send :{JsonHelper.ToJson(message)}");
+                _logger.LogDebug($"{_sender.GetType()}:send {JsonHelper.ToJson(message)}");
 
             // sending
             await _sender.Send(message);

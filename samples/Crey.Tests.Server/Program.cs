@@ -1,6 +1,5 @@
 ﻿using Crey.Builder;
 using Crey.Client;
-using Crey.Codec.MessagePack;
 using Crey.Extensions;
 using Crey.Micro;
 using Crey.Protocol.Tcp;
@@ -23,7 +22,6 @@ internal class Program
 
                 builder
                     .AddTcpProtocol()
-                    .AddMessagePackCodec()
                     //.AddStaticListDiscovery()
                     .AddConsulDiscovery()
 
@@ -57,7 +55,6 @@ internal class Program
         {
             builder
                 .AddTcpProtocol()
-                .AddMessagePackCodec()
 #if !DEBUG
                 .AddStaticListDiscovery(x =>
                 {

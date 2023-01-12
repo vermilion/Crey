@@ -1,42 +1,34 @@
-﻿namespace Crey.Message;
+﻿using MessagePack;
 
-public class DMessageInvoke<TDynamic> : DMessage
-    where TDynamic : DMessageDynamic, new()
+namespace Crey.Message;
+
+[MessagePackObject(keyAsPropertyName: true)]
+public class DMessageInvoke : Message
 {
-    public virtual string ServiceId { get; set; }
-    public virtual IDictionary<string, TDynamic> Parameters { get; set; }
-    public virtual IDictionary<string, string> Headers { get; set; }
+    public string ServiceId { get; set; }
+    public IDictionary<string, DMessageDynamic> Parameters { get; set; }
+    public DMessageInvokeContextDynamic Context { get; set; }
 
-    public DMessageInvoke() { }
-
-    public DMessageInvoke(InvokeMessage message)
-    {
-        SetValue(message);
-    }
-
-    public void SetValue(InvokeMessage message)
+    public void SetValue(InvokeMessage message, IMessageSerializer serializer)
     {
         Id = message.Id;
         ServiceId = message.ServiceId;
 
-        if (message.Parameters != null)
+        if (message.Parameters is not null)
         {
-            Parameters =
-                message.Parameters.ToDictionary(k => k.Key, v =>
-                {
-                    var item = new TDynamic();
-                    item.SetValue(v.Value);
-                    return item;
-                });
+            Parameters = message.Parameters.ToDictionary(k => k.Key, v =>
+            {
+                var item = new DMessageDynamic();
+                item.SetValue(v.Value, serializer);
+                return item;
+            });
         }
 
-        if (message.Headers != null)
-        {
-            Headers = message.Headers.ToDictionary(k => k.Key, v => v.Value);
-        }
+        Context = new DMessageInvokeContextDynamic();
+        Context.SetValue(message.Context, serializer);
     }
 
-    public InvokeMessage GetValue()
+    public InvokeMessage GetValue(IMessageSerializer serializer)
     {
         var message = new InvokeMessage
         {
@@ -44,14 +36,14 @@ public class DMessageInvoke<TDynamic> : DMessage
             ServiceId = ServiceId
         };
 
-        if (Parameters != null)
+        if (Parameters is not null)
         {
-            message.Parameters = Parameters.ToDictionary(k => k.Key, v => v.Value.GetValue());
+            message.Parameters = Parameters.ToDictionary(k => k.Key, v => v.Value.GetValue(serializer));
         }
 
-        if (Headers != null)
+        if (Context is not null)
         {
-            message.Headers = Headers.ToDictionary(k => k.Key, v => v.Value);
+            message.Context = Context.GetValue(serializer);
         }
 
         return message;

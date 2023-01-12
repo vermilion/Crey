@@ -31,7 +31,7 @@ public abstract class MicroHostBase : IMicroHost
 
     public abstract Task Stop();
 
-    private async Task MessageListenerReceived(IMessageSender sender, DMessage message)
+    private async Task MessageListenerReceived(IMessageSender sender, Message.Message message)
     {
         if (message is not InvokeMessage invokeMessage)
             return;

@@ -1,10 +1,10 @@
 ﻿namespace Crey.Message;
 
-public delegate Task ReceivedDelegate(IMessageSender sender, DMessage message);
+public delegate Task ReceivedDelegate(IMessageSender sender, Message message);
 
 public interface IMessageListener
 {
     event ReceivedDelegate Received;
 
-    Task OnReceived(IMessageSender sender, DMessage message);
+    Task OnReceived(IMessageSender sender, Message message);
 }

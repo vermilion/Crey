@@ -1,23 +1,16 @@
 ﻿using Crey.Extensions;
 using Crey.Helper;
+using MessagePack;
 
 namespace Crey.Message;
 
+[MessagePackObject(keyAsPropertyName: true)]
 public class DMessageDynamic
 {
-    private readonly IMessageSerializer _serialize;
+    public string ContentType { get; set; }
+    public byte[] Content { get; set; }
 
-    public virtual string ContentType { get; set; }
-    public virtual byte[] Content { get; set; }
-
-    public DMessageDynamic() { }
-
-    public DMessageDynamic(IMessageSerializer serialize)
-    {
-        _serialize = serialize;
-    }
-
-    public void SetValue(object value)
+    public void SetValue(object value, IMessageSerializer serializer)
     {
         if (value == null)
             return;
@@ -25,10 +18,10 @@ public class DMessageDynamic
         var type = value.GetType();
         ContentType = type.TypeName();
         var code = Type.GetTypeCode(type);
-        Content = _serialize.Serialize(code == TypeCode.Object ? JsonHelper.ToJson(value) : value);
+        Content = serializer.Serialize(code == TypeCode.Object ? JsonHelper.ToJson(value) : value);
     }
 
-    public object GetValue()
+    public object GetValue(IMessageSerializer serializer)
     {
         if (Content == null || string.IsNullOrWhiteSpace(ContentType))
             return null;
@@ -37,10 +30,10 @@ public class DMessageDynamic
         var code = Type.GetTypeCode(type);
         if (code == TypeCode.Object)
         {
-            var content = _serialize.Deserialize<string>(Content);
+            var content = serializer.Deserialize<string>(Content);
             return JsonHelper.FromJson(content, type);
         }
 
-        return _serialize.Deserialize(Content, type);
+        return serializer.Deserialize(Content, type);
     }
 }

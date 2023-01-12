@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Crey.Message;
+﻿namespace Crey.Message;
 
 public interface IMessageSerializer
 {

@@ -14,4 +14,14 @@ public abstract class ContextProvider<T>
             return _asyncLocal.Value;
         }
     }
+
+    public static void Set(T value)
+    {
+        _asyncLocal.Value = value;
+    }
+
+    public static void Reset()
+    {
+        _asyncLocal.Value = new T();
+    }
 }

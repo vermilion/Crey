@@ -1,7 +1,6 @@
 ﻿using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
 using Crey.Client;
-using Crey.Codec.MessagePack;
 using Crey.Micro;
 using Crey.Protocol.Tcp;
 using Crey.Proxy;
@@ -33,7 +32,6 @@ public class ClientServerBenchmark
         {
             builder
                 .AddTcpProtocol()
-                .AddMessagePackCodec()
 #if DEBUG
                 .AddStaticListDiscovery(x =>
                 {

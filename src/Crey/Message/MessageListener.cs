@@ -4,7 +4,7 @@ public class MessageListener : IMessageListener
 {
     public event ReceivedDelegate Received;
 
-    public async Task OnReceived(IMessageSender sender, DMessage message)
+    public async Task OnReceived(IMessageSender sender, Message message)
     {
         if (Received == null)
             return;

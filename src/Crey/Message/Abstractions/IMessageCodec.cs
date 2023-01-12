@@ -1,3 +1,5 @@
 ﻿namespace Crey.Message;
 
-public interface IMessageCodec : IMessageEncoder, IMessageDecoder { }
+public interface IMessageCodec : IMessageEncoder, IMessageDecoder
+{
+}

@@ -1,33 +1,29 @@
-﻿namespace Crey.Message;
+﻿using MessagePack;
 
-public class DMessageResult<TDynamic>
-    where TDynamic : DMessageDynamic, new()
+namespace Crey.Message;
+
+[MessagePackObject(keyAsPropertyName: true)]
+public class DMessageResult
 {
-    public virtual string Id { get; set; }
-    public virtual int Code { get; set; }
-    public virtual string Message { get; set; }
-    public virtual TDynamic Content { get; set; }
+    public string Id { get; set; }
+    public int Code { get; set; }
+    public string Message { get; set; }
+    public DMessageDynamic Content { get; set; }
 
-    public DMessageResult() { }
-
-    public DMessageResult(MessageResult message)
-    {
-        SetResult(message);
-    }
-
-    public void SetResult(MessageResult message)
+    public void SetValue(MessageResult message, IMessageSerializer serializer)
     {
         Id = message.Id;
         Code = message.Code;
         Message = message.Message;
+
         if (message.Content != null)
         {
-            Content = new TDynamic();
-            Content.SetValue(message.Content);
+            Content = new DMessageDynamic();
+            Content.SetValue(message.Content, serializer);
         }
     }
 
-    public MessageResult GetValue()
+    public MessageResult GetValue(IMessageSerializer serializer)
     {
         var result = new MessageResult
         {
@@ -38,7 +34,7 @@ public class DMessageResult<TDynamic>
 
         if (Content != null)
         {
-            result.Content = Content.GetValue();
+            result.Content = Content.GetValue(serializer);
         }
 
         return result;

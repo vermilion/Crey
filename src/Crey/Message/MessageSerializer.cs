@@ -1,22 +1,38 @@
-﻿using System;
+﻿using MessagePack.Resolvers;
+using MessagePack;
 
 namespace Crey.Message;
 
-public abstract class MessageSerializer : IMessageSerializer
+public class MessageSerializer : IMessageSerializer
 {
-    public abstract byte[] Serialize(object value);
-
-    public virtual byte[] SerializeNoType(object value)
+    public byte[] Serialize(object value)
     {
-        return Serialize(value);
+        if (value == null) return new byte[0];
+
+        return MessagePackSerializer.Serialize(value);
     }
 
-    public abstract object Deserialize(byte[] data, Type type);
-
-    public virtual object DeserializeNoType(byte[] data, Type type)
+    public byte[] SerializeNoType(object value)
     {
-        return Deserialize(data, type);
+        if (value == null) return new byte[0];
+
+        return MessagePackSerializer.Serialize(value, ContractlessStandardResolver.Options);
     }
 
-    public abstract T Deserialize<T>(byte[] data);
+    public object Deserialize(byte[] data, Type type)
+    {
+        return data == null ? null : MessagePackSerializer.Deserialize(type, data);
+    }
+
+    public object DeserializeNoType(byte[] data, Type type)
+    {
+        return data == null
+            ? null
+            : MessagePackSerializer.Deserialize(type, data, ContractlessStandardResolver.Options);
+    }
+
+    public T Deserialize<T>(byte[] data)
+    {
+        return data == null ? default : MessagePackSerializer.Deserialize<T>(data);
+    }
 }

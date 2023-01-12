@@ -6,7 +6,7 @@ using Crey.Message;
 namespace Crey.Protocol.Tcp;
 
 internal class MicroMessageHandler<T> : ChannelHandlerAdapter
-    where T : DMessage
+    where T : Message.Message
 {
     private readonly IMessageCodec _codec;
 

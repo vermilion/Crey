@@ -1,28 +1,23 @@
-﻿using Crey.Micro;
+﻿using Crey.Message;
+using Crey.Micro;
 using Crey.Session;
 
 namespace Crey.Extensions;
 
 public static class MicroServiceExtensions
 {
-    public static async Task InvokeWithContextValues<T>(this T service, Func<T, Task> action, IDictionary<string, object?> values)
+    public static async Task InvokeWithContextValues<T>(this T service, Func<T, Task> action, InvokeMethodContext context)
         where T : class, IMicroService
     {
-        CallContextProvider.Current.Clear();
-
         try
         {
-            foreach (var item in values)
-            {
-                CallContextProvider.Current.Add(item.Key, item.Value?.ToString());
-            }
+            InvokeMethodContextProvider.Set(context);
 
             await action(service);
         }
-        catch
+        finally
         {
-            CallContextProvider.Current.Clear();
-            throw;
+            InvokeMethodContextProvider.Reset();
         }
     }
 
@@ -36,9 +31,9 @@ public static class MicroServiceExtensions
     public static Task InvokeOneWay<T>(this T service, Func<T, Task> action)
         where T : class, IMicroService
     {
-        return service.InvokeWithContextValues(action, new Dictionary<string, object?>
+        return service.InvokeWithContextValues(action, new InvokeMethodContext
         {
-            [MicroConstants.LongRunning] = true
+            Type = InvokeMethodType.OneWay
         });
     }
 }

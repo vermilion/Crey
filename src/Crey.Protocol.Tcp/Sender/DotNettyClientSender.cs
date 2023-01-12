@@ -18,7 +18,7 @@ internal class DotNettyClientSender : DotNettyMessageSender, IMessageSender, IDi
         Task.Run(_channel.DisconnectAsync).Wait();
     }
 
-    public async Task Send(DMessage message, bool flush = true)
+    public async Task Send(Message.Message message, bool flush = true)
     {
         var buffer = await GetByteBuffer(message);
         if (flush)

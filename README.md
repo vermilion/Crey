@@ -8,7 +8,6 @@
 PM> Install-Package Crey
 PM> Install-Package Crey.Protocol.Tcp
 PM> Install-Package Crey.Discovery.Consul
-PM> Install-Package Crey.Codec.MessagePack
 ```
 
 | Package Name           | NuGet                                                                                                                                          | Downloads                                                                                                                                                             |
@@ -16,7 +15,6 @@ PM> Install-Package Crey.Codec.MessagePack
 | Crey                   | [![nuget](https://img.shields.io/nuget/v/Crey.svg?style=flat-square)](https://www.nuget.org/packages/Crey)                                     | [![stats](https://img.shields.io/nuget/dt/Crey.svg?style=flat-square)](https://www.nuget.org/stats/packages/Crey?groupby=Version)                                     |
 | Crey.Protocol.Tcp      | [![nuget](https://img.shields.io/nuget/v/Crey.Protocol.Tcp.svg?style=flat-square)](https://www.nuget.org/packages/Crey.Protocol.Tcp)           | [![stats](https://img.shields.io/nuget/dt/Crey.Protocol.Tcp.svg?style=flat-square)](https://www.nuget.org/stats/packages/Crey.Protocol.Tcp?groupby=Version)           |
 | Crey.Discovery.Consul  | [![nuget](https://img.shields.io/nuget/v/Crey.Discovery.Consul.svg?style=flat-square)](https://www.nuget.org/packages/Crey.Discovery.Consul)   | [![stats](https://img.shields.io/nuget/dt/Crey.Discovery.Consul.svg?style=flat-square)](https://www.nuget.org/stats/packages/Crey.Discovery.Consul?groupby=Version)   |
-| Crey.Codec.MessagePack | [![nuget](https://img.shields.io/nuget/v/Crey.Codec.MessagePack.svg?style=flat-square)](https://www.nuget.org/packages/Crey.Codec.MessagePack) | [![stats](https://img.shields.io/nuget/dt/Crey.Codec.MessagePack.svg?style=flat-square)](https://www.nuget.org/stats/packages/Crey.Codec.MessagePack?groupby=Version) |
 
 
 - [Technologies](#technologies)
@@ -56,7 +54,6 @@ var host = Host.CreateDefaultBuilder(args)
 
         builder
             .AddTcpProtocol()
-            .AddMessagePackCodec()
             // choose either static discovery list or or Consul based one
             //.AddStaticListDiscovery()
             .AddConsulDiscovery()
@@ -110,7 +107,6 @@ var proxyFactory = ClientBuilder.Create(builder =>
 {
     builder
         .AddTcpProtocol()
-        .AddMessagePackCodec()
         // choose either static discovery list or or Consul based one
         //.AddStaticListDiscovery(x =>
         //{
@@ -137,7 +133,7 @@ var res = await contract.Say("Hello world");
   "micro": {
     "discovery": {
       "consul": {
-        "server": "http://192.168.1.24:8500", // consul address
+        "server": "http://localhost:8500", // consul address
         "token": ""
       }
     }

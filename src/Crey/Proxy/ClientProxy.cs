@@ -17,18 +17,15 @@ public class ClientProxy : IProxyProvider
 {
     private readonly ILogger<ClientProxy> _logger;
     private readonly IMicroClientFactory _clientFactory;
-    private readonly ISessionValuesProvider _sessionValuesProvider;
     private readonly IServiceFinder _serviceFinder;
 
     public ClientProxy(
         ILogger<ClientProxy> logger,
         IMicroClientFactory clientFactory,
-        ISessionValuesProvider sessionValuesProvider,
         IServiceFinder serviceFinder)
     {
         _logger = logger;
         _clientFactory = clientFactory;
-        _sessionValuesProvider = sessionValuesProvider;
         _serviceFinder = serviceFinder;
     }
 
@@ -89,21 +86,14 @@ public class ClientProxy : IProxyProvider
 
     private InvokeMessage CreateMessage(MethodInfo targetMethod, IDictionary<string, object> args)
     {
-        var headers = new Dictionary<string, string?>
-        {
-            [MicroConstants.UserIp] = IpAddressHelper.LocalIp()
-        };
-
-        foreach (var item in _sessionValuesProvider.Values)
-        {
-            headers.Add(item.Key, item.Value);
-        }
+        var context = new InvokeMethodContext(InvokeMethodContextProvider.Current);
+        context.Headers.Add(MicroConstants.UserIp, IpAddressHelper.LocalIp());
 
         return new InvokeMessage
         {
             ServiceId = targetMethod.ServiceKey(),
-            Headers = headers,
-            Parameters = args
+            Parameters = args,
+            Context = context
         };
     }
 

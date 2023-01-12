@@ -1,10 +1,10 @@
 ﻿namespace Crey.Message;
 
-public class DMessage
+public class Message
 {
     public virtual string Id { get; set; }
 
-    public DMessage(string id = null)
+    public Message(string id = null)
     {
         Id = string.IsNullOrWhiteSpace(id) ? Guid.NewGuid().ToString("N") : id;
     }
