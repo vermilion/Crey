@@ -1,5 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
-using Crey.Discovery;
+﻿using Crey.Discovery;
+using Microsoft.Extensions.Logging;
 
 namespace Crey.Micro;
 
@@ -34,7 +34,7 @@ public class MicroHost : MicroHostBase
             await MicroListener.Start(serviceAddress);
 
             if (_logger.IsEnabled(LogLevel.Information))
-                _logger.LogInformation($"Service started at：{serviceAddress}");
+                _logger.LogInformation($"Service started at： {serviceAddress}");
         }
         catch (Exception ex)
         {

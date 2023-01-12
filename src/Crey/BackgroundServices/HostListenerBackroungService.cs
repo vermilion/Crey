@@ -1,8 +1,8 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using Crey.Discovery;
+using Crey.Micro;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Crey.Micro;
-using Crey.Discovery;
 
 namespace Crey.BackgroundServices;
 

@@ -1,10 +1,11 @@
 ﻿using Crey.BackgroundServices;
 using Crey.Builder;
-using Crey.Proxy;
+using Crey.Codec;
 using Crey.Discovery;
+using Crey.Proxy;
 using Crey.Session;
 using Microsoft.Extensions.DependencyInjection;
-using Crey.Codec;
+using Microsoft.Extensions.Options;
 
 namespace Crey.Micro;
 
@@ -40,6 +41,7 @@ public static class ServiceCollectionExtensions
         services.AddHostedService<HostListenerBackroungService>();
 
         services.Configure<ServiceAddress>(builder.ConfigurationSection.GetSection("service"));
+        services.AddTransient<IPostConfigureOptions<ServiceAddress>, PostConfigureServiceAddress>();
 
         return builder;
     }

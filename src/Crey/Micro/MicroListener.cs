@@ -1,5 +1,5 @@
-﻿using Crey.Message;
-using Crey.Discovery;
+﻿using Crey.Discovery;
+using Crey.Message;
 
 namespace Crey.Micro;
 

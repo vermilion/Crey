@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Crey.Message;
 using Crey.Discovery;
 using Crey.Micro;
+using System.Net;
 
 namespace Crey.Protocol.Tcp;
 
@@ -26,7 +27,8 @@ internal class DotNettyMicroListener : MicroListener, IDisposable
 
     public override async Task Start(ServiceAddress serviceAddress)
     {
-        _logger.LogDebug($"Starting TCP listener：{serviceAddress}");
+        if (_logger.IsEnabled(LogLevel.Debug))
+            _logger.LogDebug($"Starting TCP listener：{serviceAddress}");
 
         var bossGroup = new MultithreadEventLoopGroup(1);
         var workerGroup = new MultithreadEventLoopGroup();
@@ -49,14 +51,20 @@ internal class DotNettyMicroListener : MicroListener, IDisposable
                 }, _loggerFactory));
             }));
 
+        var ipEndpoint = new IPEndPoint(IPAddress.Any, serviceAddress.Port);
+
         try
         {
-            _channel = await bootstrap.BindAsync(serviceAddress.ToEndpoint());
-            _logger.LogInformation($"TCP listener started at：{serviceAddress}");
+            _channel = await bootstrap.BindAsync(ipEndpoint);
+
+            if (_logger.IsEnabled(LogLevel.Information))
+                _logger.LogInformation($"TCP listener started at： {ipEndpoint}");
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"Failed to start TCP listener at：{serviceAddress}");
+            if (_logger.IsEnabled(LogLevel.Error))
+                _logger.LogError(ex, $"Failed to start TCP listener at： {ipEndpoint}");
+
             throw;
         }
     }
