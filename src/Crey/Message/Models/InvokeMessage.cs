@@ -27,10 +27,12 @@ public class InvokeMethodContext
     {
     }
 
-    public InvokeMethodContext(InvokeMethodContext context)
+    public InvokeMethodContext(InvokeMethodContext? context)
     {
-        Type = context.Type;
-        Headers = context.Headers.ToDictionary(x => x.Key, x => x.Value);
+        var ctx = context ?? new InvokeMethodContext();
+
+        Type = ctx.Type;
+        Headers = ctx.Headers.ToDictionary(x => x.Key, x => x.Value);
     }
 
     /// <summary>

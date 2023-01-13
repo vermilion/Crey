@@ -9,14 +9,15 @@ PM> Install-Package Crey
 ```
 
 - [Technologies](#technologies)
-- [Usage samples](#usage-samples)
+- [Quick Start](#quick-start)
   - [Contract](#contract)
   - [Server](#server)
   - [Client](#client)
+- [Extensions](#extensions)
+  - [OneWay](#oneway)
+  - [ICallContextAccessor](#accessor)
 - [Roadmap](#roadmap)
 - [Benchmark](#benchmark)
-- [Licences](#licences)
-
 
 ## Technologies
 - **DotNetty** (transport layer)
@@ -25,7 +26,7 @@ PM> Install-Package Crey
 - **Castle.Core** (for building DynamicProxy)
 - **Polly** (retry strategy)
 
-## Usage samples
+## Quick Start
 
 ### Contract
 ``` c#
@@ -130,11 +131,34 @@ var res = await contract.Say("Hello world");
 }
 ```
 
+## Extensions
+
+### OneWay - Invoke tasks in fire-and-forget manner
+
+```csharp
+// creating contract proxy instance
+var contract = proxyFactory.Create<ITestContract>();
+
+// use Extension on contract instance
+await contract.InvokeOneWay((x) => x.Say("Hello OneWay"));
+```
+
+### ICallContextAccessor - Getting the call context from anywhere
+
+To access context anywhere in code, inject an instance of `ICallContextAccessor` in your constructor
+
+```csharp
+public class TestService
+{
+    public TestService(ICallContextAccessor callContextAccessor)
+    {
+    }
+}
+```
+
 ## Roadmap
 - Middleware
 - Tests
-- ContextValuesAccessor docs
-- OneWay docs
 - retry policy abstraction
 - correlation id
 

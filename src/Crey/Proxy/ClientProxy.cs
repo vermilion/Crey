@@ -86,7 +86,7 @@ public class ClientProxy : IProxyProvider
 
     private InvokeMessage CreateMessage(MethodInfo targetMethod, IDictionary<string, object> args)
     {
-        var context = new InvokeMethodContext(InvokeMethodContextProvider.Current);
+        var context = new InvokeMethodContext(InvokeMethodContextProvider.Context);
         context.Headers.Add(MicroConstants.UserIp, IpAddressHelper.LocalIp()?.ToString());
 
         return new InvokeMessage

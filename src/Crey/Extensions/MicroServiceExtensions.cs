@@ -9,20 +9,20 @@ public static class MicroServiceExtensions
     public static async Task InvokeWithContextValues<T>(this T service, Func<T, Task> action, InvokeMethodContext context)
         where T : class, IMicroService
     {
+        InvokeMethodContextProvider.Context = context;
+
         try
         {
-            InvokeMethodContextProvider.Set(context);
-
             await action(service);
         }
         finally
         {
-            InvokeMethodContextProvider.Reset();
+            InvokeMethodContextProvider.Context = null;
         }
     }
 
     /// <summary>
-    /// Invoke service "OneWay", without waiting for result
+    /// Invoke service "OneWay", in fire-and-forget manner
     /// </summary>
     /// <typeparam name="T">Service type</typeparam>
     /// <param name="service">Service instance</param>
