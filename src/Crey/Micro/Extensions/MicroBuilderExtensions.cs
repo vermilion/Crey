@@ -1,10 +1,5 @@
 ﻿using Crey.BackgroundServices;
 using Crey.Builder;
-using Crey.Codec;
-using Crey.Discovery;
-using Crey.Protocol;
-using Crey.Proxy;
-using Crey.Session;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
@@ -26,8 +21,8 @@ public static class ServiceCollectionExtensions
 
         services.AddBase();
 
-        // proxy services
         services.AddProxyServices();
+        services.AddClientServices();
 
         return builder;
     }

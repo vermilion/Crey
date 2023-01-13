@@ -1,26 +1,22 @@
 ﻿using System.Diagnostics;
 using System.Net.Sockets;
 using System.Reflection;
-using Crey.Discovery;
 using Crey.Exceptions;
 using Crey.Extensions;
 using Crey.Helper;
-using Crey.Message;
-using Crey.Micro;
-using Crey.Session;
 using Microsoft.Extensions.Logging;
 using Polly;
 
-namespace Crey.Proxy;
+namespace Crey.Client;
 
-public class ClientProxy : IProxyProvider
+public class ClientMethodExecutor : IClientMethodExecutor
 {
-    private readonly ILogger<ClientProxy> _logger;
+    private readonly ILogger<ClientMethodExecutor> _logger;
     private readonly IMicroClientFactory _clientFactory;
     private readonly IServiceFinder _serviceFinder;
 
-    public ClientProxy(
-        ILogger<ClientProxy> logger,
+    public ClientMethodExecutor(
+        ILogger<ClientMethodExecutor> logger,
         IMicroClientFactory clientFactory,
         IServiceFinder serviceFinder)
     {
@@ -29,22 +25,7 @@ public class ClientProxy : IProxyProvider
         _serviceFinder = serviceFinder;
     }
 
-    private async Task<MessageResult> ClientInvokeAsync(ServiceAddress serviceAddress, InvokeMessage message)
-    {
-        var watch = Stopwatch.StartNew();
-        try
-        {
-            var client = await _clientFactory.CreateClient(serviceAddress);
-            return await client.Send(message);
-        }
-        finally
-        {
-            watch.Stop();
-            _logger.LogInformation($"ClientInvokeAsync {watch.ElapsedMilliseconds} ms");
-        }
-    }
-
-    private async Task<MessageResult> InternalInvoke(MethodInfo targetMethod, IDictionary<string, object> args)
+    public async Task<MessageResult> Execute(MethodInfo targetMethod, IDictionary<string, object> args)
     {
         var serviceType = targetMethod.DeclaringType;
 
@@ -84,6 +65,22 @@ public class ClientProxy : IProxyProvider
         });
     }
 
+    private async Task<MessageResult> ClientInvokeAsync(ServiceAddress serviceAddress, InvokeMessage message)
+    {
+        var watch = Stopwatch.StartNew();
+
+        try
+        {
+            var client = await _clientFactory.CreateClient(serviceAddress);
+            return await client.Send(message);
+        }
+        finally
+        {
+            watch.Stop();
+            _logger.LogInformation($"ClientInvokeAsync {watch.ElapsedMilliseconds} ms");
+        }
+    }
+
     private InvokeMessage CreateMessage(MethodInfo targetMethod, IDictionary<string, object> args)
     {
         var context = new InvokeMethodContext(InvokeMethodContextProvider.Context);
@@ -95,22 +92,5 @@ public class ClientProxy : IProxyProvider
             Parameters = args,
             Context = context
         };
-    }
-
-    public object Invoke(MethodInfo method, IDictionary<string, object> parameters)
-    {
-        var result = InternalInvoke(method, parameters).ConfigureAwait(false).GetAwaiter().GetResult();
-        return result.Content;
-    }
-
-    public Task InvokeAsync(MethodInfo method, IDictionary<string, object> parameters)
-    {
-        return InternalInvoke(method, parameters);
-    }
-
-    public async Task<T> InvokeAsync<T>(MethodInfo method, IDictionary<string, object> parameters)
-    {
-        var result = await InternalInvoke(method, parameters);
-        return (T)result.Content;
     }
 }

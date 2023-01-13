@@ -1,5 +1,4 @@
 ﻿using Crey.Builder;
-using Crey.Client;
 using Crey.Extensions;
 using Crey.Micro;
 using Crey.Discovery;
@@ -7,6 +6,7 @@ using Crey.Discovery.Consul;
 using Crey.Tests.Contracts;
 using Crey.Tests.Server.Services;
 using Crey.Discovery.StaticList;
+using Crey.Client;
 
 namespace Crey.Tests.Server;
 

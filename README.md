@@ -14,8 +14,8 @@ PM> Install-Package Crey
   - [Server](#server)
   - [Client](#client)
 - [Extensions](#extensions)
-  - [OneWay](#oneway)
-  - [ICallContextAccessor](#accessor)
+  - [OneWay](#oneway---invoke-tasks-in-fire-and-forget-manner)
+  - [ICallContextAccessor](#icallcontextaccessor---getting-the-call-context-from-anywhere)
 - [Roadmap](#roadmap)
 - [Benchmark](#benchmark)
 

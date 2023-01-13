@@ -2,13 +2,13 @@
 
 namespace Crey.Proxy;
 
-public class ClientProxyInterceptor : IAsyncInterceptor
+internal class ProxyInterceptor : IAsyncInterceptor
 {
-    private readonly ProxyExecutor _proxyExecutor;
+    private readonly IProxyExecutor _proxyExecutor;
 
-    public ClientProxyInterceptor(IProxyProvider proxyProvider)
+    public ProxyInterceptor(IProxyExecutor proxyExecutor)
     {
-        _proxyExecutor = new ProxyExecutor(proxyProvider);
+        _proxyExecutor = proxyExecutor;
     }
 
     public void InterceptAsynchronous(IInvocation invocation)

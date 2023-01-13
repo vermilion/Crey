@@ -1,14 +1,13 @@
 ﻿using Castle.DynamicProxy;
-using Crey.Micro;
 
 namespace Crey.Proxy;
 
-public class ProxyFactory : IProxyFactory
+internal class ProxyFactory : IProxyFactory
 {
-    private readonly ClientProxyInterceptor _interceptor;
+    private readonly ProxyInterceptor _interceptor;
     private readonly ProxyGenerator _proxyGenerator = new();
 
-    public ProxyFactory(ClientProxyInterceptor interceptor)
+    public ProxyFactory(ProxyInterceptor interceptor)
     {
         _interceptor = interceptor;
     }

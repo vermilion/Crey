@@ -9,9 +9,10 @@ internal static class ServiceCollectionExtensions
     /// </summary>
     public static IServiceCollection AddProxyServices(this IServiceCollection services)
     {
-        services.AddSingleton<ClientProxyInterceptor>();
+        services.AddSingleton<ProxyInterceptor>();
         services.AddSingleton<IProxyFactory, ProxyFactory>();
-        services.AddSingleton<IProxyProvider, ClientProxy>();
+        services.AddSingleton<IProxyProvider, ProxyProvider>();
+        services.AddSingleton<IProxyExecutor, ProxyExecutor>();
 
         return services;
     }
