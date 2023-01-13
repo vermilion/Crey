@@ -2,6 +2,7 @@
 using Crey.Builder;
 using Crey.Codec;
 using Crey.Discovery;
+using Crey.Protocol;
 using Crey.Proxy;
 using Crey.Session;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,7 +12,13 @@ namespace Crey.Micro;
 
 public static class ServiceCollectionExtensions
 {
-    public static IMicroBuilder AddMicroClient(this IMicroBuilder builder, Action<IMicroClientBuilder> builderAction = null)
+    /// <summary>
+    /// Adds client-related services
+    /// </summary>
+    /// <param name="builder">Builder instance <see cref="IMicroBuilder"/></param>
+    /// <param name="builderAction">Configure action</param>
+    /// <returns>Fluent for <see cref="IMicroBuilder"/></returns>
+    public static IMicroBuilder AddMicroClient(this IMicroBuilder builder, Action<IMicroClientBuilder>? builderAction = null)
     {
         var services = builder.Services;
 
@@ -25,6 +32,12 @@ public static class ServiceCollectionExtensions
         return builder;
     }
 
+    /// <summary>
+    /// Adds service-related services
+    /// </summary>
+    /// <param name="builder">Builder instance <see cref="IMicroBuilder"/></param>
+    /// <param name="builderAction">Configure action</param>
+    /// <returns>Fluent for <see cref="IMicroBuilder"/></returns>
     public static IMicroBuilder AddMicroService(this IMicroBuilder builder, Action<IMicroServerBuilder> builderAction)
     {
         var services = builder.Services;
@@ -51,5 +64,6 @@ public static class ServiceCollectionExtensions
         services.AddSingleton(services);
 
         services.AddMessageCodec();
+        services.AddTcpProtocol();
     }
 }

@@ -3,7 +3,7 @@ using DotNetty.Common.Utilities;
 using DotNetty.Transport.Channels;
 using Crey.Message;
 
-namespace Crey.Protocol.Tcp;
+namespace Crey.Protocol;
 
 internal class MicroMessageHandler<T> : ChannelHandlerAdapter
     where T : Message.Message

@@ -1,21 +1,12 @@
 **Crey - netstandard2.0 microservice framework**
 
-![workflow](https://img.shields.io/github/actions/workflow/status/vermilion/Crey/build-and-publish.yml) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/vermilion/Crey?style=flat-square)
-
+![workflow](https://img.shields.io/github/actions/workflow/status/vermilion/Crey/build-and-publish.yml) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/vermilion/Crey?style=flat-square) [![nuget](https://img.shields.io/nuget/v/Crey.svg?style=flat-square)](https://www.nuget.org/packages/Crey) [![stats](https://img.shields.io/nuget/dt/Crey.svg?style=flat-square)](https://www.nuget.org/stats/packages/Crey?groupby=Version)  
 
 ### How to install
+
 ```code
 PM> Install-Package Crey
-PM> Install-Package Crey.Protocol.Tcp
-PM> Install-Package Crey.Discovery.Consul
 ```
-
-| Package Name           | NuGet                                                                                                                                          | Downloads                                                                                                                                                             |
-| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Crey                   | [![nuget](https://img.shields.io/nuget/v/Crey.svg?style=flat-square)](https://www.nuget.org/packages/Crey)                                     | [![stats](https://img.shields.io/nuget/dt/Crey.svg?style=flat-square)](https://www.nuget.org/stats/packages/Crey?groupby=Version)                                     |
-| Crey.Protocol.Tcp      | [![nuget](https://img.shields.io/nuget/v/Crey.Protocol.Tcp.svg?style=flat-square)](https://www.nuget.org/packages/Crey.Protocol.Tcp)           | [![stats](https://img.shields.io/nuget/dt/Crey.Protocol.Tcp.svg?style=flat-square)](https://www.nuget.org/stats/packages/Crey.Protocol.Tcp?groupby=Version)           |
-| Crey.Discovery.Consul  | [![nuget](https://img.shields.io/nuget/v/Crey.Discovery.Consul.svg?style=flat-square)](https://www.nuget.org/packages/Crey.Discovery.Consul)   | [![stats](https://img.shields.io/nuget/dt/Crey.Discovery.Consul.svg?style=flat-square)](https://www.nuget.org/stats/packages/Crey.Discovery.Consul?groupby=Version)   |
-
 
 - [Technologies](#technologies)
 - [Usage samples](#usage-samples)
@@ -29,7 +20,7 @@ PM> Install-Package Crey.Discovery.Consul
 
 ## Technologies
 - **DotNetty** (transport layer)
-- **Consul** (service discovery)
+- **Consul** / **Static list** (service discovery)
 - **MessagePack** (message serialization)
 - **Castle.Core** (for building DynamicProxy)
 - **Polly** (retry strategy)
@@ -53,7 +44,6 @@ var host = Host.CreateDefaultBuilder(args)
         var builder = new MicroBuilder(context.Configuration, services);
 
         builder
-            .AddTcpProtocol()
             // choose either static discovery list or or Consul based one
             //.AddStaticListDiscovery()
             .AddConsulDiscovery()
@@ -106,7 +96,6 @@ var proxyFactory = ClientBuilder.Create(provider).CreateProxyFactory();
 var proxyFactory = ClientBuilder.Create(builder =>
 {
     builder
-        .AddTcpProtocol()
         // choose either static discovery list or or Consul based one
         //.AddStaticListDiscovery(x =>
         //{

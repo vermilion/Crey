@@ -9,7 +9,7 @@ using Crey.Message;
 using Crey.Micro;
 using Crey.Discovery;
 
-namespace Crey.Protocol.Tcp;
+namespace Crey.Protocol;
 
 internal class DotNettyClientFactory : MicroClientFactory
 {

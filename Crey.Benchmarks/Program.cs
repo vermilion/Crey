@@ -2,12 +2,11 @@
 using BenchmarkDotNet.Running;
 using Crey.Client;
 using Crey.Micro;
-using Crey.Protocol.Tcp;
 using Crey.Proxy;
 using Crey.Discovery.Consul;
 using Crey.Tests.Contracts;
-using Crey.Discovery.StaticRouter;
 using Crey.Discovery;
+using Crey.Discovery.StaticList;
 
 namespace Crey.Benchmarks;
 
@@ -31,7 +30,6 @@ public class ClientServerBenchmark
         _proxyFactory = ClientBuilder.Create(builder =>
         {
             builder
-                .AddTcpProtocol()
 #if DEBUG
                 .AddStaticListDiscovery(x =>
                 {

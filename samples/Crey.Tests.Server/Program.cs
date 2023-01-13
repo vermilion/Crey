@@ -2,12 +2,11 @@
 using Crey.Client;
 using Crey.Extensions;
 using Crey.Micro;
-using Crey.Protocol.Tcp;
 using Crey.Discovery;
 using Crey.Discovery.Consul;
 using Crey.Tests.Contracts;
 using Crey.Tests.Server.Services;
-using Crey.Discovery.StaticRouter;
+using Crey.Discovery.StaticList;
 
 namespace Crey.Tests.Server;
 
@@ -21,7 +20,6 @@ internal class Program
                 var builder = new MicroBuilder(context.Configuration, services);
 
                 builder
-                    .AddTcpProtocol()
                     //.AddStaticListDiscovery()
                     .AddConsulDiscovery()
 
@@ -44,35 +42,13 @@ internal class Program
 
         Console.WriteLine("Initialized");
 
-        var factory = ClientBuilder.Create(provider)
-            .CreateProxyFactory();
-
-        var c = factory.Create<ITestContract>();
-        var res = await c.Say("Hello existing");
-
-        // create separate client
-        var proxyFactory = ClientBuilder.Create(builder =>
-        {
-            builder
-                .AddTcpProtocol()
-#if !DEBUG
-                .AddStaticListDiscovery(x =>
-                {
-                    x.Set<ITestContract>(new[] { new ServiceAddress("192.168.1.24", 5003) });
-                })
-#else
-                .AddConsulDiscovery(x =>
-                {
-                    x.Server = "http://192.168.1.24:8500";
-                })
-#endif
-                .AddMicroClient();
-        })
-        .CreateProxyFactory();
-
-        var contract = proxyFactory.Create<ITestContract>();
+        await TestSeparateClient();
 
         Console.WriteLine("Ready");
+
+        var proxyFactory = ClientBuilder.Create(provider).CreateProxyFactory();
+
+        var contract = proxyFactory.Create<ITestContract>();
 
         while (true)
         {
@@ -91,5 +67,32 @@ internal class Program
                 Console.WriteLine(result.Result);
             }
         }
+    }
+
+    private static async Task TestSeparateClient()
+    {
+        // create standalone client
+        var proxyFactory = ClientBuilder.Create(builder =>
+        {
+            builder
+#if !DEBUG
+                .AddStaticListDiscovery(x =>
+                {
+                    x.Set<ITestContract>(new[] { new ServiceAddress("192.168.1.24", 5003) });
+                })
+#else
+                .AddConsulDiscovery(x =>
+                {
+                    x.Server = "http://192.168.1.24:8500";
+                })
+#endif
+                .AddMicroClient();
+        })
+        .CreateProxyFactory();
+
+        var contract = proxyFactory.Create<ITestContract>();
+
+        var result = await contract.Say("Hello from Client");
+        Console.WriteLine(result);
     }
 }

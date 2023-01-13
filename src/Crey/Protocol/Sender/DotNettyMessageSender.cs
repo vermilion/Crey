@@ -1,7 +1,7 @@
 ﻿using DotNetty.Buffers;
 using Crey.Message;
 
-namespace Crey.Protocol.Tcp;
+namespace Crey.Protocol;
 
 internal abstract class DotNettyMessageSender
 {

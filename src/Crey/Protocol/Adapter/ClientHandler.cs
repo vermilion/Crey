@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using Crey.Helper;
 using Crey.Message;
 
-namespace Crey.Protocol.Tcp;
+namespace Crey.Protocol;
 
 internal class ClientHandler : ChannelHandlerAdapter
 {

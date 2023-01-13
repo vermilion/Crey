@@ -3,7 +3,7 @@ using DotNetty.Transport.Channels;
 using Microsoft.Extensions.Logging;
 using Crey.Message;
 
-namespace Crey.Protocol.Tcp;
+namespace Crey.Protocol;
 
 internal class ServerHandler : ChannelHandlerAdapter
 {

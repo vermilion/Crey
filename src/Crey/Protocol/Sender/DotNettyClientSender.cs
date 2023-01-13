@@ -1,7 +1,7 @@
 ﻿using DotNetty.Transport.Channels;
 using Crey.Message;
 
-namespace Crey.Protocol.Tcp;
+namespace Crey.Protocol;
 
 internal class DotNettyClientSender : DotNettyMessageSender, IMessageSender, IDisposable
 {

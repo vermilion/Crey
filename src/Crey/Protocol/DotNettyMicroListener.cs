@@ -9,7 +9,7 @@ using Crey.Discovery;
 using Crey.Micro;
 using System.Net;
 
-namespace Crey.Protocol.Tcp;
+namespace Crey.Protocol;
 
 internal class DotNettyMicroListener : MicroListener, IDisposable
 {

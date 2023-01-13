@@ -1,8 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Crey.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Crey.Builder;
 
-namespace Crey.Discovery.StaticRouter;
+namespace Crey.Discovery.StaticList;
 
 public static class MicroBuilderExtensions
 {

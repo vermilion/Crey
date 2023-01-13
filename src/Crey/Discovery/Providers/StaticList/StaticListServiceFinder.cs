@@ -1,12 +1,12 @@
 ﻿using System.Reflection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Crey.Extensions;
 using Crey.Extensions.StringExtension;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
-namespace Crey.Discovery.StaticRouter;
+namespace Crey.Discovery.StaticList;
 
-public class StaticListServiceFinder : IServiceFinder, IServiceRegister
+internal class StaticListServiceFinder : IServiceFinder, IServiceRegister
 {
     private readonly Dictionary<string, List<ServiceAddress>> _serviceRegistry = new();
     private readonly ILogger<StaticListServiceFinder> _logger;

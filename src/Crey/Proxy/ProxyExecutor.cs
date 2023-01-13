@@ -2,7 +2,7 @@
 
 namespace Crey.Proxy;
 
-public class ProxyExecutor
+internal class ProxyExecutor
 {
     private readonly IProxyProvider _proxyProvider;
 
