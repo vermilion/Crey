@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Linq;
+using System.Net;
 using System.Reflection;
 using Consul;
 using Crey.Extensions;
@@ -55,9 +56,9 @@ internal class ConsulServiceRegister : IServiceRegister
                 Check = new AgentServiceCheck
                 {
                     TCP = serverAddress.ToString(),
-                    DeregisterCriticalServiceAfter = TimeSpan.FromDays(1),
-                    Timeout = TimeSpan.FromSeconds(5),
-                    Interval = TimeSpan.FromSeconds(10)
+                    DeregisterCriticalServiceAfter = TimeSpan.FromDays(_options.Service.Check.DeregisterCriticalServiceAfterDays),
+                    Timeout = TimeSpan.FromSeconds(_options.Service.Check.Timeout),
+                    Interval = TimeSpan.FromSeconds(_options.Service.Check.Interval)
                 },
                 Meta = new Dictionary<string, string>
                 {
@@ -65,6 +66,22 @@ internal class ConsulServiceRegister : IServiceRegister
                     [ConsulRouteConstants.KeyVersion] = assembly.GetName().Version.ToString()
                 }
             };
+
+            // merge with additional tags
+            if (_options.Service.Tags is not null)
+            {
+                service.Tags = service.Tags
+                    .Union(_options.Service.Tags)
+                    .ToArray();
+            }
+
+            // merge with additional metadata values
+            if (_options.Service.Meta is not null)
+            {
+                service.Meta = service.Meta
+                    .Union(_options.Service.Meta)
+                    .ToDictionary(x => x.Key, y => y.Value);
+            }
 
             _services.Add(service.ID);
 

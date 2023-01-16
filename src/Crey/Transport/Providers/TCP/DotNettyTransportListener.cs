@@ -25,8 +25,10 @@ internal class DotNettyTransportListener : TransportListener, IDisposable
 
     public override async Task Start(ServiceAddress serviceAddress)
     {
+        var ipEndpoint = new IPEndPoint(IPAddress.Any, serviceAddress.Port);
+
         if (_logger.IsEnabled(LogLevel.Debug))
-            _logger.LogDebug($"Starting TCP listener：{serviceAddress}");
+            _logger.LogDebug($"Starting TCP listener at：{ipEndpoint}");
 
         var bossGroup = new MultithreadEventLoopGroup(1);
         var workerGroup = new MultithreadEventLoopGroup();
@@ -48,8 +50,6 @@ internal class DotNettyTransportListener : TransportListener, IDisposable
                     await OnReceived(sender, message);
                 }, _loggerFactory));
             }));
-
-        var ipEndpoint = new IPEndPoint(IPAddress.Any, serviceAddress.Port);
 
         try
         {

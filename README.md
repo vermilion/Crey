@@ -16,6 +16,7 @@ PM> Install-Package Crey
 - [Extensions](#extensions)
   - [OneWay](#oneway---invoke-tasks-in-fire-and-forget-manner)
   - [ICallContextAccessor](#icallcontextaccessor---getting-the-call-context-from-anywhere)
+  - [Consul Configuration](#consul-configuration)
 - [Roadmap](#roadmap)
 - [Benchmark](#benchmark)
 
@@ -156,12 +157,45 @@ public class TestService
 }
 ```
 
+### Consul Configuration
+
+Consul provider can be configured with these values
+- Tags
+- Metadata
+- Check options
+```json
+{
+  "micro": {
+    "discovery": {
+      "consul": {
+        "server": "http://localhost:8500",
+        "token": "",
+        "service": {
+          "tags": [
+            "DEV"
+          ],
+          "meta": {
+            "Environment": "Development"
+          },
+          "check": {
+            "deregisterCriticalServiceAfterDays": 0,
+            "timeout": 5,
+            "interval": 1
+          }
+        }
+      }
+    }
+  }
+}
+```
+
 ## Roadmap
 - Middleware
 - Tests
 - retry policy abstraction
 - correlation id
 - correct exception type propagation and resolver
+- consul pass some Metadata as config vars
 
 ## Benchmark
 
