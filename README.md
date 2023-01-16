@@ -93,7 +93,7 @@ public class TestService : ITestContract
 // create using existing IServiceProvider instance
 var proxyFactory = ClientBuilder.Create(provider).CreateProxyFactory();
 
-// OR without it (created internally)
+// OR without it (IServiceProvider is created internally)
 var proxyFactory = ClientBuilder.Create(builder =>
 {
     builder
@@ -161,6 +161,7 @@ public class TestService
 - Tests
 - retry policy abstraction
 - correlation id
+- correct exception type propagation and resolver
 
 ## Benchmark
 

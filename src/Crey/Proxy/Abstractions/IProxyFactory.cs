@@ -1,4 +1,4 @@
-﻿using Crey.Micro;
+﻿using Crey.Contracts;
 
 namespace Crey.Proxy;
 

@@ -37,9 +37,9 @@ internal class ConsulServiceRegister : IServiceRegister
     {
         using var client = CreateClient();
 
-        foreach (var ass in assemblyList)
+        foreach (var assembly in assemblyList)
         {
-            var serviceName = ass.ServiceName();
+            var serviceName = assembly.ServiceName();
             var id = $"{serviceName}_{serverAddress}".Md5();
 
             await client.Agent.ServiceDeregister(id);
@@ -48,7 +48,7 @@ internal class ConsulServiceRegister : IServiceRegister
             {
                 ID = id,
                 Name = serviceName,
-                Tags = new[] { ass.GetName().Version.ToString() },
+                Tags = new[] { assembly.GetName().Version.ToString() },
                 EnableTagOverride = true,
                 Address = serverAddress.Host,
                 Port = serverAddress.Port,
@@ -61,8 +61,8 @@ internal class ConsulServiceRegister : IServiceRegister
                 },
                 Meta = new Dictionary<string, string>
                 {
-                    [ServiceRouteConstants.KeyService] = JsonHelper.ToJson(serverAddress),
-                    [ServiceRouteConstants.KeyVersion] = ass.GetName().Version.ToString()
+                    [ConsulRouteConstants.KeyService] = JsonHelper.ToJson(serverAddress),
+                    [ConsulRouteConstants.KeyVersion] = assembly.GetName().Version.ToString()
                 }
             };
 

@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using Crey.Client;
+using Crey.Clients;
 
 namespace Crey.Proxy;
 

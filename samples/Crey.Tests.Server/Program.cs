@@ -1,12 +1,10 @@
 ﻿using Crey.Builder;
-using Crey.Extensions;
-using Crey.Micro;
-using Crey.Discovery;
+using Crey.Clients;
 using Crey.Discovery.Consul;
+using Crey.Extensions;
 using Crey.Tests.Contracts;
 using Crey.Tests.Server.Services;
-using Crey.Discovery.StaticList;
-using Crey.Client;
+using Crey.Service;
 
 namespace Crey.Tests.Server;
 
@@ -22,12 +20,11 @@ internal class Program
                 builder
                     //.AddStaticListDiscovery()
                     .AddConsulDiscovery()
-
+                    .AddMicroClient()
                     .AddMicroService(builder =>
                     {
                         builder.AddContract<ITestContract, TestService>();
-                    })
-                    .AddMicroClient();
+                    });
             })
             .Build();
 

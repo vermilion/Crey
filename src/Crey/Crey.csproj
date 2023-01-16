@@ -23,4 +23,8 @@
 		<PackageReference Include="DotNetty.Codecs" Version="0.7.5" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Micro\Options\" />
+	</ItemGroup>
+
 </Project>

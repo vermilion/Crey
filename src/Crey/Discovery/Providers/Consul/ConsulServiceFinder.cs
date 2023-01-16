@@ -12,12 +12,13 @@ internal class ConsulServiceFinder : IServiceFinder
 {
     private readonly ILogger<ConsulServiceRegister> _logger;
     private readonly ConsulOptions _options;
-    private static readonly SemaphoreSlim _slimlock = new(1, 1);
-    private static readonly IMemoryCache _memoryCache = new MemoryCache(Options.Create(new MemoryCacheOptions
+    private readonly SemaphoreSlim _slimlock = new(1, 1);
+    private readonly IMemoryCache _memoryCache = new MemoryCache(Options.Create(new MemoryCacheOptions
     {
         CompactionPercentage = 0.05,
         ExpirationScanFrequency = new TimeSpan(0, 0, 1),
     }));
+
     private const uint CacheSeconds = 5;
 
     public ConsulServiceFinder(
@@ -83,7 +84,7 @@ internal class ConsulServiceFinder : IServiceFinder
         {
             var service = entry.Service;
 
-            if (service.Meta.TryGetValue(ServiceRouteConstants.KeyService, out var json))
+            if (service.Meta.TryGetValue(ConsulRouteConstants.KeyService, out var json))
             {
                 var address = JsonHelper.FromJson<ServiceAddress>(json);
                 if (address is not null)

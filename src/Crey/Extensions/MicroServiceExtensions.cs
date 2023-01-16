@@ -1,12 +1,10 @@
-﻿using Crey.Message;
-using Crey.Micro;
-using Crey.Session;
+﻿using Crey.Contracts;
 
 namespace Crey.Extensions;
 
 public static class MicroServiceExtensions
 {
-    public static async Task InvokeWithContextValues<T>(this T service, Func<T, Task> action, InvokeMethodContext context)
+    public static async Task InvokeWithContextValues<T>(this T service, Func<T, Task> action, MessageInvokeContext context)
         where T : class, IMicroService
     {
         InvokeMethodContextProvider.Context = context;
@@ -31,9 +29,9 @@ public static class MicroServiceExtensions
     public static Task InvokeOneWay<T>(this T service, Func<T, Task> action)
         where T : class, IMicroService
     {
-        return service.InvokeWithContextValues(action, new InvokeMethodContext
+        return service.InvokeWithContextValues(action, new MessageInvokeContext
         {
-            Type = InvokeMethodType.OneWay
+            Type = MessageInvokeContextType.OneWay
         });
     }
 }

@@ -17,7 +17,7 @@ public static class ServiceAddressExtensions
         return new DnsEndPoint(address.Host, address.Port);
     }
 
-    public static ServiceAddress Random(this IList<ServiceAddress> services)
+    public static ServiceAddress? Random(this IList<ServiceAddress> services)
     {
         if (services == null || !services.Any()) return null;
         if (services.Count == 1) return services.First();

@@ -1,4 +1,5 @@
 ﻿using Castle.DynamicProxy;
+using Crey.Contracts;
 
 namespace Crey.Proxy;
 
