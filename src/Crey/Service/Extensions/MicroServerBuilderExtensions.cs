@@ -18,4 +18,15 @@ public static class MicroServerBuilderExtensions
     {
         builder.Services.AddScoped<T, TImplementation>();
     }
+
+    /// <summary>
+    /// Adds middleware to collection
+    /// </summary>
+    /// <typeparam name="TMiddleware">Middleware type</typeparam>
+    /// <param name="builder">Fluent for <see cref="IMicroServerBuilder"/></param>
+    public static void AddMiddleware<TMiddleware>(this IMicroServerBuilder builder)
+        where TMiddleware : class, IServiceMiddleware
+    {
+        builder.Services.AddScoped<IServiceMiddleware, TMiddleware>();
+    }
 }

@@ -1,8 +1,7 @@
 ﻿using Crey.CallContext;
-using Crey.Micro;
 using Crey.Tests.Contracts;
 
-namespace Crey.Tests.Server.Services;
+namespace Crey.Tests.Server;
 
 public class TestService : ITestContract
 {

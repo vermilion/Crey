@@ -16,6 +16,7 @@ PM> Install-Package Crey
 - [Extensions](#extensions)
   - [OneWay](#oneway---invoke-tasks-in-fire-and-forget-manner)
   - [ICallContextAccessor](#icallcontextaccessor---getting-the-call-context-from-anywhere)
+  - [Service Middleware](#service-middleware)
   - [Consul Configuration](#consul-configuration)
 - [Roadmap](#roadmap)
 - [Benchmark](#benchmark)
@@ -157,6 +158,26 @@ public class TestService
 }
 ```
 
+### Service Middleware
+
+```csharp
+// define middleware
+public class ServiceMiddleware : IServiceMiddleware
+{
+    public Task Execute(MessageInvoke message, ServiceHandlerDelegate next)
+    {
+        return next();
+    }
+}
+
+// register in service builder
+builder
+    .AddMicroService(builder =>
+    {
+        builder.AddMiddleware<ServiceMiddleware>();
+    });
+```
+
 ### Consul Configuration
 
 Consul provider can be configured with these values
@@ -190,12 +211,10 @@ Consul provider can be configured with these values
 ```
 
 ## Roadmap
-- Middleware
 - Tests
 - retry policy abstraction
 - correlation id
 - correct exception type propagation and resolver
-- consul pass some Metadata as config vars
 
 ## Benchmark
 

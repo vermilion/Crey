@@ -3,7 +3,6 @@ using Crey.Clients;
 using Crey.Discovery.Consul;
 using Crey.Extensions;
 using Crey.Tests.Contracts;
-using Crey.Tests.Server.Services;
 using Crey.Service;
 
 namespace Crey.Tests.Server;
@@ -24,6 +23,8 @@ internal class Program
                     .AddMicroService(builder =>
                     {
                         builder.AddContract<ITestContract, TestService>();
+
+                        builder.AddMiddleware<ServiceMiddleware>();
                     });
             })
             .Build();

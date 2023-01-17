@@ -1,5 +1,7 @@
 ﻿using System.Reflection;
+using System.Threading;
 using Crey.Helper;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Crey.Service;
@@ -7,17 +9,17 @@ namespace Crey.Service;
 public class ServiceMethodExecutor : IServiceMethodExecutor
 {
     private readonly ILogger<ServiceMethodExecutor> _logger;
-    private readonly IServiceProvider _provider;
+    private readonly IServiceProvider _serviceProvider;
     private readonly IServiceEntryFactory _entryFactory;
     private readonly ICallContextAccessor _sessionValuesAccessor;
 
     public ServiceMethodExecutor(
         ILogger<ServiceMethodExecutor> logger,
-        IServiceProvider provider,
+        IServiceProvider serviceProvider,
         ICallContextAccessor sessionValuesAccessor,
         IServiceEntryFactory entryFactory)
     {
-        _provider = provider;
+        _serviceProvider = serviceProvider;
         _entryFactory = entryFactory;
         _sessionValuesAccessor = sessionValuesAccessor;
         _logger = logger;
@@ -35,8 +37,19 @@ public class ServiceMethodExecutor : IServiceMethodExecutor
             return;
         }
 
+        // set context values
         _sessionValuesAccessor.Context = message.Context;
 
+        Task Handler() => ExecuteInternal(sender, message, entry);
+
+        await _serviceProvider
+            .GetServices<IServiceMiddleware>()
+            .Reverse()
+            .Aggregate((ServiceHandlerDelegate)Handler, (next, pipeline) => () => pipeline.Execute(message, next))();
+    }
+
+    private async Task ExecuteInternal(IMessageSender sender, MessageInvoke message, MicroEntryDelegate entry)
+    {
         if (_logger.IsEnabled(LogLevel.Information))
             _logger.LogInformation($"Execute, InvokeType: {message.Context.Type}");
 
@@ -53,7 +66,7 @@ public class ServiceMethodExecutor : IServiceMethodExecutor
     {
         try
         {
-            var data = await entry(_provider, invokeMessage.Parameters);
+            var data = await entry(_serviceProvider, invokeMessage.Parameters);
 
             if (data is not Task task)
             {
