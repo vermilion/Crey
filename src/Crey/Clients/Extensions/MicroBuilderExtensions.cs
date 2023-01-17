@@ -1,7 +1,4 @@
-﻿using Crey.Builder;
-using Crey.Codec.MessagePack;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace Crey.Clients;
 
@@ -17,12 +14,15 @@ public static class MicroBuilderExtensions
     {
         var services = builder.Services;
 
-        builderAction?.Invoke(builder);
-
         services.AddBaseServices();
 
         services.AddProxyServices();
-        services.AddClientServices();
+        services.AddSingleton<IClientMethodExecutor, ClientMethodExecutor>();
+
+        builder.AddMiddleware<ClientCorrelationIdMiddleware>();
+        builder.AddMiddleware<ClientLoggingMiddleware>();
+
+        builderAction?.Invoke(builder);
 
         return builder;
     }

@@ -1,10 +1,9 @@
-﻿using System.Diagnostics;
-using System.Net.Sockets;
+﻿using System.Net.Sockets;
 using System.Reflection;
-using Crey.Clients;
 using Crey.Exceptions;
 using Crey.Extensions;
 using Crey.Helper;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Polly;
 
@@ -13,35 +12,47 @@ namespace Crey.Clients;
 public class ClientMethodExecutor : IClientMethodExecutor
 {
     private readonly ILogger<ClientMethodExecutor> _logger;
+    private readonly IServiceProvider _serviceProvider;
     private readonly IClientFactory _clientFactory;
     private readonly IServiceFinder _serviceFinder;
 
     public ClientMethodExecutor(
         ILogger<ClientMethodExecutor> logger,
+        IServiceProvider serviceProvider,
         IClientFactory clientFactory,
         IServiceFinder serviceFinder)
     {
         _logger = logger;
+        _serviceProvider = serviceProvider;
         _clientFactory = clientFactory;
         _serviceFinder = serviceFinder;
     }
 
     public async Task<MessageResult> Execute(MethodInfo targetMethod, IDictionary<string, object> args)
     {
-        var serviceType = targetMethod.DeclaringType;
+        var services = await _serviceFinder.QueryService(targetMethod.DeclaringType);
 
-        var services = await _serviceFinder.QueryService(serviceType);
-
+        // fail fast if no services present
         if (!services.Any())
-            throw ErrorCodes.NoService.CodeException();
+            throw new FaultException("No services found alive");
 
         var invokeMessage = CreateMessage(targetMethod, args);
+
+        Task<MessageResult> Handler() => ExecuteInternal(services, targetMethod, invokeMessage);
+
+        return await _serviceProvider
+            .GetServices<IClientMiddleware>()
+            .Reverse()
+            .Aggregate((ClientHandlerDelegate)Handler, (next, pipeline) => () => pipeline.Execute(invokeMessage, next))();
+    }
+
+    private async Task<MessageResult> ExecuteInternal(List<ServiceAddress> services, MethodInfo targetMethod, MessageInvoke message)
+    {
         ServiceAddress? service = null;
 
         var builder = Policy
             .Handle<Exception>(ex =>
                 ex.GetBaseException() is SocketException ||
-                ex.GetBaseException() is HttpRequestException ||
                 ex.GetBaseException() is FaultException faultEx && faultEx.Code == ErrorCodes.SystemError)
             .OrResult<MessageResult>(r => r.Code != 200);
 
@@ -62,24 +73,9 @@ public class ClientMethodExecutor : IClientMethodExecutor
 
             service = services.Random();
 
-            return await ClientInvokeAsync(service, invokeMessage);
-        });
-    }
-
-    private async Task<MessageResult> ClientInvokeAsync(ServiceAddress serviceAddress, MessageInvoke message)
-    {
-        var watch = Stopwatch.StartNew();
-
-        try
-        {
-            var client = await _clientFactory.CreateClient(serviceAddress);
+            var client = await _clientFactory.CreateClient(service);
             return await client.Send(message);
-        }
-        finally
-        {
-            watch.Stop();
-            _logger.LogInformation($"ClientInvokeAsync {watch.ElapsedMilliseconds} ms");
-        }
+        });
     }
 
     private MessageInvoke CreateMessage(MethodInfo targetMethod, IDictionary<string, object> args)

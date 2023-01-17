@@ -16,11 +16,10 @@ public static class MicroBuilderExtensions
     {
         var services = builder.Services;
 
-        builderAction.Invoke(builder);
-
         services.AddBaseServices();
 
-        services.AddServiceServices();
+        services.AddSingleton<IServiceHost, ServiceHost>();
+        services.AddScoped<IServiceMethodExecutor, ServiceMethodExecutor>();
         services.AddSingleton<IServiceEntryFactory, ServiceEntryFactory>();
 
         services.AddScoped<ICallContextAccessor, CallContextAccessor>();
@@ -29,6 +28,10 @@ public static class MicroBuilderExtensions
 
         services.Configure<ServiceAddress>(builder.ConfigurationSection.GetSection("service"));
         services.AddTransient<IPostConfigureOptions<ServiceAddress>, PostConfigureServiceAddress>();
+
+        builder.AddMiddleware<ServiceLoggingMiddleware>();
+
+        builderAction.Invoke(builder);
 
         return builder;
     }

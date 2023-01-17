@@ -19,7 +19,10 @@ internal class Program
                 builder
                     //.AddStaticListDiscovery()
                     .AddConsulDiscovery()
-                    .AddMicroClient()
+                    .AddMicroClient(builder =>
+                    {
+                        builder.AddMiddleware<ClientMiddleware>();
+                    })
                     .AddMicroService(builder =>
                     {
                         builder.AddContract<ITestContract, TestService>();

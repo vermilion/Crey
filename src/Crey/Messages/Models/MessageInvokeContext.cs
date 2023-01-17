@@ -18,6 +18,11 @@ public class MessageInvokeContext
     }
 
     /// <summary>
+    /// Correlation Identifier
+    /// </summary>
+    public string CorrelationId { get; set; } = Guid.NewGuid().ToString("N");
+
+    /// <summary>
     /// Invoke type
     /// </summary>
     public MessageInvokeContextType Type { get; set; } = MessageInvokeContextType.None;

@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using System.Threading;
 using Crey.Helper;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;

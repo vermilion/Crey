@@ -1,4 +1,5 @@
-﻿global using Crey.CallContext;
+﻿global using Crey.Builder;
+global using Crey.CallContext;
 global using Crey.Clients;
 global using Crey.Codec;
 global using Crey.Discovery;
