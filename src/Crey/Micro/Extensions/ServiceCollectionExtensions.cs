@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Crey.Micro;
 
-public static class MicroBuilderExtensions
+public static class ServiceCollectionExtensions
 {
     internal static void AddBaseServices(this IServiceCollection services)
     {

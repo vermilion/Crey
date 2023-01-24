@@ -204,6 +204,7 @@ Consul provider can be configured with these values
 - Tests
 - retry policy abstraction
 - correct exception type propagation and resolver
+- background alive services fetcher
 
 ## Benchmark
 

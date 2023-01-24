@@ -1,5 +1,4 @@
-﻿using Crey.Builder;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
 namespace Crey.Service;
@@ -30,6 +29,8 @@ public static class MicroBuilderExtensions
         services.AddTransient<IPostConfigureOptions<ServiceAddress>, PostConfigureServiceAddress>();
 
         builder.AddMiddleware<ServiceLoggingMiddleware>();
+
+        services.AddServiceDiscoveryServices();
 
         builderAction.Invoke(builder);
 
