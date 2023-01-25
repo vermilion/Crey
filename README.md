@@ -17,7 +17,9 @@ PM> Install-Package Crey
   - [OneWay](#oneway---invoke-tasks-in-fire-and-forget-manner)
   - [ICallContextAccessor](#icallcontextaccessor---getting-the-call-context-from-anywhere)
   - [Client / Server Middleware](#middlewares)
-  - [Consul Configuration](#consul-configuration)
+- [Service Discovery](#servicediscovery)
+  - [Consul](#consul)
+  - [Static List](#static-list)
 - [Roadmap](#roadmap)
 - [Benchmark](#benchmark)
 
@@ -168,43 +170,66 @@ First, implement these interfaces. Then register these in client or server build
 builder.AddMiddleware<TMiddleware>();
 ```
 
-### Consul Configuration
+## Service Discovery
+
+Service Discovery is currently performed in a separate `BackgroundService`
+
+```json
+"discovery": {
+  "fetchInterval": 10, // check alive services interval
+  ....
+}
+```
+
+**Following providers are available out of the box:**
+
+___Configured under `discovery` tag in configuration___
+
+### Consul
 
 Consul provider can be configured with these values
 - Tags
 - Metadata
 - Check options
 ```json
-{
-  "micro": {
-    "discovery": {
-      "consul": {
-        "server": "http://localhost:8500",
-        "token": "",
-        "service": {
-          "tags": [
-            "DEV"
-          ],
-          "meta": {
-            "Environment": "Development"
-          },
-          "check": {
-            "deregisterCriticalServiceAfterDays": 0,
-            "timeout": 5,
-            "interval": 1
-          }
-        }
-      }
-    }
+"consul": {
+  "server": "http://localhost:8500",
+  "token": "",
+  "service": {
+  "tags": [
+    "DEV"
+  ],
+  "meta": {
+    "Environment": "Development"
+  },
+  "check": {
+    "deregisterCriticalServiceAfterDays": 0,
+    "timeout": 5,
+    "interval": 1
   }
 }
 ```
+
+### Static List
+
+Static List provider can be configured with these values
+
+```json
+"staticList": {
+  "Crey.Tests.Contracts_v1": [
+    "host": "localhost",
+    "port": 5003,
+    "weight": 1 // optional, used in weighted random algorithm
+  ]
+}
+```
+
+Where `Key` = `$"{AssemblyNamespace}_v{AssemblyVersion.Major}"`
 
 ## Roadmap
 - Tests
 - retry policy abstraction
 - correct exception type propagation and resolver
-- background alive services fetcher
 
 ## Benchmark
 

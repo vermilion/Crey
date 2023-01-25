@@ -1,5 +1,4 @@
-﻿using Crey.Builder;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Crey.Discovery.StaticList;
@@ -16,12 +15,10 @@ public static class MicroBuilderExtensions
     {
         var services = builder.Services;
 
-        services.AddSingleton(provider =>
+        services.Configure<StaticListOptions>(options =>
         {
-            var options = builder.ConfigurationSection.GetSection("discovery:static").Get<StaticListOptions>() ?? new StaticListOptions();
+            builder.ConfigurationSection.GetSection("discovery:static").Bind(options);
             action?.Invoke(options);
-
-            return Microsoft.Extensions.Options.Options.Create(options);
         });
 
         services.AddSingleton<StaticListServiceFinder>();

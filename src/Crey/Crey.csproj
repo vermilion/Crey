@@ -19,12 +19,7 @@
 		<PackageReference Include="System.Text.Json" Version="7.0.1" />
 		<PackageReference Include="MessagePack" Version="2.4.59" />
 		<PackageReference Include="Consul" Version="1.6.10.8" />
-		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="7.0.0" />
 		<PackageReference Include="DotNetty.Codecs" Version="0.7.5" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Micro\Options\" />
 	</ItemGroup>
 
 </Project>

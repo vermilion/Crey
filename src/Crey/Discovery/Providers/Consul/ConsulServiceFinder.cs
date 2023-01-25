@@ -1,25 +1,14 @@
 ﻿using Consul;
+using Crey.Helper;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Crey.Extensions;
-using Crey.Helper;
-using Microsoft.Extensions.Caching.Memory;
-using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Crey.Discovery.Consul;
 
-internal class ConsulServiceFinder : IServiceFinder
+internal class ConsulServiceFinder : ServiceFinderBase
 {
     private readonly ILogger<ConsulServiceRegister> _logger;
     private readonly ConsulOptions _options;
-    private readonly SemaphoreSlim _slimlock = new(1, 1);
-    private readonly IMemoryCache _memoryCache = new MemoryCache(Options.Create(new MemoryCacheOptions
-    {
-        CompactionPercentage = 0.05,
-        ExpirationScanFrequency = new TimeSpan(0, 0, 1),
-    }));
-
-    private const uint CacheSeconds = 5;
 
     public ConsulServiceFinder(
         ILogger<ConsulServiceRegister> logger,
@@ -39,74 +28,34 @@ internal class ConsulServiceFinder : IServiceFinder
         });
     }
 
-    public async Task<List<ServiceAddress>> QueryService(Type serviceType)
+    protected override async Task<Dictionary<string, List<ServiceAddress>>> QueryAllAliveServices(CancellationToken cancellationToken = default)
     {
-        if (TryGetFromCache(serviceType.Name, out var cachedServices))
-            return cachedServices;
-
-        await _slimlock.WaitAsync();
-
-        try
-        {
-            if (TryGetFromCache(serviceType.Name, out var cachedServicesLocked))
-                return cachedServicesLocked;
-
-            var services = await GetAllAliveServices(serviceType);
-
-            if (services.Any())
-            {
-                _memoryCache.Set(serviceType.Name, services, new MemoryCacheEntryOptions
-                {
-                    AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(CacheSeconds)
-                });
-            }
-
-            return services;
-        }
-        catch (Exception ex)
-        {
-            throw new Exception(ex.Message, ex);
-        }
-        finally
-        {
-            _slimlock.Release();
-        }
-    }
-
-    private async Task<List<ServiceAddress>> GetAllAliveServices(Type serviceType)
-    {
-        var services = new List<ServiceAddress>();
+        var services = new Dictionary<string, List<ServiceAddress>>();
 
         using var client = CreateClient();
-        var list = await client.Health.Service(serviceType.Assembly.ServiceName(), null, true);
 
-        foreach (var entry in list.Response)
+        var list = await client.Catalog.Services(cancellationToken);
+
+        foreach (var service in list.Response)
         {
-            var service = entry.Service;
+            var healthCheckList = await client.Health.Service(service.Key, null, true, cancellationToken);
 
-            if (service.Meta.TryGetValue(ConsulRouteConstants.KeyService, out var json))
+            // service exists - add key to dictionary
+            services.Add(service.Key, new List<ServiceAddress>());
+
+            foreach (var entry in healthCheckList.Response)
             {
-                var address = JsonHelper.FromJson<ServiceAddress>(json);
-                if (address is not null)
-                    services.Add(address);
+                var serviceInfo = entry.Service;
+
+                if (serviceInfo.Meta.TryGetValue(ConsulRouteConstants.KeyService, out var json))
+                {
+                    var address = JsonHelper.FromJson<ServiceAddress>(json);
+                    if (address is not null)
+                        services[service.Key].Add(address);
+                }
             }
         }
 
         return services;
-    }
-
-    private bool TryGetFromCache(string serviceName, out List<ServiceAddress>? services)
-    {
-        services = _memoryCache.Get<List<ServiceAddress>>(serviceName);
-
-        if (services is not null)
-        {
-            if (_logger.IsEnabled(LogLevel.Debug))
-                _logger.LogDebug($"Cache hit for service: {serviceName}");
-
-            return true;
-        }
-
-        return false;
     }
 }

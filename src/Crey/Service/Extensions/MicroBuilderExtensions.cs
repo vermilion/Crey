@@ -30,7 +30,7 @@ public static class MicroBuilderExtensions
 
         builder.AddMiddleware<ServiceLoggingMiddleware>();
 
-        services.AddServiceDiscoveryServices();
+        builder.AddServiceDiscoveryServices();
 
         builderAction.Invoke(builder);
 

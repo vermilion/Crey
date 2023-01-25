@@ -2,7 +2,7 @@
 using Crey.Transport.TCP;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Crey.Micro;
+namespace Crey.Core;
 
 public static class ServiceCollectionExtensions
 {

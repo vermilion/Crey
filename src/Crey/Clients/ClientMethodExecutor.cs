@@ -81,7 +81,7 @@ public class ClientMethodExecutor : IClientMethodExecutor
     private MessageInvoke CreateMessage(MethodInfo targetMethod, IDictionary<string, object> args)
     {
         var context = new MessageInvokeContext(InvokeMethodContextProvider.Context);
-        context.Headers.Add(MicroConstants.UserIp, IpAddressHelper.LocalIp()?.ToString());
+        context.Headers.Add(CoreConstants.UserIp, IpAddressHelper.LocalIp()?.ToString());
 
         return new MessageInvoke
         {

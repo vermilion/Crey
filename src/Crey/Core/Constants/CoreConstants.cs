@@ -1,6 +1,6 @@
-﻿namespace Crey.Micro;
+﻿namespace Crey.Core;
 
-public class MicroConstants
+public class CoreConstants
 {
     public const string UserIp = nameof(UserIp);
 }

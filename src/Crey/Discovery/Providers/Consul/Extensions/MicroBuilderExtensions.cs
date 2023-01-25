@@ -1,5 +1,4 @@
-﻿using Crey.Builder;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Crey.Discovery.Consul;
@@ -16,12 +15,10 @@ public static class ServiceCollectionExtensions
     {
         var services = builder.Services;
 
-        services.AddSingleton(provider =>
+        services.Configure<ConsulOptions>(options =>
         {
-            var options = builder.ConfigurationSection.GetSection("discovery:consul").Get<ConsulOptions>() ?? new ConsulOptions();
+            builder.ConfigurationSection.GetSection("discovery:consul").Bind(options);
             action?.Invoke(options);
-
-            return Microsoft.Extensions.Options.Options.Create(options);
         });
 
         services.AddSingleton<IServiceRegister, ConsulServiceRegister>();

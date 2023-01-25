@@ -9,7 +9,7 @@ public abstract class ClientFactory : IClientFactory, IDisposable
     protected readonly ILogger Logger;
     protected readonly IServiceProvider Provider;
 
-    private readonly ConcurrentDictionary<ServiceAddress, Lazy<Task<IClient>>> _clients = new();
+    private readonly ConcurrentDictionary<string, Lazy<Task<IClient>>> _clients = new();
 
     protected ClientFactory(ILoggerFactory loggerFactory, IServiceProvider provider)
     {
@@ -23,18 +23,18 @@ public abstract class ClientFactory : IClientFactory, IDisposable
     protected void Remove(ServiceAddress address)
     {
         Logger.LogInformation($"Client removed: {address}");
-        _clients.TryRemove(address, out _);
+        _clients.TryRemove(address.ToString(), out _);
     }
 
     public async Task<IClient> CreateClient(ServiceAddress serviceAddress)
     {
         try
         {
-            var lazyClient = _clients.GetOrAdd(serviceAddress,
+            var lazyClient = _clients.GetOrAdd(serviceAddress.ToString(),
                 key => new Lazy<Task<IClient>>(async () =>
                 {
                     Logger.LogInformation($"Client created：{key}");
-                    return await Create(key);
+                    return await Create(serviceAddress);
                 }));
 
             return await lazyClient.Value;

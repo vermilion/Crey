@@ -1,12 +1,11 @@
 ﻿using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
-using Crey.Micro;
-using Crey.Proxy;
-using Crey.Discovery.Consul;
-using Crey.Tests.Contracts;
+using Crey.Clients;
 using Crey.Discovery;
 using Crey.Discovery.StaticList;
-using Crey.Clients;
+using Crey.Discovery.Consul;
+using Crey.Proxy;
+using Crey.Tests.Contracts;
 
 namespace Crey.Benchmarks;
 

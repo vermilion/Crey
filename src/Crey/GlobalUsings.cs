@@ -2,9 +2,9 @@
 global using Crey.CallContext;
 global using Crey.Clients;
 global using Crey.Codec;
+global using Crey.Core;
 global using Crey.Discovery;
 global using Crey.Messages;
-global using Crey.Micro;
 global using Crey.Proxy;
 global using Crey.Service;
 global using Crey.Transport;

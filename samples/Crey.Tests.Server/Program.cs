@@ -1,6 +1,10 @@
 ﻿using Crey.Builder;
 using Crey.Clients;
 using Crey.Discovery.Consul;
+#if !DEBUG
+using Crey.Discovery;
+using Crey.Discovery.StaticList;
+#endif
 using Crey.Extensions;
 using Crey.Tests.Contracts;
 using Crey.Service;
@@ -37,40 +41,48 @@ internal class Program
             await host.RunAsync();
         });
 
-        var provider = host.Services;
-
-        await Task.Delay(10000);
-
-        Console.WriteLine("Initialized");
-
-        await TestSeparateClient();
-
         Console.WriteLine("Ready");
 
-        var proxyFactory = ClientBuilder.Create(provider).CreateProxyFactory();
+        var proxyFactory = ClientBuilder.Create(host.Services).CreateProxyFactory();
 
         var contract = proxyFactory.Create<ITestContract>();
 
         while (true)
         {
-            var cmd = Console.ReadLine();
-            if (cmd == "exit") break;
-
-            if (cmd?.StartsWith("one:") == true)
+            try
             {
-                var command = cmd.Replace("one:", "");
+                var cmd = Console.ReadLine();
+                if (cmd == "exit") break;
 
-                await contract.InvokeOneWay((x) => x.Say(command));
+                if (cmd?.StartsWith("one:") == true)
+                {
+                    var command = cmd.Replace("one:", "");
+
+                    await contract.InvokeOneWay((x) => x.Say(command));
+                }
+                else if (cmd?.StartsWith("client:") == true)
+                {
+                    var command = cmd.Replace("client:", "");
+
+                    var c = await GetStandaloneClient();
+
+                    var result = c.Say("Hello from client");
+                    Console.WriteLine(result.Result);
+                }
+                else
+                {
+                    var result = contract.Say("Hello");
+                    Console.WriteLine(result.Result);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                var result = contract.Say("Hello");
-                Console.WriteLine(result.Result);
+                Console.WriteLine(ex.Message);
             }
         }
     }
 
-    private static async Task TestSeparateClient()
+    private static Task<ITestContract> GetStandaloneClient()
     {
         // create standalone client
         var proxyFactory = ClientBuilder.Create(builder =>
@@ -93,7 +105,6 @@ internal class Program
 
         var contract = proxyFactory.Create<ITestContract>();
 
-        var result = await contract.Say("Hello from Client");
-        Console.WriteLine(result);
+        return Task.FromResult(contract);
     }
 }
