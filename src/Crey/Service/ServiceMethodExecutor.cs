@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Crey.Exceptions;
 using Crey.Helper;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -11,16 +12,19 @@ public class ServiceMethodExecutor : IServiceMethodExecutor
     private readonly IServiceProvider _serviceProvider;
     private readonly IServiceEntryFactory _entryFactory;
     private readonly ICallContextAccessor _sessionValuesAccessor;
+    private readonly IExceptionConverter _exceptionTransformer;
 
     public ServiceMethodExecutor(
         ILogger<ServiceMethodExecutor> logger,
         IServiceProvider serviceProvider,
         ICallContextAccessor sessionValuesAccessor,
+        IExceptionConverter exceptionTransformer,
         IServiceEntryFactory entryFactory)
     {
         _serviceProvider = serviceProvider;
-        _entryFactory = entryFactory;
         _sessionValuesAccessor = sessionValuesAccessor;
+        _exceptionTransformer = exceptionTransformer;
+        _entryFactory = entryFactory;
         _logger = logger;
     }
 
@@ -65,7 +69,7 @@ public class ServiceMethodExecutor : IServiceMethodExecutor
     {
         try
         {
-            var data = await entry(_serviceProvider, invokeMessage.Parameters);
+            var data = await entry(_serviceProvider, invokeMessage.Parameters).ConfigureAwait(false);
 
             if (data is not Task task)
             {
@@ -73,7 +77,7 @@ public class ServiceMethodExecutor : IServiceMethodExecutor
             }
             else
             {
-                await task;
+                await task.ConfigureAwait(false);
                 var taskType = task.GetType().GetTypeInfo();
                 if (taskType.IsGenericType)
                 {
@@ -85,15 +89,15 @@ public class ServiceMethodExecutor : IServiceMethodExecutor
         }
         catch (Exception ex)
         {
-            if (_logger.IsEnabled(LogLevel.Debug))
+            if (_logger.IsEnabled(LogLevel.Error))
                 _logger.LogError(ex, "Server error occured");
 
-            messageResult.Message = ex.Message;
             messageResult.Code = 500;
+            messageResult.Content = _exceptionTransformer.Wrap(ex);
         }
     }
 
-    private async Task SendResult(IMessageSender sender, string messageId, Messages.Message result)
+    private async Task SendResult(IMessageSender sender, string messageId, Message result)
     {
         try
         {

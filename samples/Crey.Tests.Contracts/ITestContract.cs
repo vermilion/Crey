@@ -4,7 +4,9 @@ namespace Crey.Tests.Contracts;
 
 public interface ITestContract : IMicroService
 {
-    Task<string> InvokeFast();
+    Task<string> Ping(string name);
 
-    Task<string> Say(string name);
+    Task<string> InvokeChain(string name);
+
+    Task Throw();
 }

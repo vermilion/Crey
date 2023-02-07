@@ -52,7 +52,7 @@ public class BuildableClient
     /// Gets client resolve factory from <see cref="IServiceProvider"/>
     /// </summary>
     /// <returns>Factory <see cref="IProxyFactory"/></returns>
-    public IProxyFactory CreateProxyFactory()
+    public IProxyFactory GetProxyFactory()
     {
         return _provider.GetRequiredService<IProxyFactory>();
     }

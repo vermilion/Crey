@@ -229,7 +229,7 @@ Where `Key` = `$"{AssemblyNamespace}_v{AssemblyVersion.Major}"`
 ## Roadmap
 - Tests
 - retry policy abstraction
-- correct exception type propagation and resolver
+- fix client aquiring services
 
 ## Benchmark
 

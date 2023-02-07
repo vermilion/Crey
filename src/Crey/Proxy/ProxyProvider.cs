@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Crey.Clients;
 
 namespace Crey.Proxy;
 
@@ -18,14 +17,14 @@ public class ProxyProvider : IProxyProvider
         return result.Content;
     }
 
-    public Task InvokeAsync(MethodInfo method, IDictionary<string, object> parameters)
+    public async Task InvokeAsync(MethodInfo method, IDictionary<string, object> parameters)
     {
-        return _clientMethodExecutor.Execute(method, parameters);
+        await _clientMethodExecutor.Execute(method, parameters).ConfigureAwait(false);
     }
 
     public async Task<T> InvokeAsync<T>(MethodInfo method, IDictionary<string, object> parameters)
     {
-        var result = await _clientMethodExecutor.Execute(method, parameters);
+        var result = await _clientMethodExecutor.Execute(method, parameters).ConfigureAwait(false);
         return (T)result.Content;
     }
 }

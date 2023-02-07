@@ -11,7 +11,7 @@ internal abstract class DotNettyMessageSender
         _codec = codec;
     }
 
-    protected async Task<IByteBuffer> GetByteBuffer(Messages.Message message)
+    protected async Task<IByteBuffer> GetByteBuffer(Message message)
     {
         var data = await _codec.EncodeAsync(message);
         return Unpooled.WrappedBuffer(data);

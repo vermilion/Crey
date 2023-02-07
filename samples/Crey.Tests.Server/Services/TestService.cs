@@ -1,5 +1,4 @@
 ﻿using Crey.CallContext;
-using Crey.Clients;
 using Crey.Proxy;
 using Crey.Tests.Contracts;
 
@@ -18,22 +17,27 @@ public class TestService : ITestContract
         _proxyFactory = proxyFactory;
     }
 
-    public Task<string> InvokeFast()
+    public async Task<string> Ping(string message)
     {
-        return Task.FromResult("Hello world");
-    }
-
-    public async Task<string> Say(string message)
-    {
-        var contract = _proxyFactory.Create<ITestContract>();
-
-        var s = await contract.InvokeFast();
-
         //await Task.Delay(3000);
 
         //var res = _callContextAccessor.GetValue<bool>(MicroConstants.LongRunning);
         //_logger.LogWarning($"Server says: {name}, longRunning: {res}");
 
         return await Task.FromResult($"pong: {message}");
+    }
+
+    public async Task<string> InvokeChain(string name)
+    {
+        var contract = _proxyFactory.Proxy<ITestContract>();
+
+        var s = await contract.Ping(name);
+
+        return $"{s} -> {nameof(InvokeChain)} -> {nameof(Ping)}";
+    }
+
+    public Task Throw()
+    {
+        throw new NotImplementedException("test exception");
     }
 }

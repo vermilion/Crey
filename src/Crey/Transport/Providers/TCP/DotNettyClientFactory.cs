@@ -1,4 +1,5 @@
-﻿using DotNetty.Buffers;
+﻿using Crey.Exceptions;
+using DotNetty.Buffers;
 using DotNetty.Codecs;
 using DotNetty.Common.Utilities;
 using DotNetty.Transport.Bootstrapping;
@@ -17,15 +18,17 @@ internal class DotNettyClientFactory : ClientFactory
         AttributeKey<IMessageSender>.ValueOf(typeof(DotNettyClientFactory), nameof(IMessageSender));
     private static readonly AttributeKey<IMessageListener> ListenerKey =
         AttributeKey<IMessageListener>.ValueOf(typeof(DotNettyClientFactory), nameof(IMessageListener));
-
+    private readonly IExceptionConverter _exceptionTransformer;
     private readonly IMessageCodec _codec;
 
     public DotNettyClientFactory(
         ILoggerFactory loggerFactory,
         IServiceProvider provider,
+        IExceptionConverter exceptionTransformer,
         IMessageCodec codec)
         : base(loggerFactory, provider)
     {
+        _exceptionTransformer = exceptionTransformer;
         _codec = codec;
     }
 
@@ -40,7 +43,7 @@ internal class DotNettyClientFactory : ClientFactory
         channel.GetAttribute(SenderKey).Set(sender);
         channel.GetAttribute(ServiceAddressKey).Set(serviceAddress);
 
-        return new Client(sender, listener, LoggerFactory);
+        return new Client(sender, listener, _exceptionTransformer, LoggerFactory);
     }
 
     private Bootstrap CreateBootstrap()

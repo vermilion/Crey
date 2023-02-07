@@ -10,19 +10,25 @@ public class Client : IClient, IDisposable
 {
     private readonly IMessageSender _sender;
     private readonly IMessageListener _listener;
+    private readonly IExceptionConverter _exceptionConverter;
     private readonly ILogger<Client> _logger;
 
     private readonly ConcurrentDictionary<string, TaskCompletionSource<MessageResult>> _resultDictionary = new();
 
-    public Client(IMessageSender sender, IMessageListener listener, ILoggerFactory loggerFactory)
+    public Client(
+        IMessageSender sender, 
+        IMessageListener listener,
+        IExceptionConverter exceptionConverter,
+        ILoggerFactory loggerFactory)
     {
         _sender = sender;
         _listener = listener;
+        _exceptionConverter = exceptionConverter;
         _logger = loggerFactory.CreateLogger<Client>();
         listener.Received += ListenerOnReceived;
     }
 
-    private Task ListenerOnReceived(IMessageSender sender, Messages.Message message)
+    private Task ListenerOnReceived(IMessageSender sender, Message message)
     {
         if (!_resultDictionary.TryGetValue(message.Id, out var task))
             return Task.CompletedTask;
@@ -31,7 +37,8 @@ public class Client : IClient, IDisposable
         {
             if (result.Code != 200)
             {
-                task.TrySetException(new FaultException(result.Message, result.Code));
+                var ex = _exceptionConverter.Unwrap(result.Content as MessageException);
+                task.TrySetException(ex);
             }
             else
             {

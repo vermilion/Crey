@@ -1,4 +1,5 @@
 ﻿using Crey.Codec.MessagePack;
+using Crey.Exceptions;
 using Crey.Transport.TCP;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,6 +11,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddSingleton(services);
 
+        services.AddExceptionHandlingServices();
         services.AddMessagePackCodec();
         services.AddTcpProtocol();
     }

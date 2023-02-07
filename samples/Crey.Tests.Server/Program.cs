@@ -8,6 +8,7 @@ using Crey.Discovery.StaticList;
 using Crey.Extensions;
 using Crey.Tests.Contracts;
 using Crey.Service;
+using Crey.Exceptions;
 
 namespace Crey.Tests.Server;
 
@@ -41,11 +42,11 @@ internal class Program
             await host.RunAsync();
         });
 
-        Console.WriteLine("Ready");
+        Console.WriteLine("Service started");
 
-        var proxyFactory = ClientBuilder.Create(host.Services).CreateProxyFactory();
+        var proxyFactory = ClientBuilder.Create(host.Services).GetProxyFactory();
 
-        var contract = proxyFactory.Create<ITestContract>();
+        var contract = proxyFactory.Proxy<ITestContract>();
 
         while (true)
         {
@@ -58,26 +59,53 @@ internal class Program
                 {
                     var command = cmd.Replace("one:", "");
 
-                    await contract.InvokeOneWay((x) => x.Say(command));
+                    await contract.InvokeOneWay((x) => x.Ping(command));
+                    continue;
                 }
-                else if (cmd?.StartsWith("client:") == true)
+
+
+                if (cmd?.StartsWith("client:") == true)
                 {
                     var command = cmd.Replace("client:", "");
 
                     var c = await GetStandaloneClient();
 
-                    var result = c.Say("Hello from client");
-                    Console.WriteLine(result.Result);
+                    var r2 = await c.Ping("Hello from client");
+                    Console.WriteLine(r2);
+                    continue;
                 }
-                else
+
+                if (cmd?.StartsWith("chain:") == true)
                 {
-                    var result = contract.Say("Hello");
-                    Console.WriteLine(result.Result);
+                    var command = cmd.Replace("chain:", "");
+
+                    var r3 = await contract.InvokeChain(command);
+                    Console.WriteLine(r3);
+                    continue;
                 }
+
+                if (cmd?.StartsWith("throw") == true)
+                {
+                    var command = cmd.Replace("client:", "");
+
+                    await contract.Throw();
+                    continue;
+                }
+
+                var result = await contract.Ping("Hello");
+                Console.WriteLine(result);
+            }
+            catch (FaultException<NotImplementedException> ex)
+            {
+                Console.WriteLine($"Caught {nameof(NotImplementedException)}: {ex.Message}");
+            }
+            catch (AggregateException ex)
+            {
+                Console.WriteLine($"Aggregate: {ex.Message}");
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine($"Exception: {ex.Message}");
             }
         }
     }
@@ -96,14 +124,14 @@ internal class Program
 #else
                 .AddConsulDiscovery(x =>
                 {
-                    x.Server = "http://192.168.1.24:8500";
+                    x.Server = "http://localhost:8500";
                 })
 #endif
                 .AddMicroClient();
         })
-        .CreateProxyFactory();
+        .GetProxyFactory();
 
-        var contract = proxyFactory.Create<ITestContract>();
+        var contract = proxyFactory.Proxy<ITestContract>();
 
         return Task.FromResult(contract);
     }

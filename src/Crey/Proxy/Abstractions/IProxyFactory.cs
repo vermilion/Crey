@@ -12,5 +12,5 @@ public interface IProxyFactory
     /// </summary>
     /// <typeparam name="T">Interface type</typeparam>
     /// <returns>Generated Dispatch Proxy</returns>
-    T Create<T>() where T : class, IMicroService;
+    T Proxy<T>() where T : class, IMicroService;
 }

@@ -37,19 +37,19 @@ public class ClientServerBenchmark
 #else
                 .AddConsulDiscovery(x =>
                 {
-                    x.Server = "http://192.168.1.24:8500";
+                    x.Server = "http://localhost:8500";
                 })
 #endif
                 .AddMicroClient();
         })
-        .CreateProxyFactory();
+        .GetProxyFactory();
     }
 
     [Benchmark]
     public Task CreateContractAndCallMethod()
     {
-        var contract = _proxyFactory.Create<ITestContract>();
+        var contract = _proxyFactory.Proxy<ITestContract>();
 
-        return contract.Say("Qwe");
+        return contract.Ping("Qwe");
     }
 }

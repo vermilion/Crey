@@ -13,7 +13,7 @@ internal class ProxyFactory : IProxyFactory
         _interceptor = interceptor;
     }
 
-    public T Create<T>()
+    public T Proxy<T>()
         where T : class, IMicroService
     {
         return _proxyGenerator.CreateInterfaceProxyWithoutTarget<T>(_interceptor.ToInterceptor());

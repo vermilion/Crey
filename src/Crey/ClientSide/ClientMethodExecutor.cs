@@ -32,10 +32,6 @@ public class ClientMethodExecutor : IClientMethodExecutor
     {
         var services = await _serviceFinder.QueryService(targetMethod.DeclaringType);
 
-        // fail fast if no services present
-        if (!services.Any())
-            throw new FaultException("No services found alive");
-
         var invokeMessage = CreateMessage(targetMethod, args);
 
         Task<MessageResult> Handler() => ExecuteInternal(services, targetMethod, invokeMessage);
@@ -51,17 +47,12 @@ public class ClientMethodExecutor : IClientMethodExecutor
         ServiceAddress? service = null;
 
         var builder = Policy
-            .Handle<Exception>(ex =>
-                ex.GetBaseException() is SocketException ||
-                ex.GetBaseException() is FaultException faultEx && faultEx.Code == ErrorCodes.SystemError)
-            .OrResult<MessageResult>(r => r.Code != 200);
+            .Handle<Exception>(ex => ex.GetBaseException() is SocketException);
 
         // retry 3 times
-        var policy = builder.RetryAsync(3, (result, count) =>
+        var policy = builder.RetryAsync(3, (ex, count) =>
         {
-            _logger.LogWarning(result.Exception != null
-                ? $"{service},{targetMethod.ServiceKey()}:retry,{count},{result.Exception.Format()}"
-                : $"{service},{targetMethod.ServiceKey()}:retry,{count},{result.Result.Code}");
+            _logger.LogWarning($"{service},{targetMethod.ServiceKey()}:retry,{count},{ex.Format()}");
 
             services.Remove(service);
         });
@@ -69,7 +60,7 @@ public class ClientMethodExecutor : IClientMethodExecutor
         return await policy.ExecuteAsync(async () =>
         {
             if (!services.Any())
-                throw ErrorCodes.NoService.CodeException();
+                throw new FaultException("No services found alive");
 
             service = services.Random();
 
