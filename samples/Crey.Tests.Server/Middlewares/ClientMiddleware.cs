@@ -1,4 +1,4 @@
-﻿using Crey.Clients;
+﻿using Crey.ClientSide;
 using Crey.Messages;
 
 namespace Crey.Tests.Server;

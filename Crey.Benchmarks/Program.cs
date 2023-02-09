@@ -1,6 +1,6 @@
 ﻿using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
-using Crey.Clients;
+using Crey.ClientSide;
 using Crey.Discovery;
 using Crey.Discovery.StaticList;
 using Crey.Discovery.Consul;

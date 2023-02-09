@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Crey.Clients;
+namespace Crey.ClientSide;
 
 public interface IClientMethodExecutor
 {

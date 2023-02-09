@@ -1,5 +1,5 @@
 ﻿using Crey.Builder;
-using Crey.Clients;
+using Crey.ClientSide;
 using Crey.Discovery.Consul;
 #if !DEBUG
 using Crey.Discovery;
@@ -9,6 +9,8 @@ using Crey.Extensions;
 using Crey.Tests.Contracts;
 using Crey.Service;
 using Crey.Exceptions;
+using System.Diagnostics;
+using Crey.Discovery;
 
 namespace Crey.Tests.Server;
 
@@ -54,6 +56,18 @@ internal class Program
             {
                 var cmd = Console.ReadLine();
                 if (cmd == "exit") break;
+
+                if (cmd?.StartsWith("sw") == true)
+                {
+                    var finder = host.Services.GetRequiredService<IServiceFinder>();
+
+                    var sw = new Stopwatch();
+                    sw.Start();
+                    await finder.QueryServices(typeof(ITestContract));
+                    sw.Stop();
+                    Console.WriteLine($"Elapsed: {sw.ElapsedMilliseconds}ms");
+                    continue;
+                }
 
                 if (cmd?.StartsWith("one:") == true)
                 {

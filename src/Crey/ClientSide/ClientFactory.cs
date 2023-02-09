@@ -1,7 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using Microsoft.Extensions.Logging;
 
-namespace Crey.Clients;
+namespace Crey.ClientSide;
 
 public abstract class ClientFactory : IClientFactory, IDisposable
 {

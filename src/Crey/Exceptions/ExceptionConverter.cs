@@ -10,7 +10,7 @@ public class ExceptionConverter : IExceptionConverter
     public FaultException Unwrap(MessageException? message)
     {
         if (message is null)
-            return new FaultException("Unknown error occured");
+            return new FaultException(ExceptionConstants.UnknownError);
 
         var serviceExceptionType = Type.GetType(message.ExceptionTypeName);
         if (serviceExceptionType is null)

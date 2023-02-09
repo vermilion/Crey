@@ -6,7 +6,7 @@ using Microsoft.Extensions.Options;
 
 namespace Crey.Discovery.StaticList;
 
-internal class StaticListServiceFinder : ServiceFinderBase, IServiceRegister
+internal class StaticListServiceFinder : IServiceFinder, IServiceRegister
 {
     private readonly Dictionary<string, List<ServiceAddress>> _serviceRegistry = new();
     private readonly ILogger<StaticListServiceFinder> _logger;
@@ -56,19 +56,22 @@ internal class StaticListServiceFinder : ServiceFinderBase, IServiceRegister
 
     private void Register(string serviceName, ServiceAddress address)
     {
-        _logger.LogInformation($"Register service: [{serviceName}@{address}]");
+        if (_logger.IsEnabled(LogLevel.Information))
+            _logger.LogInformation($"Register service: [{serviceName}@{address}]");
 
         if (!_serviceRegistry.TryGetValue(serviceName, out var list))
-        {
             list = new List<ServiceAddress>();
-        }
 
         list.Add(address);
         _serviceRegistry[serviceName] = list;
     }
 
-    protected override Task<Dictionary<string, List<ServiceAddress>>> QueryAllAliveServices(CancellationToken cancellationToken = default)
+    public Task<List<ServiceAddress>> QueryServices(Type serviceType)
     {
-        return Task.FromResult(_serviceRegistry);
+        var serviceName = serviceType.Assembly.ServiceName();
+        if (!_serviceRegistry.TryGetValue(serviceName, out var list))
+            list = new List<ServiceAddress>();
+
+        return Task.FromResult(list);
     }
 }

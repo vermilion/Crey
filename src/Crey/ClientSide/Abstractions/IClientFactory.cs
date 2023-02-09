@@ -1,4 +1,4 @@
-﻿namespace Crey.Clients;
+﻿namespace Crey.ClientSide;
 
 public interface IClientFactory
 {

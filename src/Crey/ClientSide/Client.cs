@@ -4,7 +4,7 @@ using Crey.Exceptions;
 using Crey.Helper;
 using Microsoft.Extensions.Logging;
 
-namespace Crey.Clients;
+namespace Crey.ClientSide;
 
 public class Client : IClient, IDisposable
 {

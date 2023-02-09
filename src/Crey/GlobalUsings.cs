@@ -1,6 +1,6 @@
 ﻿global using Crey.Builder;
 global using Crey.CallContext;
-global using Crey.Clients;
+global using Crey.ClientSide;
 global using Crey.Codec;
 global using Crey.Core;
 global using Crey.Discovery;

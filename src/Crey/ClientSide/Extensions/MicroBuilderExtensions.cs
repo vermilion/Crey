@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Crey.Clients;
+namespace Crey.ClientSide;
 
 public static class MicroBuilderExtensions
 {

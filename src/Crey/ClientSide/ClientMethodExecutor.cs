@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Polly;
 
-namespace Crey.Clients;
+namespace Crey.ClientSide;
 
 public class ClientMethodExecutor : IClientMethodExecutor
 {
@@ -30,11 +30,9 @@ public class ClientMethodExecutor : IClientMethodExecutor
 
     public async Task<MessageResult> Execute(MethodInfo targetMethod, IDictionary<string, object> args)
     {
-        var services = await _serviceFinder.QueryService(targetMethod.DeclaringType);
-
         var invokeMessage = CreateMessage(targetMethod, args);
 
-        Task<MessageResult> Handler() => ExecuteInternal(services, targetMethod, invokeMessage);
+        Task<MessageResult> Handler() => ExecuteInternal(targetMethod, invokeMessage);
 
         return await _serviceProvider
             .GetServices<IClientMiddleware>()
@@ -42,8 +40,10 @@ public class ClientMethodExecutor : IClientMethodExecutor
             .Aggregate((ClientHandlerDelegate)Handler, (next, pipeline) => () => pipeline.Execute(invokeMessage, next))();
     }
 
-    private async Task<MessageResult> ExecuteInternal(List<ServiceAddress> services, MethodInfo targetMethod, MessageInvoke message)
+    private async Task<MessageResult> ExecuteInternal(MethodInfo targetMethod, MessageInvoke message)
     {
+        var services = await _serviceFinder.QueryServices(targetMethod.DeclaringType);
+
         ServiceAddress? service = null;
 
         var builder = Policy
@@ -52,7 +52,8 @@ public class ClientMethodExecutor : IClientMethodExecutor
         // retry 3 times
         var policy = builder.RetryAsync(3, (ex, count) =>
         {
-            _logger.LogWarning($"{service},{targetMethod.ServiceKey()}:retry,{count},{ex.Format()}");
+            if (_logger.IsEnabled(LogLevel.Warning))
+                _logger.LogWarning($"{service}, {targetMethod.ServiceKey()}: retry #{count}, {ex.Format()}");
 
             services.Remove(service);
         });
@@ -60,7 +61,7 @@ public class ClientMethodExecutor : IClientMethodExecutor
         return await policy.ExecuteAsync(async () =>
         {
             if (!services.Any())
-                throw new FaultException("No services found alive");
+                throw new FaultException(ExceptionConstants.NoServicesFound);
 
             service = services.Random();
 

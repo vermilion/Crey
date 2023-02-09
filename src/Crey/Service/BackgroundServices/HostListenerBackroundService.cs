@@ -27,7 +27,9 @@ internal class HostListenerBackroundService : BackgroundService
 
     public override async Task StopAsync(CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Stopping listener service..");
+        if (_logger.IsEnabled(LogLevel.Information))
+            _logger.LogInformation("Stopping listener service..");
+
         await base.StopAsync(cancellationToken);
         await _host.Stop();
     }

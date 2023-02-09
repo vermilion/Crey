@@ -1,4 +1,4 @@
-﻿namespace Crey.Clients;
+﻿namespace Crey.ClientSide;
 
 /// <summary>
 /// Represents an async continuation for the next task to execute in the pipeline

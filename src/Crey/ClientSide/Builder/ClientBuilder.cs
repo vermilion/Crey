@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Crey.Clients;
+namespace Crey.ClientSide;
 
 /// <summary>
 /// Default client builder

@@ -172,15 +172,6 @@ builder.AddMiddleware<TMiddleware>();
 
 ## Service Discovery
 
-Service Discovery is currently performed in a separate `BackgroundService`
-
-```json
-"discovery": {
-  "fetchInterval": 10, // check alive services interval
-  ....
-}
-```
-
 **Following providers are available out of the box:**
 
 ___Configured under `discovery` tag in configuration___

@@ -6,8 +6,8 @@ public static class RoutingExtensions
 {
     public static string ServiceName(this Assembly assembly)
     {
-        var assName = assembly.GetName();
-        return $"{assName.Name}_v{assName.Version.Major}";
+        var assemblyName = assembly.GetName();
+        return $"{assemblyName.Name}_v{assemblyName.Version.Major}";
     }
 
     public static string TypeName(this Type type)

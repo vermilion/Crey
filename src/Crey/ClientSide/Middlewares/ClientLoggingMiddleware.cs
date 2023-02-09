@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using Microsoft.Extensions.Logging;
 
-namespace Crey.Clients;
+namespace Crey.ClientSide;
 
 internal class ClientLoggingMiddleware : IClientMiddleware
 {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace Crey.Clients;
+namespace Crey.ClientSide;
 
 internal class ClientCorrelationIdMiddleware : IClientMiddleware
 {
