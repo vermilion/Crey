@@ -1,7 +1,5 @@
 ﻿using System.Net;
 using System.Text.RegularExpressions;
-using Crey.Extensions;
-using Crey.Helper;
 
 namespace Crey.Discovery;
 
@@ -15,25 +13,5 @@ public static class ServiceAddressExtensions
             return new IPEndPoint(IPAddress.Parse(address.Host), address.Port);
 
         return new DnsEndPoint(address.Host, address.Port);
-    }
-
-    public static ServiceAddress? Random(this IList<ServiceAddress> services)
-    {
-        if (services == null || !services.Any()) return null;
-        if (services.Count == 1) return services.First();
-
-        // order by weight
-        var sum = services.Sum(t => t.Weight);
-        var rand = RandomHelper.Random().NextDouble() * sum;
-        var tempWeight = 0D;
-
-        foreach (var service in services)
-        {
-            tempWeight += service.Weight;
-            if (rand <= tempWeight)
-                return service;
-        }
-
-        return services.RandomSort().First();
     }
 }

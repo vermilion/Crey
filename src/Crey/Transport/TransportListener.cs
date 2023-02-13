@@ -1,17 +1,16 @@
 ﻿using Crey.Helper;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Crey.Transport;
 
 public abstract class TransportListener : MessageListener, ITransportListener
 {
-    private readonly IServiceProvider _serviceProvider;
+    private readonly IServiceMethodExecutor _methodExecutor;
     private readonly ILogger<TransportListener> _logger;
 
-    protected TransportListener(IServiceProvider serviceProvider, ILoggerFactory loggerFactory)
+    protected TransportListener(IServiceMethodExecutor methodExecutor, ILoggerFactory loggerFactory)
     {
-        _serviceProvider = serviceProvider;
+        _methodExecutor = methodExecutor;
         _logger = loggerFactory.CreateLogger<TransportListener>();
 
         Received += MessageListenerReceived;
@@ -29,11 +28,6 @@ public abstract class TransportListener : MessageListener, ITransportListener
         if (_logger.IsEnabled(LogLevel.Debug))
             _logger.LogDebug($"receive:{JsonHelper.ToJson(message)}");
 
-        // execute each request in it's own service scope
-        await using var scope = _serviceProvider.CreateAsyncScope();
-
-        var microExecutor = scope.ServiceProvider.GetRequiredService<IServiceMethodExecutor>();
-
-        await microExecutor.Execute(sender, invokeMessage);
+        await _methodExecutor.Execute(sender, invokeMessage);
     }
 }

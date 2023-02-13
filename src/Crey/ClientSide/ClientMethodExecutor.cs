@@ -8,22 +8,28 @@ using Polly;
 
 namespace Crey.ClientSide;
 
-public class ClientMethodExecutor : IClientMethodExecutor
+internal class ClientMethodExecutor : IClientMethodExecutor
 {
     private readonly ILogger<ClientMethodExecutor> _logger;
     private readonly IServiceProvider _serviceProvider;
     private readonly IClientFactory _clientFactory;
+    private readonly IClientRetryPolicyProvider _retryPolicyProvider;
+    private readonly IClientLoadBalancingStrategy _loadBalancingStrategy;
     private readonly IServiceFinder _serviceFinder;
 
     public ClientMethodExecutor(
         ILogger<ClientMethodExecutor> logger,
         IServiceProvider serviceProvider,
         IClientFactory clientFactory,
+        IClientRetryPolicyProvider retryPolicyProvider,
+        IClientLoadBalancingStrategy loadBalancingStrategy,
         IServiceFinder serviceFinder)
     {
         _logger = logger;
         _serviceProvider = serviceProvider;
         _clientFactory = clientFactory;
+        _retryPolicyProvider = retryPolicyProvider;
+        _loadBalancingStrategy = loadBalancingStrategy;
         _serviceFinder = serviceFinder;
     }
 
@@ -41,28 +47,28 @@ public class ClientMethodExecutor : IClientMethodExecutor
 
     private async Task<MessageResult> ExecuteInternal(MethodInfo targetMethod, MessageInvoke message)
     {
-        var services = await _serviceFinder.QueryServices(targetMethod.DeclaringType);
+        var policy = _retryPolicyProvider.Provide((ex, timeSpan, count, context) =>
+        {
+            context.TryGetValue("service", out var service);
 
-        ServiceAddress? service = null;
+            if (_logger.IsEnabled(LogLevel.Warning))
+                _logger.LogWarning($"{service}, {targetMethod.ServiceKey()}: retry #{count}, {ex.Format()}");
+        });
 
         var builder = Policy
             .Handle<Exception>(ex => ex.GetBaseException() is SocketException);
 
-        // retry 3 times
-        var policy = builder.RetryAsync(3, (ex, count) =>
-        {
-            if (_logger.IsEnabled(LogLevel.Warning))
-                _logger.LogWarning($"{service}, {targetMethod.ServiceKey()}: retry #{count}, {ex.Format()}");
-
-            services.Remove(service);
-        });
+        var services = await _serviceFinder.QueryServices(targetMethod.DeclaringType);
 
         return await policy.ExecuteAsync(async () =>
         {
             if (!services.Any())
                 throw new FaultException(ExceptionConstants.NoServicesFound);
 
-            service = services.Random();
+            var service = await _loadBalancingStrategy.GetNextService(services);
+
+            if (service is null)
+                throw new FaultException(ExceptionConstants.ServiceCallFailed);
 
             var client = await _clientFactory.CreateClient(service);
             return await client.Send(message);

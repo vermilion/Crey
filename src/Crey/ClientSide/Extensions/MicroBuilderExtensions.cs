@@ -18,6 +18,8 @@ public static class MicroBuilderExtensions
 
         services.AddProxyServices();
         services.AddSingleton<IClientMethodExecutor, ClientMethodExecutor>();
+        services.AddSingleton<IClientRetryPolicyProvider, ClientRetryPolicyProvider>();
+        services.AddSingleton<IClientLoadBalancingStrategy, ClientWeightedRandomLoadBalancingStrategy>();
 
         builder.AddMiddleware<ClientCorrelationIdMiddleware>();
         builder.AddMiddleware<ClientLoggingMiddleware>();

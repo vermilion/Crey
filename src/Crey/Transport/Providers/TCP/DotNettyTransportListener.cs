@@ -15,8 +15,8 @@ internal class DotNettyTransportListener : TransportListener, IDisposable
     private readonly ILogger<DotNettyTransportListener> _logger;
     private readonly IMessageCodec _messageCodec;
 
-    public DotNettyTransportListener(IServiceProvider serviceProvider, ILoggerFactory loggerFactory, IMessageCodec messageCodec)
-        : base(serviceProvider, loggerFactory)
+    public DotNettyTransportListener(IServiceMethodExecutor methodExecutor, ILoggerFactory loggerFactory, IMessageCodec messageCodec)
+        : base(methodExecutor, loggerFactory)
     {
         _loggerFactory = loggerFactory;
         _logger = loggerFactory.CreateLogger<DotNettyTransportListener>();

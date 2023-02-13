@@ -219,8 +219,7 @@ Where `Key` = `$"{AssemblyNamespace}_v{AssemblyVersion.Major}"`
 
 ## Roadmap
 - Tests
-- retry policy abstraction
-- fix client aquiring services
+- Check internal services override possibility
 
 ## Benchmark
 

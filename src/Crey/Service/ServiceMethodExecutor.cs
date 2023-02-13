@@ -8,22 +8,19 @@ namespace Crey.Service;
 public class ServiceMethodExecutor : IServiceMethodExecutor
 {
     private readonly ILogger<ServiceMethodExecutor> _logger;
-    private readonly IServiceProvider _serviceProvider;
     private readonly IServiceEntryFactory _entryFactory;
-    private readonly ICallContextAccessor _sessionValuesAccessor;
+    private readonly IServiceScopeFactory _scopeFactory;
     private readonly IExceptionConverter _exceptionTransformer;
 
     public ServiceMethodExecutor(
         ILogger<ServiceMethodExecutor> logger,
-        IServiceProvider serviceProvider,
-        ICallContextAccessor sessionValuesAccessor,
         IExceptionConverter exceptionTransformer,
-        IServiceEntryFactory entryFactory)
+        IServiceEntryFactory entryFactory,
+        IServiceScopeFactory scopeFactory)
     {
-        _serviceProvider = serviceProvider;
-        _sessionValuesAccessor = sessionValuesAccessor;
         _exceptionTransformer = exceptionTransformer;
         _entryFactory = entryFactory;
+        _scopeFactory = scopeFactory;
         _logger = logger;
     }
 
@@ -35,40 +32,45 @@ public class ServiceMethodExecutor : IServiceMethodExecutor
         var entry = _entryFactory.Find(message.ServiceId);
         if (entry == null)
         {
-            await SendResult(sender, message.Id, new MessageResult("Service not found"));
+            await SendResult(sender, message.Id, new MessageResult(ExceptionConstants.ServiceNotFound));
             return;
         }
 
+        // execute every request in it's own service scope
+        await using var scope = _scopeFactory.CreateAsyncScope();
+
+        var callContextAccessor = scope.ServiceProvider.GetRequiredService<ICallContextAccessor>();
+
         // set context values
-        _sessionValuesAccessor.Context = message.Context;
+        callContextAccessor.Context = message.Context;
 
-        Task Handler() => ExecuteInternal(sender, message, entry);
+        Task Handler() => ExecuteInternal(scope.ServiceProvider, sender, message, entry);
 
-        await _serviceProvider
+        await scope.ServiceProvider
             .GetServices<IServiceMiddleware>()
             .Reverse()
             .Aggregate((ServiceHandlerDelegate)Handler, (next, pipeline) => () => pipeline.Execute(message, next))();
     }
 
-    private async Task ExecuteInternal(IMessageSender sender, MessageInvoke message, MicroEntryDelegate entry)
+    private async Task ExecuteInternal(IServiceProvider serviceProvider, IMessageSender sender, MessageInvoke message, MicroEntryDelegate entry)
     {
         if (_logger.IsEnabled(LogLevel.Information))
             _logger.LogInformation($"Execute, InvokeType: {message.Context.Type}");
 
         if (message.Context.Type == MessageInvokeContextType.OneWay)
         {
-            await ExecuteOneWay(sender, entry, message);
+            await ExecuteOneWay(serviceProvider, sender, entry, message);
             return;
         }
 
-        await ExecuteWithResult(sender, entry, message);
+        await ExecuteWithResult(serviceProvider, sender, entry, message);
     }
 
-    private async Task LocalExecute(MicroEntryDelegate entry, MessageInvoke invokeMessage, MessageResult messageResult)
+    private async Task LocalExecute(IServiceProvider serviceProvider, MicroEntryDelegate entry, MessageInvoke invokeMessage, MessageResult messageResult)
     {
         try
         {
-            var data = await entry(_serviceProvider, invokeMessage.Parameters).ConfigureAwait(false);
+            var data = await entry(serviceProvider, invokeMessage.Parameters).ConfigureAwait(false);
 
             if (data is not Task task)
             {
@@ -109,14 +111,14 @@ public class ServiceMethodExecutor : IServiceMethodExecutor
         }
     }
 
-    private async Task ExecuteWithResult(IMessageSender sender, MicroEntryDelegate entry, MessageInvoke message)
+    private async Task ExecuteWithResult(IServiceProvider serviceProvider, IMessageSender sender, MicroEntryDelegate entry, MessageInvoke message)
     {
         var result = new MessageResult();
-        await LocalExecute(entry, message, result);
+        await LocalExecute(serviceProvider, entry, message, result);
         await SendResult(sender, message.Id, result);
     }
 
-    private async Task ExecuteOneWay(IMessageSender sender, MicroEntryDelegate entry, MessageInvoke message)
+    private async Task ExecuteOneWay(IServiceProvider serviceProvider, IMessageSender sender, MicroEntryDelegate entry, MessageInvoke message)
     {
         var result = new MessageResult();
 
@@ -124,7 +126,7 @@ public class ServiceMethodExecutor : IServiceMethodExecutor
 
         await Task.Factory.StartNew(async () =>
         {
-            await LocalExecute(entry, message, result);
+            await LocalExecute(serviceProvider, entry, message, result);
         }, TaskCreationOptions.LongRunning);
     }
 }

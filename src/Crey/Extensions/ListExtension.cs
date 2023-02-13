@@ -13,9 +13,4 @@ internal static class ListExtension
 
         return !array.Any() || array.All(t => t == null || string.IsNullOrWhiteSpace(t.ToString()));
     }
-
-    public static IEnumerable<T> RandomSort<T>(this IEnumerable<T> array)
-    {
-        return array.OrderBy(t => RandomHelper.Random().Next());
-    }
 }

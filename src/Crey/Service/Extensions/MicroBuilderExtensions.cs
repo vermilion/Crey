@@ -18,7 +18,7 @@ public static class MicroBuilderExtensions
         services.AddBaseServices();
 
         services.AddSingleton<IServiceHost, ServiceHost>();
-        services.AddScoped<IServiceMethodExecutor, ServiceMethodExecutor>();
+        services.AddSingleton<IServiceMethodExecutor, ServiceMethodExecutor>();
         services.AddSingleton<IServiceEntryFactory, ServiceEntryFactory>();
 
         services.AddScoped<ICallContextAccessor, CallContextAccessor>();
