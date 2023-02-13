@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Reflection;
 using Consul;
 using Crey.Extensions;
@@ -7,6 +6,7 @@ using Crey.Extensions.StringExtension;
 using Crey.Helper;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Crey.Discovery.Consul;
 
@@ -87,9 +87,15 @@ internal class ConsulServiceRegister : IServiceRegister
 
             var result = await client.Agent.ServiceRegister(service);
             if (result.StatusCode != HttpStatusCode.OK)
-                _logger.LogWarning($"Service registration failed [{serviceName}@{serverAddress}]:{result.StatusCode}, {result.RequestTime}");
+            {
+                if (_logger.IsEnabled(LogLevel.Warning))
+                    _logger.LogWarning($"Service registration failed [{serviceName}@{serverAddress}]:{result.StatusCode}, {result.RequestTime}");
+            }
             else
-                _logger.LogInformation($"Service registered [{serviceName}@{serverAddress}]");
+            {
+                if (_logger.IsEnabled(LogLevel.Information))
+                    _logger.LogInformation($"Service registered [{serviceName}@{serverAddress}]");
+            }
         }
     }
 
@@ -100,7 +106,9 @@ internal class ConsulServiceRegister : IServiceRegister
         foreach (var service in _services)
         {
             await client.Agent.ServiceDeregister(service);
-            _logger.LogInformation($"Service deregistered [{service}]");
+
+            if (_logger.IsEnabled(LogLevel.Information))
+                _logger.LogInformation($"Service deregistered [{service}]");
         }
     }
 }

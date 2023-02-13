@@ -1,6 +1,5 @@
 ﻿using System.Net.Sockets;
 using System.Reflection;
-using Crey.Exceptions;
 using Crey.Extensions;
 using Crey.Helper;
 using Microsoft.Extensions.DependencyInjection;

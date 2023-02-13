@@ -1,5 +1,8 @@
 ﻿namespace Crey.Exceptions;
 
+/// <summary>
+/// Provides methods for exception convertion to transport object and vise versa
+/// </summary>
 public interface IExceptionConverter
 {
     /// <summary>
