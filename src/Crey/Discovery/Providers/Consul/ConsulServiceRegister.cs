@@ -3,7 +3,7 @@ using System.Reflection;
 using Consul;
 using Crey.Extensions;
 using Crey.Extensions.StringExtension;
-using Crey.Helper;
+using Crey.Helpers;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;

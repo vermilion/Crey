@@ -1,4 +1,4 @@
-﻿using Crey.Helper;
+﻿using Crey.Helpers;
 
 namespace Crey.Extensions;
 

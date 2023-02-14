@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace Crey.Helper;
+namespace Crey.Helpers;
 
 public static class JsonHelper
 {

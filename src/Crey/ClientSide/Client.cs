@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Diagnostics;
-using Crey.Helper;
+using Crey.Helpers;
 using Microsoft.Extensions.Logging;
 
 namespace Crey.ClientSide;

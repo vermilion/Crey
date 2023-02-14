@@ -221,6 +221,7 @@ Where `Key` = `$"{AssemblyNamespace}_v{AssemblyVersion.Major}"`
 - Tests
 - Check internal services override possibility
 - Kestrel hosting with `ConnectionHandler`
+- Make `NetworkUtilities` configurable through _DI_
 
 ## Benchmark
 

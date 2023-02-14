@@ -1,6 +1,4 @@
-﻿using System.Net.Sockets;
-using Crey.Helper;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace Crey.Service;
@@ -18,7 +16,7 @@ internal class PostConfigureServiceAddress : IPostConfigureOptions<ServiceAddres
     {
         try
         {
-            var resolvedIP = IpAddressHelper.ResolveIPAddressOrDefault(options.Host, null, AddressFamily.InterNetwork);
+            var resolvedIP = IpAddressHelper.ResolveIPAddressOrDefault(options.Host, _logger);
 
             if (resolvedIP is null)
                 throw new Exception($"Unable to find a suitable candidate for {nameof(ServiceAddress)}.{nameof(options.Host)}");

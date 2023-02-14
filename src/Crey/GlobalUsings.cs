@@ -5,6 +5,7 @@ global using Crey.Codec;
 global using Crey.Core;
 global using Crey.Discovery;
 global using Crey.Exceptions;
+global using Crey.Helpers;
 global using Crey.Messages;
 global using Crey.Proxy;
 global using Crey.Service;

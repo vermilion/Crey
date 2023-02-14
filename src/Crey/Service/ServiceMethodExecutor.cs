@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using Crey.Helper;
+using Crey.Helpers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 

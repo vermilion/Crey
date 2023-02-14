@@ -1,7 +1,7 @@
 ﻿using System.Net.Sockets;
 using System.Reflection;
 using Crey.Extensions;
-using Crey.Helper;
+using Crey.Helpers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Polly;
