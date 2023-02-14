@@ -17,7 +17,7 @@ public static class ServiceCollectionExtensions
 
         services.Configure<ConsulOptions>(options =>
         {
-            builder.ConfigurationSection.GetSection("discovery:consul").Bind(options);
+            builder.ConfigurationSection.GetSection("Discovery:Consul").Bind(options);
             action?.Invoke(options);
         });
 

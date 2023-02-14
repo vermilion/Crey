@@ -17,7 +17,7 @@ public static class MicroBuilderExtensions
 
         services.Configure<StaticListOptions>(options =>
         {
-            builder.ConfigurationSection.GetSection("discovery:static").Bind(options);
+            builder.ConfigurationSection.GetSection("Discovery:Static").Bind(options);
             action?.Invoke(options);
         });
 

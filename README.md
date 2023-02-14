@@ -76,15 +76,15 @@ public class TestService : ITestContract
 **Configuration**
 ```json
 {
-  "micro": {
-    "service": {
-      "host": "192.168.1.24", // define host IP
-      "port": 5003 // port to bind to
+  "Micro": {
+    "Service": {
+      "Host": "192.168.1.24", // define host IP
+      "Port": 5003 // port to bind to
     },
-    "discovery": {
-      "consul": {
-        "server": "http://localhost:8500", // consul address
-        "token": ""
+    "Discovery": {
+      "Consul": {
+        "Server": "http://localhost:8500", // consul address
+        "Token": ""
       }
     }
   }
@@ -124,11 +124,11 @@ var res = await contract.Say("Hello world");
 **Configuration**
 ```json
 {
-  "micro": {
-    "discovery": {
-      "consul": {
-        "server": "http://localhost:8500", // consul address
-        "token": ""
+  "Micro": {
+    "Discovery": {
+      "Consul": {
+        "Server": "http://localhost:8500", // consul address
+        "Token": ""
       }
     }
   }
@@ -183,20 +183,20 @@ Consul provider can be configured with these values
 - Metadata
 - Check options
 ```json
-"consul": {
-  "server": "http://localhost:8500",
-  "token": "",
-  "service": {
-  "tags": [
+"Consul": {
+  "Server": "http://localhost:8500",
+  "Token": "",
+  "Service": {
+  "Tags": [
     "DEV"
   ],
-  "meta": {
+  "Meta": {
     "Environment": "Development"
   },
-  "check": {
-    "deregisterCriticalServiceAfterDays": 0,
-    "timeout": 5,
-    "interval": 1
+  "Check": {
+    "DeregisterCriticalServiceAfterDays": 0,
+    "Timeout": 5,
+    "Interval": 1
   }
 }
 ```
@@ -206,11 +206,11 @@ Consul provider can be configured with these values
 Static List provider can be configured with these values
 
 ```json
-"staticList": {
+"Static": {
   "Crey.Tests.Contracts_v1": [
-    "host": "localhost",
-    "port": 5003,
-    "weight": 1 // optional, used in weighted random algorithm
+    "Host": "localhost",
+    "Port": 5003,
+    "Weight": 1 // optional, used in weighted random algorithm
   ]
 }
 ```
@@ -220,6 +220,7 @@ Where `Key` = `$"{AssemblyNamespace}_v{AssemblyVersion.Major}"`
 ## Roadmap
 - Tests
 - Check internal services override possibility
+- Kestrel hosting with `ConnectionHandler`
 
 ## Benchmark
 

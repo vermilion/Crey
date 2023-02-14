@@ -7,7 +7,7 @@ public class MicroBuilder : IMicroBuilder
 {
     public MicroBuilder(IConfiguration configuration, IServiceCollection services)
     {
-        ConfigurationSection = configuration.GetSection("micro");
+        ConfigurationSection = configuration.GetSection("Micro");
         Services = services;
     }
 

@@ -25,7 +25,7 @@ public static class MicroBuilderExtensions
 
         services.AddHostedService<HostListenerBackroundService>();
 
-        services.Configure<ServiceAddress>(builder.ConfigurationSection.GetSection("service"));
+        services.Configure<ServiceAddress>(builder.ConfigurationSection.GetSection("Service"));
         services.AddTransient<IPostConfigureOptions<ServiceAddress>, PostConfigureServiceAddress>();
 
         builder.AddMiddleware<ServiceLoggingMiddleware>();
