@@ -44,10 +44,8 @@ public interface ITestContract : IMicroService
 ``` c#
 // using .net core's GenericHost
 var host = Host.CreateDefaultBuilder(args)
-    .ConfigureServices((context, services) =>
+    .UseMicroServices((context, builder) =>
     {
-        var builder = new MicroBuilder(context.Configuration, services);
-
         builder
             // choose either static discovery list or or Consul based one
             //.AddStaticListDiscovery()
@@ -101,7 +99,7 @@ var proxyFactory = ClientBuilder.Create(provider).CreateProxyFactory();
 var proxyFactory = ClientBuilder.Create(builder =>
 {
     builder
-        // choose either static discovery list or or Consul based one
+        // choose either static discovery list or Consul based one
         //.AddStaticListDiscovery(x =>
         //{
         //    x.Set<ITestContract>(new[] { new ServiceAddress("192.168.1.24", 5003) });

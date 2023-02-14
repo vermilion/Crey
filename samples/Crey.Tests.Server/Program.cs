@@ -19,10 +19,8 @@ internal class Program
     private static async Task Main(string[] args)
     {
         var host = Host.CreateDefaultBuilder(args)
-            .ConfigureServices((context, services) =>
+            .UseMicroServices((context, builder) =>
             {
-                var builder = new MicroBuilder(context.Configuration, services);
-
                 builder
                     //.AddStaticListDiscovery()
                     .AddConsulDiscovery()
