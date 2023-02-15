@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Net;
+using System.Reflection;
 using Microsoft.Extensions.Options;
 
 namespace Crey.Discovery.Localhost;
@@ -12,7 +13,7 @@ internal class LocalhostServiceFinder : IServiceFinder, IServiceRegister
         var address = options.Value;
         _serviceRegistry = new()
         {
-             new ServiceAddress(address.Host ?? "127.0.0.1", address.Port)
+             new ServiceAddress(IPAddress.Loopback.ToString(), address.Port)
         };
     }
 

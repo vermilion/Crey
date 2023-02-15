@@ -19,7 +19,7 @@ internal class PostConfigureServiceAddress : IPostConfigureOptions<ServiceAddres
             var resolvedIP = IpAddressHelper.ResolveIPAddressOrDefault(options.Host, _logger);
 
             if (resolvedIP is null)
-                throw new Exception($"Unable to find a suitable candidate for {nameof(ServiceAddress)}.{nameof(options.Host)}");
+                throw new Exception($"Unable to find a suitable candidate for {nameof(ServiceAddress)}. {nameof(options.Host)}");
 
             options.Host = resolvedIP.ToString();
         }
