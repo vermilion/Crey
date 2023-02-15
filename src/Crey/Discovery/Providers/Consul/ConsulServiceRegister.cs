@@ -55,7 +55,7 @@ internal class ConsulServiceRegister : IServiceRegister
                 Check = new AgentServiceCheck
                 {
                     TCP = serverAddress.ToString(),
-                    DeregisterCriticalServiceAfter = TimeSpan.FromDays(_options.Service.Check.DeregisterCriticalServiceAfterDays),
+                    DeregisterCriticalServiceAfter = _options.Service.Check.DeregisterCriticalServiceAfter,
                     Timeout = TimeSpan.FromSeconds(_options.Service.Check.Timeout),
                     Interval = TimeSpan.FromSeconds(_options.Service.Check.Interval)
                 },

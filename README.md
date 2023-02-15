@@ -192,7 +192,7 @@ Consul provider can be configured with these values
     "Environment": "Development"
   },
   "Check": {
-    "DeregisterCriticalServiceAfterDays": 0,
+    "DeregisterCriticalServiceAfter": "00:10:00", // TimeSpan - 10mins
     "Timeout": 5,
     "Interval": 1
   }
