@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using Crey.Helpers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -36,37 +35,44 @@ public class ServiceMethodExecutor : IServiceMethodExecutor
             return;
         }
 
+        if (_logger.IsEnabled(LogLevel.Information))
+            _logger.LogInformation($"Execute, InvokeType: {message.Context.Type}");
+
+        switch (message.Context.Type)
+        {
+            case MessageInvokeContextType.OneWay:
+                {
+                    await ExecuteOneWay(sender, entry, message);
+                    break;
+                }
+            case MessageInvokeContextType.None:
+            default:
+                {
+                    await ExecuteWithResult(sender, entry, message);
+                    break;
+                }
+        }
+    }
+
+    private async Task LocalExecute(MicroEntryDelegate entry, MessageInvoke invokeMessage, MessageResult messageResult)
+    {
         // execute every request in it's own service scope
         await using var scope = _scopeFactory.CreateAsyncScope();
 
         var callContextAccessor = scope.ServiceProvider.GetRequiredService<ICallContextAccessor>();
 
         // set context values
-        callContextAccessor.Context = message.Context;
+        callContextAccessor.Context = invokeMessage.Context;
 
-        Task Handler() => ExecuteInternal(scope.ServiceProvider, sender, message, entry);
+        Task Handler() => ExecuteMethod(scope.ServiceProvider, entry, invokeMessage, messageResult);
 
         await scope.ServiceProvider
             .GetServices<IServiceMiddleware>()
             .Reverse()
-            .Aggregate((ServiceHandlerDelegate)Handler, (next, pipeline) => () => pipeline.Execute(message, next))();
+            .Aggregate((ServiceHandlerDelegate)Handler, (next, pipeline) => () => pipeline.Execute(invokeMessage, next))();
     }
 
-    private async Task ExecuteInternal(IServiceProvider serviceProvider, IMessageSender sender, MessageInvoke message, MicroEntryDelegate entry)
-    {
-        if (_logger.IsEnabled(LogLevel.Information))
-            _logger.LogInformation($"Execute, InvokeType: {message.Context.Type}");
-
-        if (message.Context.Type == MessageInvokeContextType.OneWay)
-        {
-            await ExecuteOneWay(serviceProvider, sender, entry, message);
-            return;
-        }
-
-        await ExecuteWithResult(serviceProvider, sender, entry, message);
-    }
-
-    private async Task LocalExecute(IServiceProvider serviceProvider, MicroEntryDelegate entry, MessageInvoke invokeMessage, MessageResult messageResult)
+    private async Task ExecuteMethod(IServiceProvider serviceProvider, MicroEntryDelegate entry, MessageInvoke invokeMessage, MessageResult messageResult)
     {
         try
         {
@@ -111,22 +117,22 @@ public class ServiceMethodExecutor : IServiceMethodExecutor
         }
     }
 
-    private async Task ExecuteWithResult(IServiceProvider serviceProvider, IMessageSender sender, MicroEntryDelegate entry, MessageInvoke message)
+    private async Task ExecuteWithResult(IMessageSender sender, MicroEntryDelegate entry, MessageInvoke message)
     {
         var result = new MessageResult();
-        await LocalExecute(serviceProvider, entry, message, result);
+        await LocalExecute(entry, message, result);
         await SendResult(sender, message.Id, result);
     }
 
-    private async Task ExecuteOneWay(IServiceProvider serviceProvider, IMessageSender sender, MicroEntryDelegate entry, MessageInvoke message)
+    private async Task ExecuteOneWay(IMessageSender sender, MicroEntryDelegate entry, MessageInvoke message)
     {
         var result = new MessageResult();
 
         await SendResult(sender, message.Id, result);
 
-        await Task.Factory.StartNew(async () =>
+        await Task.Factory.StartNew(() =>
         {
-            await LocalExecute(serviceProvider, entry, message, result);
+            return LocalExecute(entry, message, result);
         }, TaskCreationOptions.LongRunning);
     }
 }
