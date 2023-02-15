@@ -33,7 +33,7 @@ public abstract class ClientFactory : IClientFactory, IDisposable
             var lazyClient = _clients.GetOrAdd(serviceAddress.ToString(),
                 key => new Lazy<Task<IClient>>(async () =>
                 {
-                    Logger.LogInformation($"Client created：{key}");
+                    Logger.LogInformation($"Client created： {key}");
                     return await Create(serviceAddress);
                 }));
 

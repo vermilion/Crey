@@ -1,4 +1,6 @@
-﻿namespace Crey.Discovery;
+﻿using System.Net;
+
+namespace Crey.Discovery;
 
 /// <summary>
 /// Service address info
@@ -8,8 +10,13 @@ public class ServiceAddress
     /// <summary>
     /// Service Host
     /// </summary>
-    public string Host { get; set; }
+    public string Host
+    {
+        get => string.IsNullOrEmpty(_host) ? IPAddress.Loopback.ToString() : _host;
+        set => _host = value;
+    }
 
+    private string _host;
     private int _port;
 
     /// <summary>

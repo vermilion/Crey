@@ -220,6 +220,7 @@ Where `Key` = `$"{AssemblyNamespace}_v{AssemblyVersion.Major}"`
 - Check internal services override possibility
 - Kestrel hosting with `ConnectionHandler`
 - Make `NetworkUtilities` configurable through _DI_
+- replace `ProxyFactory` with other abstraction on client creation
 
 ## Benchmark
 

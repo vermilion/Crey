@@ -2,7 +2,6 @@
 using Crey.ClientSide;
 using Crey.Discovery.Consul;
 #if !DEBUG
-using Crey.Discovery;
 using Crey.Discovery.StaticList;
 #endif
 using Crey.Extensions;
@@ -127,6 +126,8 @@ internal class Program
         // create standalone client
         var proxyFactory = ClientBuilder.Create(builder =>
         {
+            builder.Services.AddLogging(x => x.AddConsole());
+
             builder
 #if !DEBUG
                 .AddStaticListDiscovery(x =>

@@ -14,14 +14,14 @@ public static class ClientBuilder
     /// </summary>
     /// <param name="configureAction">Configure action</param>
     /// <returns>Builder <see cref="BuildableClient"/></returns>
-    public static BuildableClient Create(Action<Builder.MicroBuilder> configureAction)
+    public static BuildableClient Create(Action<MicroBuilder> configureAction)
     {
         var configurationBuilder = new ConfigurationBuilder();
         var configuration = configurationBuilder.Build();
         var services = new ServiceCollection();
         services.AddLogging();
 
-        var builder = new Builder.MicroBuilder(configuration, services);
+        var builder = new MicroBuilder(configuration, services);
 
         configureAction(builder);
 

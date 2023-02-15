@@ -63,7 +63,7 @@ internal class ClientMethodExecutor : IClientMethodExecutor
         return await policy.ExecuteAsync(async () =>
         {
             if (!services.Any())
-                throw new FaultException(ExceptionConstants.NoServicesFound);
+                throw new FaultException(ExceptionConstants.ServiceNotFound);
 
             var service = await _loadBalancingStrategy.GetNextService(services);
 
