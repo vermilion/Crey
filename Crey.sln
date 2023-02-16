@@ -18,9 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crey.Benchmarks", "Crey.Benchmarks\Crey.Benchmarks.csproj", "{87EC4A01-7FA3-44D0-AD3E-68AC2E2C8B0C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Crey.Tests.NetFramework", "samples\Crey.Tests.NetFramework\Crey.Tests.NetFramework.csproj", "{A878D391-27D4-4429-80C1-DF191035603B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crey.Benchmarks", "samples\Crey.Benchmarks\Crey.Benchmarks.csproj", "{87EC4A01-7FA3-44D0-AD3E-68AC2E2C8B0C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,10 +42,6 @@ Global
 		{87EC4A01-7FA3-44D0-AD3E-68AC2E2C8B0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{87EC4A01-7FA3-44D0-AD3E-68AC2E2C8B0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{87EC4A01-7FA3-44D0-AD3E-68AC2E2C8B0C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A878D391-27D4-4429-80C1-DF191035603B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A878D391-27D4-4429-80C1-DF191035603B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A878D391-27D4-4429-80C1-DF191035603B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A878D391-27D4-4429-80C1-DF191035603B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -56,7 +50,6 @@ Global
 		{10A887EE-5FFF-405D-BF81-B08D4E67597C} = {3D9793B2-FFDF-466B-8574-A6EC15B07CE2}
 		{717E6011-70ED-4A2D-94FD-912CA46EF038} = {3D9793B2-FFDF-466B-8574-A6EC15B07CE2}
 		{87EC4A01-7FA3-44D0-AD3E-68AC2E2C8B0C} = {3D9793B2-FFDF-466B-8574-A6EC15B07CE2}
-		{A878D391-27D4-4429-80C1-DF191035603B} = {3D9793B2-FFDF-466B-8574-A6EC15B07CE2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {80C90B42-B34C-4BE9-8695-96E316D751E9}

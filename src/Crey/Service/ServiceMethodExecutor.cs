@@ -29,7 +29,7 @@ public class ServiceMethodExecutor : IServiceMethodExecutor
             _logger.LogDebug(JsonHelper.ToJson(message));
 
         var entry = _entryFactory.Find(message.ServiceId);
-        if (entry == null)
+        if (entry is null)
         {
             await SendResult(sender, message.Id, new MessageResult(ExceptionConstants.ServiceNotFound));
             return;
@@ -89,7 +89,7 @@ public class ServiceMethodExecutor : IServiceMethodExecutor
                 if (taskType.IsGenericType)
                 {
                     var prop = taskType.GetProperty("Result");
-                    if (prop != null)
+                    if (prop is not null)
                         messageResult.Content = prop.GetValue(task);
                 }
             }

@@ -1,6 +1,6 @@
 ﻿namespace Crey.Exceptions;
 
-public class ExceptionConverter : IExceptionConverter
+internal class ExceptionConverter : IExceptionConverter
 {
     public MessageException Wrap(Exception ex)
     {
