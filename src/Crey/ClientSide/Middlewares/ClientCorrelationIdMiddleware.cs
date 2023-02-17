@@ -23,8 +23,8 @@ internal class ClientCorrelationIdMiddleware : IClientMiddleware
 
         if (callContextAccessor is not null)
         {
-            if (_logger.IsEnabled(LogLevel.Information))
-                _logger.LogInformation($"Found correlationId: {callContextAccessor.Context.CorrelationId}");
+            if (_logger.IsEnabled(LogLevel.Debug))
+                _logger.LogDebug($"Found correlationId: {callContextAccessor.Context.CorrelationId}");
 
             message.Context.CorrelationId = callContextAccessor.Context.CorrelationId;
         }

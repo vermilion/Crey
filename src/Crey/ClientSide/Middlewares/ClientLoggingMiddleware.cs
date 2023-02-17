@@ -1,9 +1,8 @@
 ﻿using System.Diagnostics;
-using Microsoft.Extensions.Logging;
 
 namespace Crey.ClientSide;
 
-internal class ClientLoggingMiddleware : IClientMiddleware
+public class ClientLoggingMiddleware : IClientMiddleware
 {
     private readonly ILogger<ClientLoggingMiddleware> _logger;
 

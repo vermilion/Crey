@@ -28,8 +28,6 @@ public static class MicroBuilderExtensions
         services.Configure<ServiceAddress>(builder.ConfigurationSection.GetSection("Service"));
         services.AddTransient<IPostConfigureOptions<ServiceAddress>, PostConfigureServiceAddress>();
 
-        builder.AddMiddleware<ServiceLoggingMiddleware>();
-
         builder.AddServiceDiscoveryServices();
 
         builderAction.Invoke(builder);

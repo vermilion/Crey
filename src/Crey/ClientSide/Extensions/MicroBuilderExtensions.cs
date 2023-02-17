@@ -22,7 +22,6 @@ public static class MicroBuilderExtensions
         services.AddSingleton<IClientLoadBalancingStrategy, ClientWeightedRandomLoadBalancingStrategy>();
 
         builder.AddMiddleware<ClientCorrelationIdMiddleware>();
-        builder.AddMiddleware<ClientLoggingMiddleware>();
 
         builderAction?.Invoke(builder);
 
