@@ -1,5 +1,8 @@
 ﻿namespace Crey.Messages;
 
+/// <summary>
+/// Invoke message object
+/// </summary>
 public class MessageInvoke : Message
 {
     /// <summary>

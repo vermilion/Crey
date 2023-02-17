@@ -5,7 +5,7 @@ namespace Crey.Tests.Server;
 
 internal class ServiceMiddleware : IServiceMiddleware
 {
-    public Task Execute(MessageInvoke message, ServiceHandlerDelegate next)
+    public Task Execute(MessageInvoke message, NextServiceDelegate next)
     {
         return next();
     }

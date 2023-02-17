@@ -1,9 +1,8 @@
 ﻿using System.Diagnostics;
-using Microsoft.Extensions.Logging;
 
 namespace Crey.Service;
 
-internal class ServiceLoggingMiddleware : IServiceMiddleware
+public class ServiceLoggingMiddleware : IServiceMiddleware
 {
     private readonly ILogger<ServiceLoggingMiddleware> _logger;
 
@@ -12,7 +11,7 @@ internal class ServiceLoggingMiddleware : IServiceMiddleware
         _logger = logger;
     }
 
-    public async Task Execute(MessageInvoke message, ServiceHandlerDelegate next)
+    public async Task Execute(MessageInvoke message, NextServiceDelegate next)
     {
         var watch = Stopwatch.StartNew();
 

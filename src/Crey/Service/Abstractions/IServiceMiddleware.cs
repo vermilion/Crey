@@ -3,7 +3,7 @@
 /// <summary>
 /// Represents an async continuation for the next task to execute in the pipeline
 /// </summary>
-public delegate Task ServiceHandlerDelegate();
+public delegate Task NextServiceDelegate();
 
 /// <summary>
 /// Middleware interface
@@ -16,5 +16,5 @@ public interface IServiceMiddleware
     /// <param name="message">Received message</param>
     /// <param name="next">Continuation delegate</param>
     /// <returns><see cref="Task"/></returns>
-    Task Execute(MessageInvoke message, ServiceHandlerDelegate next);
+    Task Execute(MessageInvoke message, NextServiceDelegate next);
 }

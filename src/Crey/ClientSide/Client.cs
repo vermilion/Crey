@@ -34,7 +34,7 @@ public class Client : IClient, IDisposable
 
         if (message is MessageResult result)
         {
-            if (result.Code != 200)
+            if (result.IsSuccess is false)
             {
                 var ex = _exceptionConverter.Unwrap(result.Content as MessageException);
                 task.TrySetException(ex);

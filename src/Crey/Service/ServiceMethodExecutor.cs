@@ -23,84 +23,90 @@ public class ServiceMethodExecutor : IServiceMethodExecutor
         _logger = logger;
     }
 
-    public async Task Execute(IMessageSender sender, MessageInvoke message)
+    public async Task Execute(IMessageSender sender, MessageInvoke invokeMessage)
     {
         if (_logger.IsEnabled(LogLevel.Debug))
-            _logger.LogDebug(JsonHelper.ToJson(message));
+            _logger.LogDebug(JsonHelper.ToJson(invokeMessage));
 
-        var entry = _entryFactory.Find(message.ServiceId);
+        var entry = _entryFactory.Find(invokeMessage.ServiceId);
         if (entry is null)
-        {
-            await SendResult(sender, message.Id, new MessageResult(ExceptionConstants.ServiceNotFound));
-            return;
-        }
+            throw new FaultException(ExceptionConstants.ServiceNotFound);
 
-        if (_logger.IsEnabled(LogLevel.Information))
-            _logger.LogInformation($"Execute, InvokeType: {message.Context.Type}");
+        var messageResult = new MessageResult();
 
-        switch (message.Context.Type)
-        {
-            case MessageInvokeContextType.OneWay:
-                {
-                    await ExecuteOneWay(sender, entry, message);
-                    break;
-                }
-            case MessageInvokeContextType.None:
-            default:
-                {
-                    await ExecuteWithResult(sender, entry, message);
-                    break;
-                }
-        }
-    }
-
-    private async Task LocalExecute(MicroEntryDelegate entry, MessageInvoke invokeMessage, MessageResult messageResult)
-    {
         // execute every request in it's own service scope
-        await using var scope = _scopeFactory.CreateAsyncScope();
+        var scope = _scopeFactory.CreateScope();
 
         var callContextAccessor = scope.ServiceProvider.GetRequiredService<ICallContextAccessor>();
 
         // set context values
         callContextAccessor.Context = invokeMessage.Context;
 
-        Task Handler() => ExecuteMethod(scope.ServiceProvider, entry, invokeMessage, messageResult);
-
-        await scope.ServiceProvider
-            .GetServices<IServiceMiddleware>()
-            .Reverse()
-            .Aggregate((ServiceHandlerDelegate)Handler, (next, pipeline) => () => pipeline.Execute(invokeMessage, next))();
-    }
-
-    private async Task ExecuteMethod(IServiceProvider serviceProvider, MicroEntryDelegate entry, MessageInvoke invokeMessage, MessageResult messageResult)
-    {
         try
         {
-            var data = await entry(serviceProvider, invokeMessage.Parameters).ConfigureAwait(false);
-
-            if (data is not Task task)
-            {
-                messageResult.Content = data;
-            }
-            else
-            {
-                await task.ConfigureAwait(false);
-                var taskType = task.GetType().GetTypeInfo();
-                if (taskType.IsGenericType)
-                {
-                    var prop = taskType.GetProperty("Result");
-                    if (prop is not null)
-                        messageResult.Content = prop.GetValue(task);
-                }
-            }
+            // start execution. filters -> middlewares -> actual method
+            await ExecuteWithFilters(scope, entry, invokeMessage, messageResult);
         }
         catch (Exception ex)
         {
             if (_logger.IsEnabled(LogLevel.Error))
                 _logger.LogError(ex, "Server error occured");
 
-            messageResult.Code = 500;
+            messageResult.IsSuccess = false;
             messageResult.Content = _exceptionTransformer.Wrap(ex);
+        }
+        finally
+        {
+            await SendResult(sender, invokeMessage.Id, messageResult);
+        }
+    }
+
+    private async Task ExecuteWithFilters(IServiceScope scope, ServiceEntryInfo entry, MessageInvoke invokeMessage, MessageResult messageResult)
+    {
+        Task Handler() => ExecuteWithMiddlewares(scope, entry.Delegate, invokeMessage, messageResult);
+
+        var filters = entry.MethodFilters.Select(x => (IServiceMethodFilter)scope.ServiceProvider.GetService(x));
+
+        await filters
+            .Reverse()
+            .Aggregate((NextServiceDelegate)Handler, (next, pipeline) => () => pipeline.Execute(invokeMessage, next))();
+    }
+
+    private async Task ExecuteWithMiddlewares(IServiceScope scope, MicroEntryDelegate entry, MessageInvoke invokeMessage, MessageResult messageResult)
+    {
+        try
+        {
+            Task Handler() => ExecuteMethod(scope.ServiceProvider, entry, invokeMessage, messageResult);
+
+            await scope.ServiceProvider
+                .GetServices<IServiceMiddleware>()
+                .Reverse()
+                .Aggregate((NextServiceDelegate)Handler, (next, pipeline) => () => pipeline.Execute(invokeMessage, next))();
+        }
+        finally
+        {
+            scope?.Dispose();
+        }
+    }
+
+    private async Task ExecuteMethod(IServiceProvider serviceProvider, MicroEntryDelegate entry, MessageInvoke invokeMessage, MessageResult messageResult)
+    {
+        var data = await entry(serviceProvider, invokeMessage.Parameters).ConfigureAwait(false);
+
+        if (data is not Task task)
+        {
+            messageResult.Content = data;
+        }
+        else
+        {
+            await task.ConfigureAwait(false);
+            var taskType = task.GetType().GetTypeInfo();
+            if (taskType.IsGenericType)
+            {
+                var prop = taskType.GetProperty("Result");
+                if (prop is not null)
+                    messageResult.Content = prop.GetValue(task);
+            }
         }
     }
 
@@ -109,30 +115,11 @@ public class ServiceMethodExecutor : IServiceMethodExecutor
         try
         {
             result.Id = messageId;
-            await sender.Send(result);
+            await sender.Send(result).ConfigureAwait(false);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Failed to send response message");
         }
-    }
-
-    private async Task ExecuteWithResult(IMessageSender sender, MicroEntryDelegate entry, MessageInvoke message)
-    {
-        var result = new MessageResult();
-        await LocalExecute(entry, message, result);
-        await SendResult(sender, message.Id, result);
-    }
-
-    private async Task ExecuteOneWay(IMessageSender sender, MicroEntryDelegate entry, MessageInvoke message)
-    {
-        var result = new MessageResult();
-
-        await SendResult(sender, message.Id, result);
-
-        await Task.Factory.StartNew(() =>
-        {
-            return LocalExecute(entry, message, result);
-        }, TaskCreationOptions.LongRunning);
     }
 }

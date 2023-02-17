@@ -1,6 +1,6 @@
 ﻿namespace Crey.Messages;
 
-public class Message
+public abstract class Message
 {
     public virtual string Id { get; set; }
 

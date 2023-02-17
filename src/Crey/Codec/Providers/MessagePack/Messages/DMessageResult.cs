@@ -6,14 +6,14 @@ namespace Crey.Codec.MessagePack;
 public class DMessageResult : TransportMessageResult
 {
     public string Id { get; set; }
-    public int Code { get; set; }
+    public bool IsSuccess { get; set; }
     public string Message { get; set; }
     public DMessageDynamic Content { get; set; }
 
     public override void SetValue(MessageResult message, IMessageSerializer serializer)
     {
         Id = message.Id;
-        Code = message.Code;
+        IsSuccess = message.IsSuccess;
         Message = message.Message;
 
         if (message.Content != null)
@@ -28,7 +28,7 @@ public class DMessageResult : TransportMessageResult
         var result = new MessageResult
         {
             Id = Id,
-            Code = Code,
+            IsSuccess = IsSuccess,
             Message = Message,
         };
 

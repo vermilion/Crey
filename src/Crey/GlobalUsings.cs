@@ -10,3 +10,5 @@ global using Crey.Messages;
 global using Crey.Proxy;
 global using Crey.Service;
 global using Crey.Transport;
+
+global using Microsoft.Extensions.Logging;

@@ -13,7 +13,6 @@ public class MessageInvokeContext
     {
         var ctx = context ?? new MessageInvokeContext();
 
-        Type = ctx.Type;
         Headers = ctx.Headers.ToDictionary(x => x.Key, x => x.Value);
     }
 
@@ -21,11 +20,6 @@ public class MessageInvokeContext
     /// Correlation Identifier
     /// </summary>
     public string CorrelationId { get; set; } = Guid.NewGuid().ToString("N");
-
-    /// <summary>
-    /// Invoke type
-    /// </summary>
-    public MessageInvokeContextType Type { get; set; } = MessageInvokeContextType.None;
 
     /// <summary>
     /// Headers passed

@@ -1,5 +1,6 @@
 ﻿using Crey.CallContext;
 using Crey.Proxy;
+using Crey.Service;
 using Crey.Tests.Contracts;
 
 namespace Crey.Tests.Server;
@@ -15,6 +16,14 @@ public class TestService : ITestContract
         _logger = logger;
         _callContextAccessor = callContextAccessor;
         _proxyFactory = proxyFactory;
+    }
+
+    [MethodFilter<OneWayMethodFilter>]
+    public async Task PingOneWay(string message)
+    {
+        await Task.Delay(3000);
+
+        throw new NotImplementedException("test exception");
     }
 
     public async Task<string> Ping(string message)

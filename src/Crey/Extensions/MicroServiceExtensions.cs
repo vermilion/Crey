@@ -18,20 +18,4 @@ public static class MicroServiceExtensions
             InvokeMethodContextProvider.Context = null;
         }
     }
-
-    /// <summary>
-    /// Invoke service "OneWay", in fire-and-forget manner
-    /// </summary>
-    /// <typeparam name="T">Service type</typeparam>
-    /// <param name="service">Service instance</param>
-    /// <param name="action">Action to execute</param>
-    /// <returns><see cref="Task"/> that completes once service receives request</returns>
-    public static Task InvokeOneWay<T>(this T service, Func<T, Task> action)
-        where T : class, IMicroService
-    {
-        return service.InvokeWithContextValues(action, new MessageInvokeContext
-        {
-            Type = MessageInvokeContextType.OneWay
-        });
-    }
 }

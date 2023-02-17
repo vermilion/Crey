@@ -32,6 +32,9 @@ internal class Program
                         builder.AddContract<ITestContract, TestService>();
 
                         builder.AddMiddleware<ServiceMiddleware>();
+                        builder.AddMiddleware<ServiceMiddleware>();
+
+                        builder.AddMethodFilter<OneWayMethodFilter>();
                     });
             })
             .Build();
@@ -70,7 +73,7 @@ internal class Program
                 {
                     var command = cmd.Replace("one:", "");
 
-                    await contract.InvokeOneWay((x) => x.Ping(command));
+                    await contract.PingOneWay("Hello from client");
                     continue;
                 }
 

@@ -17,6 +17,7 @@ PM> Install-Package Crey
   - [OneWay](#oneway---invoke-tasks-in-fire-and-forget-manner)
   - [ICallContextAccessor](#icallcontextaccessor---getting-the-call-context-from-anywhere)
   - [Client / Server Middleware](#middlewares)
+  - [Method Filters](#method-filters)
 - [Service Discovery](#servicediscovery)
   - [Consul](#consul)
   - [Static List](#static-list)
@@ -166,6 +167,25 @@ First, implement these interfaces. Then register these in client or server build
 
 ```csharp
 builder.AddMiddleware<TMiddleware>();
+```
+
+### Method Filters
+
+Cross-cutting concepts can also be implemented using Method Filters `IServiceMethodFilter`.
+
+Any filter can be used as `Middleware`.
+
+First, implement this interface. Then register these in server builder
+
+```csharp
+builder.AddMethodFilter<TServiceMethodFilters>();
+```
+
+Also, desired method should be marked with `MethodFilterAttribute` (also has generic version `MethodFilterAttribute<>` accepting filter type).
+
+```csharp
+[MethodFilter<OneWayMethodFilter>]
+public Task MyMethod()
 ```
 
 ## Service Discovery

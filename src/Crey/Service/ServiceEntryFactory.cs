@@ -10,7 +10,7 @@ namespace Crey.Service;
 public class ServiceEntryFactory : IServiceEntryFactory
 {
     private readonly ILogger<ServiceEntryFactory> _logger;
-    private readonly ConcurrentDictionary<string, MicroEntryDelegate> _entries = new();
+    private readonly ConcurrentDictionary<string, ServiceEntryInfo> _entries = new();
     private readonly List<Type> _services = new();
 
     public ServiceEntryFactory(ILogger<ServiceEntryFactory> logger, IServiceProvider serviceProvider)
@@ -26,22 +26,22 @@ public class ServiceEntryFactory : IServiceEntryFactory
 
         foreach (var service in services)
         {
-            _services.Add(service);
-            var methods = service.GetMethods(BindingFlags.Public | BindingFlags.Instance);
+            _services.Add(service.ServiceType);
+            var methods = service.ServiceType.GetMethods(BindingFlags.Public | BindingFlags.Instance);
 
             foreach (var method in methods)
             {
                 var serviceId = GenerateServiceId(method);
-                _entries.TryAdd(serviceId, CreateEntry(method));
+                _entries.TryAdd(serviceId, CreateEntry(service.ImplementationType, method));
             }
         }
     }
 
-    private MicroEntryDelegate CreateEntry(MethodInfo method)
+    private ServiceEntryInfo CreateEntry(Type? implementationType, MethodInfo method)
     {
         var fastInvokeHandler = FastInvokeHelper.GetMethodInvoker(method);
 
-        return (provider, param) =>
+        Task<object> DelegateMethod(IServiceProvider provider, IDictionary<string, object> param)
         {
             var instance = provider.GetService(method.DeclaringType);
 
@@ -62,16 +62,26 @@ public class ServiceEntryFactory : IServiceEntryFactory
             }
 
             return Task.FromResult(fastInvokeHandler(instance, args.ToArray()));
-        };
+        }
+
+        // create entry
+        var entry = new ServiceEntryInfo(DelegateMethod);
+
+        var targetMethod = GetImplementedMethod(implementationType, method);
+        var attributes = targetMethod?.GetCustomAttributes<MethodFilterAttribute>(true);
+        if (attributes is not null)
+            entry.MethodFilters = attributes.Select(x => x.Type).ToList();
+
+        return entry;
     }
 
-    protected virtual List<Type> FindServices(IServiceProvider serviceProvider)
+    protected virtual List<(Type ServiceType, Type? ImplementationType)> FindServices(IServiceProvider serviceProvider)
     {
         var collection = serviceProvider.GetRequiredService<IServiceCollection>();
 
         return collection
              .Where(x => typeof(IMicroService).IsAssignableFrom(x.ServiceType))
-             .Select(x => x.ServiceType)
+             .Select(x => (x.ServiceType, x.ImplementationType))
              .ToList();
     }
 
@@ -111,11 +121,25 @@ public class ServiceEntryFactory : IServiceEntryFactory
         return list;
     }
 
-    public MicroEntryDelegate? Find(string serviceId)
+    public ServiceEntryInfo? Find(string serviceId)
     {
         if (_entries.TryGetValue(serviceId, out var method))
             return method;
 
         return null;
+    }
+
+    private MethodInfo? GetImplementedMethod(Type? targetType, MethodInfo? interfaceMethod)
+    {
+        if (targetType is null) throw new ArgumentNullException(nameof(targetType));
+        if (interfaceMethod is null) throw new ArgumentNullException(nameof(interfaceMethod));
+
+        var map = targetType.GetInterfaceMap(interfaceMethod.DeclaringType);
+        var index = Array.IndexOf(map.InterfaceMethods, interfaceMethod);
+        if (index < 0)
+            return null;
+
+        return map.TargetMethods[index];
+
     }
 }

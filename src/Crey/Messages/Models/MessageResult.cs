@@ -1,18 +1,22 @@
-﻿using System.Net;
+﻿namespace Crey.Messages;
 
-namespace Crey.Messages;
-
+/// <summary>
+/// Result message object
+/// </summary>
 public class MessageResult : Message
 {
-    public int Code { get; set; } = 200;
+    /// <summary>
+    /// Indicates result Status
+    /// </summary>
+    public bool IsSuccess { get; set; } = true;
+
+    /// <summary>
+    /// Text message
+    /// </summary>
     public string Message { get; set; }
+
+    /// <summary>
+    /// Message content
+    /// </summary>
     public object Content { get; set; }
-
-    public MessageResult() { }
-
-    public MessageResult(string message, int code = (int)HttpStatusCode.InternalServerError)
-    {
-        Message = message;
-        Code = code;
-    }
 }
