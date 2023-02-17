@@ -35,6 +35,7 @@ internal class Program
                         builder.AddMiddleware<ServiceMiddleware>();
 
                         builder.AddMethodFilter<OneWayMethodFilter>();
+                        builder.AddMethodFilter<TestMethodFilter>();
                     });
             })
             .Build();

@@ -19,6 +19,7 @@ public class TestService : ITestContract
     }
 
     [MethodFilter<OneWayMethodFilter>]
+    [MethodFilter<TestMethodFilter>]
     public async Task PingOneWay(string message)
     {
         await Task.Delay(3000);

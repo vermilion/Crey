@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Crey.Discovery.Localhost;
 
@@ -9,13 +10,13 @@ public static class MicroBuilderExtensions
     /// </summary>
     /// <param name="builder">Builder instance</param>
     /// <returns>Builder instance</returns>
-    public static IMicroBuilder AddLocalhostDiscovery(this IMicroBuilder builder, Action<ServiceAddress>? action = null)
+    public static IMicroBuilder AddLocalhostDiscovery(this IMicroBuilder builder, Action<LocalhostDiscoveryOptions>? action = null)
     {
         var services = builder.Services;
 
-        services.Configure<ServiceAddress>(options =>
+        services.Configure<LocalhostDiscoveryOptions>(options =>
         {
-            var address = new ServiceAddress();
+            builder.ConfigurationSection.GetSection("Discovery:Localhost").Bind(options);
             action?.Invoke(options);
         });
 

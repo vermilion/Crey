@@ -8,12 +8,11 @@ internal class LocalhostServiceFinder : IServiceFinder, IServiceRegister
 {
     private readonly List<ServiceAddress> _serviceRegistry;
 
-    public LocalhostServiceFinder(IOptions<ServiceAddress> options)
+    public LocalhostServiceFinder(IOptions<LocalhostDiscoveryOptions> options)
     {
-        var address = options.Value;
         _serviceRegistry = new()
         {
-             new ServiceAddress(IPAddress.Loopback.ToString(), address.Port)
+             new ServiceAddress(IPAddress.Loopback.ToString(), options.Value.Port)
         };
     }
 
