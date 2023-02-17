@@ -36,8 +36,7 @@ jobs:
       run: dotnet test --no-restore --verbosity normal
 
     - name: 🗳️ Creating library package for release
-      run: dotnet pack -c Release --no-restore -p:PackageOutputPath="../nuget-packages" -p:PublicRelease=true
+      run: dotnet pack -c Release --no-restore -p:PublicRelease=true
 
     - name: 📦 Push packages to NuGet
-      run: dotnet nuget push 'nuget-packages/*.nupkg' --api-key ${{ secrets.NUGET_API_KEY }} --source ${{ env.NUGET_REPO_URL }} --skip-duplicate --no-symbols
-
+      run: dotnet nuget push '**/bin/**/*.nupkg' --api-key ${{ secrets.NUGET_API_KEY }} --source ${{ env.NUGET_REPO_URL }} --skip-duplicate --no-symbols
