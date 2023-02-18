@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace Crey.Discovery;
@@ -32,7 +31,9 @@ internal class ServiceRegisterBackroundService : BackgroundService
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, ex.Message);
+            if (_logger.IsEnabled(LogLevel.Error))
+                _logger.LogError(ex, ex.Message);
+
             throw;
         }
     }

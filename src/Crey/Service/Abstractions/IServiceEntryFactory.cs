@@ -2,9 +2,11 @@
 
 namespace Crey.Service;
 
+public delegate Task<object> ServiceEntryDelegate(IServiceProvider provider, IDictionary<string, object> parameters);
+
 public interface IServiceEntryFactory
 {
     IEnumerable<Assembly> GetContracts();
 
-    ServiceEntryInfo? Find(string serviceId);
+    ServiceEntryDelegate? Find(string serviceId);
 }

@@ -4,7 +4,6 @@ using Crey.Discovery.Consul;
 #if !DEBUG
 using Crey.Discovery.StaticList;
 #endif
-using Crey.Extensions;
 using Crey.Tests.Contracts;
 using Crey.Service;
 using Crey.Exceptions;
@@ -33,9 +32,6 @@ internal class Program
 
                         builder.AddMiddleware<ServiceMiddleware>();
                         builder.AddMiddleware<ServiceMiddleware>();
-
-                        builder.AddMethodFilter<OneWayMethodFilter>();
-                        builder.AddMethodFilter<TestMethodFilter>();
                     });
             })
             .Build();

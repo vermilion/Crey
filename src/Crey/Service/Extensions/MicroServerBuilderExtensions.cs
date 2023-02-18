@@ -29,16 +29,4 @@ public static class MicroServerBuilderExtensions
     {
         builder.Services.AddScoped<IServiceMiddleware, TMiddleware>();
     }
-
-    /// <summary>
-    /// Adds method filter to collection
-    /// </summary>
-    /// <typeparam name="TFilter">Filter type</typeparam>
-    /// <param name="builder">Fluent for <see cref="IMicroServerBuilder"/></param>
-    public static void AddMethodFilter<TFilter>(this IMicroServerBuilder builder)
-        where TFilter : class, IServiceMethodFilter
-    {
-        builder.Services.AddScoped<IServiceMethodFilter, TFilter>();
-        builder.Services.AddScoped<TFilter>();
-    }
 }

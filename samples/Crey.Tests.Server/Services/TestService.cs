@@ -18,8 +18,6 @@ public class TestService : ITestContract
         _proxyFactory = proxyFactory;
     }
 
-    [MethodFilter<OneWayMethodFilter>]
-    [MethodFilter<TestMethodFilter>]
     public async Task PingOneWay(string message)
     {
         await Task.Delay(3000);

@@ -35,7 +35,7 @@ public class ServiceMethodExecutor : IServiceMethodExecutor
         var messageResult = new MessageResult();
 
         // execute every request in it's own service scope
-        var scope = _scopeFactory.CreateScope();
+        await using var scope = _scopeFactory.CreateAsyncScope();
 
         var callContextAccessor = scope.ServiceProvider.GetRequiredService<ICallContextAccessor>();
 
@@ -44,8 +44,13 @@ public class ServiceMethodExecutor : IServiceMethodExecutor
 
         try
         {
-            // start execution. filters -> middlewares -> actual method
-            await ExecuteWithFilters(scope, entry, invokeMessage, messageResult);
+            // start execution. middlewares -> actual method
+            Task Handler() => ExecuteMethod(scope.ServiceProvider, entry, invokeMessage, messageResult);
+
+            await scope.ServiceProvider
+                .GetServices<IServiceMiddleware>()
+                .Reverse()
+                .Aggregate((NextServiceDelegate)Handler, (next, pipeline) => () => pipeline.Execute(invokeMessage, next))();
         }
         catch (Exception ex)
         {
@@ -61,35 +66,7 @@ public class ServiceMethodExecutor : IServiceMethodExecutor
         }
     }
 
-    private async Task ExecuteWithFilters(IServiceScope scope, ServiceEntryInfo entry, MessageInvoke invokeMessage, MessageResult messageResult)
-    {
-        Task Handler() => ExecuteWithMiddlewares(scope, entry.Delegate, invokeMessage, messageResult);
-
-        var filters = entry.MethodFilters.Select(x => (IServiceMethodFilter)scope.ServiceProvider.GetService(x));
-
-        await filters
-            .Reverse()
-            .Aggregate((NextServiceDelegate)Handler, (next, pipeline) => () => pipeline.Execute(invokeMessage, next))();
-    }
-
-    private async Task ExecuteWithMiddlewares(IServiceScope scope, MicroEntryDelegate entry, MessageInvoke invokeMessage, MessageResult messageResult)
-    {
-        try
-        {
-            Task Handler() => ExecuteMethod(scope.ServiceProvider, entry, invokeMessage, messageResult);
-
-            await scope.ServiceProvider
-                .GetServices<IServiceMiddleware>()
-                .Reverse()
-                .Aggregate((NextServiceDelegate)Handler, (next, pipeline) => () => pipeline.Execute(invokeMessage, next))();
-        }
-        finally
-        {
-            scope?.Dispose();
-        }
-    }
-
-    private async Task ExecuteMethod(IServiceProvider serviceProvider, MicroEntryDelegate entry, MessageInvoke invokeMessage, MessageResult messageResult)
+    private async Task ExecuteMethod(IServiceProvider serviceProvider, ServiceEntryDelegate entry, MessageInvoke invokeMessage, MessageResult messageResult)
     {
         var data = await entry(serviceProvider, invokeMessage.Parameters).ConfigureAwait(false);
 

@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-
-namespace Crey.Service;
+﻿namespace Crey.Service;
 
 public class ServiceHost : IServiceHost, IDisposable
 {
@@ -34,12 +32,13 @@ public class ServiceHost : IServiceHost, IDisposable
     public async Task Stop()
     {
         await _transportListener.Stop();
-        Console.WriteLine("Service Stopped");
+
+        if (_logger.IsEnabled(LogLevel.Information))
+            _logger.LogInformation("Service stopped");
     }
 
     public void Dispose()
     {
         (_transportListener as IDisposable)?.Dispose();
-        Task.Run(Stop).Wait();
     }
 }
