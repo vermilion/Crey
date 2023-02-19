@@ -18,11 +18,12 @@ public class TestService : ITestContract
         _proxyFactory = proxyFactory;
     }
 
-    public async Task PingOneWay(string message)
+    public Task PingOneWay(string message)
     {
-        await Task.Delay(3000);
+        //await Task.Delay(3000);
+        return Task.CompletedTask;
 
-        throw new NotImplementedException("test exception");
+        //throw new NotImplementedException("test exception");
     }
 
     public async Task<string> Ping(string message)

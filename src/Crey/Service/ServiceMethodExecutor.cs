@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 namespace Crey.Service;
 
@@ -77,12 +76,17 @@ public class ServiceMethodExecutor : IServiceMethodExecutor
         else
         {
             await task.ConfigureAwait(false);
+
             var taskType = task.GetType().GetTypeInfo();
             if (taskType.IsGenericType)
             {
                 var prop = taskType.GetProperty("Result");
                 if (prop is not null)
-                    messageResult.Content = prop.GetValue(task);
+                {
+                    var isPublic = prop.PropertyType.IsPublic;
+                    if (isPublic is true)
+                        messageResult.Content = prop.GetValue(task);
+                }
             }
         }
     }
