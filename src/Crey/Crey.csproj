@@ -6,9 +6,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Castle.Core" Version="5.1.1" />
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.3" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.4" />
 		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="7.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="7.0.0" />
@@ -17,9 +16,19 @@
 		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="7.0.0" />
 		<PackageReference Include="Polly" Version="7.2.3" />
 		<PackageReference Include="System.Text.Json" Version="7.0.2" />
-		<PackageReference Include="MessagePack" Version="2.4.59" />
-		<PackageReference Include="Consul" Version="1.6.10.8" />
+		<PackageReference Include="MessagePack" Version="2.5.108" />
 		<PackageReference Include="DotNetty.Codecs" Version="0.7.5" />
+
+		<PackageReference Include="Google.Protobuf" Version="3.22.1" />
+		<PackageReference Include="Grpc.Net.Client" Version="2.52.0" />
+		<PackageReference Include="Grpc.Tools" Version="2.52.0">
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Protobuf Include="Transport\Endpoint.proto" />
 	</ItemGroup>
 
 </Project>

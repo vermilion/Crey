@@ -2,7 +2,7 @@
 
 namespace Crey.Extensions;
 
-internal static class CommonExtensions
+public static class CommonExtensions
 {
     public static T? CastTo<T>(this object obj)
     {

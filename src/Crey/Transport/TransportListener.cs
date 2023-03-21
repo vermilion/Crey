@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-
-namespace Crey.Transport;
+﻿namespace Crey.Transport;
 
 public abstract class TransportListener : MessageListener, ITransportListener
 {

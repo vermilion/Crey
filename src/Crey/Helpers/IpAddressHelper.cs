@@ -6,7 +6,7 @@ namespace Crey.Helpers;
 /// <summary>
 /// Utilities class for working with IP
 /// </summary>
-internal static class IpAddressHelper
+public static class IpAddressHelper
 {
     private static IPAddress? _localIp;
 

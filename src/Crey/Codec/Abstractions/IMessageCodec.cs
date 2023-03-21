@@ -3,5 +3,5 @@
 public interface IMessageCodec
 {
     Task<byte[]> EncodeAsync(object message);
-    Task<object> DecodeAsync(byte[] data, Type type);
+    Task<object?> DecodeAsync(byte[] data, Type type);
 }

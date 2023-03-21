@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<IsPackable>true</IsPackable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Consul" Version="1.6.10.8" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Crey\Crey.csproj" />
+	</ItemGroup>
+
+</Project>

@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 using Crey.Extensions;
 using Crey.Extensions.StringExtension;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace Crey.Discovery.StaticList;

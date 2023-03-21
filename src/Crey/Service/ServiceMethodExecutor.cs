@@ -83,8 +83,7 @@ public class ServiceMethodExecutor : IServiceMethodExecutor
                 var prop = taskType.GetProperty("Result");
                 if (prop is not null)
                 {
-                    var isPublic = prop.PropertyType.IsPublic;
-                    if (isPublic is true)
+                    if (prop.PropertyType.IsPublic is true)
                         messageResult.Content = prop.GetValue(task);
                 }
             }

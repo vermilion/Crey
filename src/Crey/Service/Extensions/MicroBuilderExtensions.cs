@@ -15,7 +15,7 @@ public static class MicroBuilderExtensions
     {
         var services = builder.Services;
 
-        services.AddBaseServices();
+        services.AddCoreServices();
 
         services.AddSingleton<IServiceHost, ServiceHost>();
         services.AddSingleton<IServiceMethodExecutor, ServiceMethodExecutor>();
@@ -23,7 +23,7 @@ public static class MicroBuilderExtensions
 
         services.AddScoped<ICallContextAccessor, CallContextAccessor>();
 
-        services.AddHostedService<HostListenerBackroundService>();
+        services.AddHostedService<HostListenerBackgroundService>();
 
         services.Configure<ServiceAddress>(builder.ConfigurationSection.GetSection("Service"));
         services.AddTransient<IPostConfigureOptions<ServiceAddress>, PostConfigureServiceAddress>();

@@ -8,10 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BenchmarkDotNet" Version="0.13.4" />
+    <PackageReference Include="BenchmarkDotNet" Version="0.13.5" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Crey.Client\Crey.Client.csproj" />
+    <ProjectReference Include="..\..\src\Crey.Discovery.Consul\Crey.Discovery.Consul.csproj" />
     <ProjectReference Include="..\Crey.Tests.Contracts\Crey.Tests.Contracts.csproj" />
   </ItemGroup>
 

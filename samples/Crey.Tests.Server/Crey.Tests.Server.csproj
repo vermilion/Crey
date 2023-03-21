@@ -18,6 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Crey.Client\Crey.Client.csproj" />
+    <ProjectReference Include="..\..\src\Crey.Discovery.Consul\Crey.Discovery.Consul.csproj" />
     <ProjectReference Include="..\..\src\Crey\Crey.csproj" />
     <ProjectReference Include="..\Crey.Tests.Contracts\Crey.Tests.Contracts.csproj" />
   </ItemGroup>
