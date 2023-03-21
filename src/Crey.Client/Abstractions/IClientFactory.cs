@@ -1,4 +1,4 @@
-﻿using Crey.Service;
+﻿using Crey.Core;
 
 namespace Crey.ClientSide;
 

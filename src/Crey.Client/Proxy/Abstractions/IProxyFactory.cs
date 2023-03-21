@@ -1,6 +1,4 @@
-﻿using Crey.Contracts;
-
-namespace Crey.Proxy;
+﻿namespace Crey.Proxy;
 
 /// <summary>
 /// Proxy factory generator

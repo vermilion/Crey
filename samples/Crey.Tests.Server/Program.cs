@@ -2,6 +2,7 @@
 using Crey.ClientSide;
 using Crey.Discovery.Consul;
 #if !DEBUG
+using Crey.Core;
 using Crey.Discovery.StaticList;
 #endif
 using Crey.Tests.Contracts;

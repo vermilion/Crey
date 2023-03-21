@@ -1,4 +1,4 @@
-﻿namespace Crey.Service;
+﻿namespace Crey.Core;
 
 /// <summary>
 /// Service address info

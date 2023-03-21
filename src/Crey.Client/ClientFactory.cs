@@ -1,5 +1,5 @@
 ﻿using System.Collections.Concurrent;
-using Crey.Service;
+using Crey.Core;
 using Microsoft.Extensions.Logging;
 
 namespace Crey.ClientSide;

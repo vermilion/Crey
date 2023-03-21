@@ -1,7 +1,7 @@
 ﻿using Consul;
+using Crey.Core;
 using Crey.Extensions;
 using Crey.Helpers;
-using Crey.Service;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;

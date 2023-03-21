@@ -1,6 +1,6 @@
 ﻿namespace Crey.CallContext;
 
-internal class CallContextAccessor : ICallContextAccessor
+public class CallContextAccessor : ICallContextAccessor
 {
     public MessageInvokeContext Context { get; set; } = new();
 

@@ -1,10 +1,10 @@
 ﻿using System.Net;
 using System.Reflection;
 using Consul;
+using Crey.Core;
 using Crey.Extensions;
 using Crey.Extensions.StringExtension;
 using Crey.Helpers;
-using Crey.Service;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;

@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Text.RegularExpressions;
 
-namespace Crey.Discovery;
+namespace Crey.Core;
 
 public static class ServiceAddressExtensions
 {

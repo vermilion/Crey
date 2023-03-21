@@ -1,4 +1,7 @@
-﻿namespace Crey.Transport;
+﻿using Crey.Core;
+using Crey.Messages;
+
+namespace Crey.Transport;
 
 public interface ITransportListener : IMessageListener
 {

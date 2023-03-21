@@ -1,6 +1,4 @@
-﻿using Crey.Contracts;
-
-namespace Crey.Extensions;
+﻿namespace Crey.Extensions;
 
 public static class MicroServiceExtensions
 {

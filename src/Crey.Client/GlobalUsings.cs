@@ -6,6 +6,5 @@ global using Crey.Discovery;
 global using Crey.Exceptions;
 global using Crey.Helpers;
 global using Crey.Messages;
-global using Crey.Transport;
 
 global using Microsoft.Extensions.Logging;

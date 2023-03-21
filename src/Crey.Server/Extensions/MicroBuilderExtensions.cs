@@ -28,7 +28,7 @@ public static class MicroBuilderExtensions
         services.Configure<ServiceAddress>(builder.ConfigurationSection.GetSection("Service"));
         services.AddTransient<IPostConfigureOptions<ServiceAddress>, PostConfigureServiceAddress>();
 
-        builder.AddServiceDiscoveryServices();
+        services.AddHostedService<ServiceRegisterBackroundService>();
 
         builderAction.Invoke(builder);
 

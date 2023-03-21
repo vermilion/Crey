@@ -6,7 +6,7 @@ using Crey.Discovery.StaticList;
 using Crey.Discovery.Consul;
 using Crey.Proxy;
 using Crey.Tests.Contracts;
-using Crey.Service;
+using Crey.Core;
 
 namespace Crey.Benchmarks;
 

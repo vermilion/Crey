@@ -1,6 +1,4 @@
-﻿using Crey.Service;
-
-namespace Crey.ClientSide;
+﻿namespace Crey.ClientSide;
 
 public interface IClientLoadBalancingStrategy
 {

@@ -1,4 +1,6 @@
-﻿namespace Crey.Service;
+﻿using Crey.Transport;
+
+namespace Crey.Service;
 
 public class ServiceHost : IServiceHost, IDisposable
 {

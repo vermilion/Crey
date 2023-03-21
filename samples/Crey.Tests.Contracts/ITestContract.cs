@@ -1,4 +1,4 @@
-﻿using Crey.Contracts;
+﻿using Crey.Core;
 
 namespace Crey.Tests.Contracts;
 

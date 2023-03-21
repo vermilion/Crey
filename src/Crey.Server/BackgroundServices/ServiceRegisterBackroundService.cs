@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 
-namespace Crey.Discovery;
+namespace Crey.Service;
 
 internal class ServiceRegisterBackroundService : BackgroundService
 {

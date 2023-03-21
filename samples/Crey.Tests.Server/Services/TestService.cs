@@ -1,6 +1,5 @@
 ﻿using Crey.CallContext;
 using Crey.Proxy;
-using Crey.Service;
 using Crey.Tests.Contracts;
 
 namespace Crey.Tests.Server;

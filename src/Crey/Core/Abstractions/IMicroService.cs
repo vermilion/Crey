@@ -1,4 +1,4 @@
-﻿namespace Crey.Contracts;
+﻿namespace Crey.Core;
 
 /// <summary>
 /// Service marker interface

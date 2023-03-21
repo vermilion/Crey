@@ -2,5 +2,5 @@
 
 public interface ICallContextAccessor
 {
-    MessageInvokeContext Context { get; internal set; }
+    MessageInvokeContext Context { get; set; }
 }

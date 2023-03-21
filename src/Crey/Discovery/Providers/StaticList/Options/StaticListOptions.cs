@@ -1,5 +1,4 @@
-﻿using Crey.Contracts;
-using Crey.Extensions;
+﻿using Crey.Extensions;
 
 namespace Crey.Discovery.StaticList;
 
